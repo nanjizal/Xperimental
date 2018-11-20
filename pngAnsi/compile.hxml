@@ -1,0 +1,9 @@
+-cp src
+-main Main
+-neko main.n
+#-cpp main
+-lib folder
+-lib hxPixels
+-lib format
+-lib ansi
+-cmd neko main.n 
