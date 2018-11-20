@@ -5,7 +5,7 @@ import ANSI;
 @:enum
 @:forward
 abstract CharSet( String ) from String to String {
-    var CharSimple = " .:-=+*#%@";//█
+    var CharSimple = " .:-=+*#%@";
     var CharComplex = " .'`^" + '",:;Il!i><~+_-?][}{1)(|' +'\\' + '/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$█';
 }
 class Main{
@@ -29,7 +29,6 @@ class Main{
         var scale = brightness.length;
         ANSI.set( White );
         var str = '';
-        
         w = Std.int( Math.min( w*scaleFactor, 99 ) );
         h = Std.int( Math.min( h*scaleFactor, 84 ) );
         var r: Bool;
@@ -42,7 +41,7 @@ class Main{
                 for( y in 0...h ){
                     p = pixels.getPixel32( Math.round( x/scaleFactor ), Math.round( y/scaleFactor ) );
                     l = p.fA*( 0.21*p.fR + 0.72*p.fG + 0.07*p.fB ) * scale;
-                    r = ( p.fR > ( 0.3 - 0.21/2 ) );
+                    r = ( p.fR > ( 0.3 - 0.21/2 ) ); // adjust these to create different colored images
                     g = ( p.fG > ( 0.3 - 0.72/2 ) );
                     b = ( p.fB > ( 0.3 - 0.07/2 ) );
                     color = White;
