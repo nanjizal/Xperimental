@@ -32,4 +32,4 @@ folders on my github.
 
 7) Some terminals support more colors but the named colors are common standard.
 
-8) Can adjust the brightness scale on line 29 at moment it's set to length of character set, it would probably be unwise to make it greate than the character set, no protection currently.
+8) Can adjust the brightness scale on line 29 at moment it's set to length of character set, it would probably be unwise to make it greater than the character set, no protection currently.
