@@ -1,0 +1,101 @@
+{
+    "frames": {
+
+   "chin.png":
+    {
+        "frame": {"x":0,"y":0,"w":11,"h":12},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x":0,"y":0,"w":11,"h":12},
+        "sourceSize": {"w":11,"h":12 }
+    },
+   "backHoff.png":
+    {
+        "frame": {"x":11,"y":0,"w":20,"h":16},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x":0,"y":0,"w":20,"h":16},
+        "sourceSize": {"w":20,"h":16 }
+    },
+   "frontHoff.png":
+    {
+        "frame": {"x":31,"y":0,"w":20,"h":15},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x":0,"y":0,"w":20,"h":15},
+        "sourceSize": {"w":20,"h":15 }
+    },
+   "frontLegBottom.png":
+    {
+        "frame": {"x":11,"y":16,"w":18,"h":51},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x":0,"y":0,"w":18,"h":51},
+        "sourceSize": {"w":18,"h":51 }
+    },
+   "backLegBottom.png":
+    {
+        "frame": {"x":29,"y":16,"w":31,"h":58},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x":0,"y":0,"w":31,"h":58},
+        "sourceSize": {"w":31,"h":58 }
+    },
+   "backLegTop.png":
+    {
+        "frame": {"x":60,"y":16,"w":64,"h":73},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x":0,"y":0,"w":64,"h":73},
+        "sourceSize": {"w":64,"h":73 }
+    },
+   "head.png":
+    {
+        "frame": {"x":124,"y":16,"w":77,"h":45},
+        "rotated": true,
+        "trimmed": false,
+        "spriteSourceSize": {"x":0,"y":0,"w":77,"h":45},
+        "sourceSize": {"w":77,"h":45 }
+    },
+   "tail.png":
+    {
+        "frame": {"x":29,"y":74,"w":23,"h":88},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x":0,"y":0,"w":23,"h":88},
+        "sourceSize": {"w":23,"h":88 }
+    },
+   "frontLegTop.png":
+    {
+        "frame": {"x":60,"y":89,"w":57,"h":92},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x":0,"y":0,"w":57,"h":92},
+        "sourceSize": {"w":57,"h":92 }
+    },
+   "neck.png":
+    {
+        "frame": {"x":117,"y":89,"w":92,"h":110},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x":0,"y":0,"w":92,"h":110},
+        "sourceSize": {"w":92,"h":110 }
+    },
+   "body.png":
+    {
+        "frame": {"x":240,"y":0,"w":230,"h":100},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x":0,"y":0,"w":230,"h":100},
+        "sourceSize": {"w":230,"h":100 }
+    },
+   "meta": {
+        "app": "http://www.codeandweb.com/texturepacker",
+        "version": "1.0",
+        "image": "./assets/rectPack/zebraAtlas.png",
+        "format": "RGBA8888",
+        "size": {"w":480,"h":240},
+        "scale": "1"
+    }
+    }
+}

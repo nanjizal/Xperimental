@@ -1,0 +1,10 @@
+let project = new Project('Zeal Atlas');
+project.addAssets('Assets/**');
+project.addShaders('Shaders/**');
+project.addSources('src');
+project.addLibrary('hxRectPack2D');
+project.addParameter('-main MainApp');
+//project.addParameter('-dce no');
+project.windowOptions.width = 1024;
+project.windowOptions.height = 768;
+resolve( project );

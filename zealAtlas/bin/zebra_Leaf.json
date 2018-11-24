@@ -1,0 +1,162 @@
+{   
+    "leaf": {
+        "name": "zebra",
+        "top": { "name": "body"
+               , "texture": "body.png"
+               , "parentName": ""
+               , "x": 0.0
+               , "y": 0.0
+               , "ox": 0.0
+               , "oy": 0.0
+               , "cx": 0.0
+               , "cy": 0.0
+               , "rotation": 0.0
+        },
+        "leaves": [
+            {    "name": "head"
+               , "texture": "head.png"
+               , "parentName": "neck"
+               , "ox": 18.0
+               , "oy": 32.0
+               , "cx": 40.0
+               , "cy": 30.0
+               , "rotation": 0.0
+            },
+            {    "name": "neck"
+               , "texture": "neck.png"
+               , "parentName": "body"
+               , "ox": 33.0
+               , "oy": 49.0
+               , "cx": 80.0
+               , "cy": 90.0
+               , "rotation": 0.0
+            },
+            {    "name": "chin"
+               , "texture": "chin.png"
+               , "parentName": "head"
+               , "ox": 20.0
+               , "oy": 62.0
+               , "cx": 11.0
+               , "cy": -5.0
+               , "rotation": 0.0
+            },
+            {    "name": "backHoff"
+               , "texture": "backHoff.png"
+               , "parentName": "backLegBottom"
+               , "ox": 10.0
+               , "oy": 55.0
+               , "cx": 15.0
+               , "cy": 0.0
+               , "rotation": 0.0
+            },
+            {    "name": "backHoff2"
+               , "texture": "backHoff.png"
+               , "parentName": "backLegBottom2"
+               , "ox": 10.0
+               , "oy": 53.0
+               , "cx": 15.0
+               , "cy": 0.0
+               , "rotation": 0.0
+            },
+            {    "name": "frontHoff"
+               , "texture": "frontHoff.png"
+               , "parentName": "frontLegBottom"
+               , "ox": 10.0
+               , "oy": 50.0
+               , "cx": 15.0
+               , "cy": 0.0
+               , "rotation": 0.0
+            },
+            {    "name": "frontHoff2"
+               , "texture": "frontHoff.png"
+               , "parentName": "frontLegBottom2"
+               , "ox": 10.0
+               , "oy": 48.0
+               , "cx": 15.0
+               , "cy": 0.0
+               , "rotation": 0.0
+            },
+            {    "name": "backLegBottom"
+               , "texture": "backLegBottom.png"
+               , "parentName": "backLegTop"
+               , "ox": 47.0
+               , "oy": 75.0
+               , "cx": 15.0
+               , "cy": 5.0
+               , "rotation": 0.0
+            },
+            {    "name": "backLegBottom2"
+               , "texture": "backLegBottom.png"
+               , "parentName": "backLegTop2"
+               , "ox": 47.0
+               , "oy": 73.0
+               , "cx": 15.0
+               , "cy": 5.0
+               , "rotation": 0.0
+            },
+            {    "name": "frontLegBottom"
+               , "texture": "frontLegBottom.png"
+               , "parentName": "frontLegTop"
+               , "ox": 35.0
+               , "oy": 95.0
+               , "cx": 10.0
+               , "cy": 10.0
+               , "rotation": 0.0
+            },
+            {    "name": "frontLegBottom2"
+               , "texture": "frontLegBottom.png"
+               , "parentName": "frontLegTop2"
+               , "ox": 35.0
+               , "oy": 93.0
+               , "cx": 10.0
+               , "cy": 10.0
+               , "rotation": 0.0
+            },
+            {    "name": "frontLegTop"
+               , "texture": "frontLegTop.png"
+               , "parentName": "body"
+               , "ox": 28.0  
+               , "oy": 87.0 
+               , "cx": 25.0
+               , "cy": 25.0
+               , "rotation": 0.0
+            },
+            {    "name": "frontLegTop2"
+               , "texture": "frontLegTop.png"
+               , "parentName": "body"
+               , "ox": 28.0 
+               , "oy": 85.0
+               , "cx": 25.0
+               , "cy": 25.0
+               , "rotation": 0.0
+            },
+            {    "name": "backLegTop"
+               , "texture": "backLegTop.png"
+               , "parentName": "body"
+               , "ox": 185.0
+               , "oy": 57.0
+               , "cx": 23.0
+               , "cy": -8.0
+               , "rotation": 0.0
+            },
+            {    "name": "backLegTop2"
+               , "texture": "backLegTop.png"
+               , "parentName": "body"
+               , "ox": 185.0
+               , "oy": 55.0
+               , "cx": 23.0
+               , "cy": -8.0
+               , "rotation": 0.0
+            },
+            {    "name": "tail"
+               , "texture": "tail.png"
+               , "parentName": "body"
+               , "ox": 230.0
+               , "oy": 25.0
+               , "cx": 5.0
+               , "cy": 5.0
+               , "rotation": 0.0
+            }
+        ]
+    }
+}
