@@ -86,7 +86,11 @@ Multiple Arc Tan with rotation limits might be enough perhaps with some tween so
 
 ## Trilateral drawing contours with WebGL ( GL ).
 
-
+## Tetris, triangle crazy.
+I was asked to make Tetris, I implemented it with triangles, you can define your own shapes and it runs on all Haxe toolkits, it apparently even supports SVG but need optimizing.
+Arrow keys to play.
+- [ WebGL ](https://nanjizal.github.io/PolyominoTriangles/binHeaps/index.html)
+- [ Canvas ](https://rawgit.com/nanjizal/PolyominoTriangles/master/binCanvas/index.html?2)
 
 ## Spiro
 
