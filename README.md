@@ -79,7 +79,12 @@ Was really excited but the code was too convoluted to easily use for say a Tiger
 The tools in Zeal need to be improved to allow the placement JSON to be created by dragging around limbs and rotation cross hairs, the project may extend.
 
 Next I am looking at recreating some IK and a tool to build the offset rotation JSON.
-Multiple Arc Tan with Rotation limits might be enough perhaps with some tween softening. Recreating an arm... the hassle of getting vector art out of flash perhaps I can parse the illustrator export..
+Multiple Arc Tan with rotation limits might be enough perhaps with some tween softening. Recreating an arm... the hassle of getting vector art out of flash perhaps I can parse the illustrator export.. that's the beauty of Opensource you can explore some tangents they normally turn out useful later.
+
+## JigsawX
+### demos
+- ( WebGL )      https://nanjizal.github.io/TrilateralBazaar/jigsawX/bin/index.html
+- ( Canvas/Dom ) https://nanjizal.github.io/JigsawX/bin/JigsawDivtastic.htm
 
 ## Trilateral drawing contours with WebGL ( GL ).
 
