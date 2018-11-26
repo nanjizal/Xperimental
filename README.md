@@ -100,7 +100,9 @@ Port of Spiro a fancy tool for making intuative curves.
 
 _TODO: upload better version to github as the code pen one move points is broken._
 
-
+## L-Systems 
+greatly improved this project adding cool examples, animation and implementing color and abstracting so it will work for Kha and Luxe.
+- [ L-System animation wait for 2nd page](https://nanjizal.github.io/L-System/bin/web/)
 
 
 
