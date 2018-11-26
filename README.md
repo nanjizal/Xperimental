@@ -90,7 +90,7 @@ Multiple Arc Tan with rotation limits might be enough perhaps with some tween so
 I was asked if I could make Tetris, implemented it with triangles not an MVC framework! You can define your own shapes in the code easily and it runs on all Haxe toolkits, did add SVG target but meh, also emscriptem via NME. Two versions below.
 Arrow keys to play.
 - [ WebGL ](https://nanjizal.github.io/PolyominoTriangles/binHeaps/index.html)
-- [ Canvas ](https://rawgit.com/nanjizal/PolyominoTriangles/master/binCanvas/index.html?2)
+- [ Canvas ](https://nanjizal.github.io/PolyominoTriangles/binCanvas/index.html?2)
 
 ## Spiro
 
