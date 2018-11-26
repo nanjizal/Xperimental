@@ -83,8 +83,8 @@ Multiple Arc Tan with rotation limits might be enough perhaps with some tween so
 
 ## JigsawX
 ### demos
-- ( WebGL )      https://nanjizal.github.io/TrilateralBazaar/jigsawX/bin/index.html
-- ( Canvas/Dom ) https://nanjizal.github.io/JigsawX/bin/JigsawDivtastic.htm
+- ( WebGL )[https://nanjizal.github.io/TrilateralBazaar/jigsawX/bin/index.html]
+- ( Canvas/Dom )[https://nanjizal.github.io/JigsawX/bin/JigsawDivtastic.htm]
 
 ## Trilateral drawing contours with WebGL ( GL ).
 
