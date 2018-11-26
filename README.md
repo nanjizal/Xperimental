@@ -7,8 +7,6 @@ Nanjizal has grown. Lot of the projects are graphical and experimental testing a
 ### Zeal of Zebra
 Using my **Leaf** offset rotations, **folders** image/file **helper** and my port of **RectPack2D**. 
 
-#### Main Demos
-
  - [WebGL] https://nanjizal.github.io/Xperimental/zealAtlas/bin/index.html
  - [Canvas] https://nanjizal.github.io/Zeal/deploy/index.html
 
@@ -82,7 +80,7 @@ Next I am looking at recreating some IK and a tool to build the offset rotation 
 Multiple Arc Tan with rotation limits might be enough perhaps with some tween softening. Recreating an arm... the hassle of getting vector art out of flash perhaps I can parse the illustrator export.. that's the beauty of Opensource you can explore some tangents they normally turn out useful later.
 
 ## JigsawX
-### demos
+
 - ( WebGL )[https://nanjizal.github.io/TrilateralBazaar/jigsawX/bin/index.html]
 - ( Canvas/Dom )[https://nanjizal.github.io/JigsawX/bin/JigsawDivtastic.htm]
 
