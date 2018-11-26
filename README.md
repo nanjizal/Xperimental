@@ -95,7 +95,8 @@ Arrow keys to play.
 ## hxSpiro
 Port of Spiro a fancy tool for making intuative curves.
 - [ code pen demo ](https://codepen.io/Nanjizal/pen/qReLLR)
-TODO: upload better version to github as the code pen one move points is broken.
+
+_TODO: upload better version to github as the code pen one move points is broken._
 
 
 
