@@ -84,7 +84,7 @@ Multiple Arc Tan with rotation limits might be enough perhaps with some tween so
 - [ WebGL ](https://nanjizal.github.io/TrilateralBazaar/jigsawX/bin/index.html)
 - [ Canvas/Dom ](https://nanjizal.github.io/JigsawX/bin/JigsawDivtastic.htm)
 
-_Flash, Swing, OpenFL, NME, Kha and Canvas versions, some with webcam or video. _
+_Flash, Swing, OpenFL, NME, Kha and Canvas versions, some with webcam or video._
 
 ## Trilateral drawing contours with WebGL ( GL ).
 
