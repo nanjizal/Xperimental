@@ -7,7 +7,7 @@ Nanjizal has grown. Lot of the projects are graphical and experimental testing a
 ### Zeal of Zebra
 Using my **Leaf** offset rotations, **folders** image/file **helper** and my port of **RectPack2D**. 
 
- - [ WebGL ](https://nanjizal.github.io/Xperimental/zealAtlas/bin/index.html)
+ - [ WebGL ](https://nanjizal.github.io/Xperimental/zealAtlas/bin/index.html) _mouse down and <- -> to rotate piece._
  - [ Canvas ](https://nanjizal.github.io/Zeal/deploy/index.html)
 
 #### Zeal Development 
