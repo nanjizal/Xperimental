@@ -223,6 +223,16 @@ A puzzle where you flip triangles by clicking on thier corners to complete the i
 
 A puzzle with a similar concept to a slider puzzle but instead of sliding rectangular pieces you flip triangular pieces, very hard to play. Developed in NME/OpenFL/Flash uses lots of BitmapData.  It could be useful for triangular grid games in theory but the code is perhaps a bit complex for such reuse.
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 ## Nodule
 
 Nodule a library to parse XML to a faster structure.
@@ -231,3 +241,12 @@ Nodule a library to parse XML to a faster structure.
 
 Nodule does very low level parsing of XML using character codes, so it's pretty fast but not infinitely robust.  Provides a LinkedList firstChild structure with extensive use of abstracts to make access of final structural data easy and flexible.  By hooking in Kha's text it's possible to provide simple color coded XML render.
  
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
