@@ -113,6 +113,12 @@ greatly improved this project adding cool examples, animation and implementing c
 <br>
 <br>
 <br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 ## Ellipse SVG parsing
 <img width="300" align="left" alt="elipse" src="https://user-images.githubusercontent.com/20134338/49062944-af0a8900-f20d-11e8-9e1e-031eec3164d2.jpg">
