@@ -1,5 +1,5 @@
-[< back ](https://github.com/nanjizal/Xperimental#zeal-of-zebra)
 # Zeal of Zebra
+[ < back to main readme ](https://github.com/nanjizal/Xperimental#zeal-of-zebra)
 
 Using my **Leaf** offset rotations, **folders** image/file **helper** and my port of **RectPack2D**. 
 
@@ -96,3 +96,5 @@ So to build the Zebras into a Zebra Leaf tree, I now have to merge the two JSON 
 ###### Future
 
 The tools in Zeal need to be improved to allow the placement JSON to be created by dragging around limbs and rotation cross hairs, the project may extend. But as dev tools it's kind of acceptable and the step to making it into an application others use for animating is much bigger, but who knows...
+[ < back to main readme ](https://github.com/nanjizal/Xperimental#zeal-of-zebra)
+
