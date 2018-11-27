@@ -44,7 +44,7 @@ From the Canvas version to the WebGL, with some Texture packing and Ascii art di
 #### Code Links:
 | Canvas | Kha ( WebGL ) |
 | :-----------: | :-----------: |
-|[htmlHelper.canvas.Leaf](https://github.com/nanjizal/htmlHelper/blob/master/htmlHelper/canvas/Leaf.hx) |[Kha - MainApp](https://github.com/nanjizal/Xperimental/blob/master/zealAtlas/src/MainApp.hx) |
+|[htmlHelper.canvas.Leaf](https://github.com/nanjizal/htmlHelper/blob/master/htmlHelper/canvas/Leaf.hx) |[MainApp](https://github.com/nanjizal/Xperimental/blob/master/zealAtlas/src/MainApp.hx) |
 |[zeal.Zebra](https://github.com/nanjizal/Zeal/blob/master/src/zeal/Zebra.hx) | |
 
 ## Ascii Art, hxPixel and Ansi
