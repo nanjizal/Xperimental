@@ -15,6 +15,8 @@
 | [<img width="150" alt="lettersgrab" src="https://user-images.githubusercontent.com/20134338/49061470-b9765400-f208-11e8-800f-776aab0cc710.jpg">](/README.md#letters)| [<img width="150" alt="backtothefuture" src="https://user-images.githubusercontent.com/20134338/49062686-e7f62e00-f20c-11e8-9eb3-185faab51182.jpg">](/README.md#LED) | [<img width="150" alt="elipse" src="https://user-images.githubusercontent.com/20134338/49062944-af0a8900-f20d-11e8-9e1e-031eec3164d2.jpg">](README.md#ellipse-svg-parsing) | [<img width="150" alt="parrot" src="https://user-images.githubusercontent.com/20134338/49063282-c26a2400-f20e-11e8-897e-9980f11712c9.jpg">](/README.md#parrot-fxg-with-trilateral)|
 | Dot matrix | Trilateral ( Vectors for GPU ) | PolyminoTriangles ( tetris ) | SimpleText |
 | [<img width="150" alt="dotmatrix" src="https://user-images.githubusercontent.com/20134338/49063654-ec701600-f20f-11e8-8b35-6cc60027bedd.jpg">](/README.md#dot-matrix-with-trilateral)| [<img height="150" alt="trilateralkiwi" src="https://user-images.githubusercontent.com/20134338/49064013-4fae7800-f211-11e8-8308-0a9bc75c871c.jpg">](/README.md#trilateral) | [<img width="150" alt="polyminokha" src ="https://user-images.githubusercontent.com/20134338/49080453-987b2680-f23b-11e8-8666-3df3bd9bf7fd.jpg">](/README.md#tetris-triangle-crazy) | [<img width="150" alt="simpletext" src="https://user-images.githubusercontent.com/20134338/49083891-e2690a00-f245-11e8-9c13-7ce4e29aeb12.jpg">](/README.md#simpletext) |
+| tryflipSpin puzzle | | | |
+| [<img width="150" alt="tryflip" src="https://user-images.githubusercontent.com/20134338/49084720-2d841c80-f248-11e8-9a47-2cdc925dd3a7.jpg">](/README.md#tryflipspin)| | |
 
 *****
 
@@ -212,3 +214,9 @@ Features:
 - Horizontal justification, LEFT, CENTRE, RIGHT, ...
 - Highlight of word, character, sentences
 - Allows Equations to control x, y, scale coordinates of letters.
+
+## tryFlipSpin puzzle
+A puzzle where you flip triangles by clicking on thier corners to complete the image.
+<img width="300" align="left" alt="tryflip" src="https://user-images.githubusercontent.com/20134338/49084720-2d841c80-f248-11e8-9a47-2cdc925dd3a7.jpg">
+
+A puzzle with a similar concept to a slider puzzle but instead of sliding rectangular pieces you flip triangular pieces, very hard to play. Developed in NME/OpenFL/Flash uses lots of BitmapData.  It could be useful for triangular grid games in theory but the code is perhaps a bit complex for such reuse.
