@@ -146,10 +146,6 @@ greatly improved this project adding cool examples, animation and implementing c
 <br>
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
 
 ## Parrot FXG with Trilateral
 
