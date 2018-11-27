@@ -38,12 +38,12 @@ Flexible jigsaw engine where you can adjust aspects of the curve generation and 
 
 <img width="300" align="left" alt="jigsawximage" src="https://user-images.githubusercontent.com/20134338/49057707-a65b8800-f1f8-11e8-93af-f4f92a86ecbc.png">
 
-WebGL version uses Trilateral in Kha mapping textures to the triangulation fill generated, the Canvas version is a Div with a Canvas within each piece. The WebGL version has rotation, this is currently setup to be controlled by using arrow keys while mouse is down on a piece, needs reconsideration for mobile use perhaps.
+WebGL Kha uses Trilateral mapping textures to the triangulation fill generated, rotation via arrow keys when mouse down. Canvas version uses one per Div piece.
 
 - [ WebGL ](https://nanjizal.github.io/TrilateralBazaar/jigsawX/bin/index.html)
 - [ Canvas/Dom ](https://nanjizal.github.io/JigsawX/bin/JigsawDivtastic.htm)
 
-_Flash, Swing Java, OpenFL, NME ( android ), Kha and Canvas versions, some with webcam or video._
+_Flash, Swing Java, OpenFL, NME ( + android ), Kha and Canvas versions, some with webcam or video._
 <br>
 <br>
 
