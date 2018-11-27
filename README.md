@@ -1,6 +1,6 @@
 # Xperimental
 
-**Nanjizal** has grown. Here I collate smaller projects and provide more narative on the development of concepts through experiments and libraries within Nanjizal ( and hxDaeadlus ).
+**Nanjizal** has grown. Here I collate smaller projects and provide an overview narative on the development of concepts through experiments and libraries within Nanjizal ( and hxDaeadlus ).
 ###### Click on the table image to go to the project section
 
 | Projects |  |  |  |
