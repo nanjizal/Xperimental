@@ -46,7 +46,7 @@ _TODO: upload better version to github as the code pen one move points is broken
 greatly improved this project adding cool examples, animation and implementing color and abstracting so it will work for Kha and Luxe.
 - [ L-System animation ](https://nanjizal.github.io/L-System/bin/web/), wait for 2nd page spoiler alert below:
 
-<img width="150" alt="lsystem2" src="https://user-images.githubusercontent.com/20134338/49053899-04cd3a00-f1ea-11e8-98dd-b5b016090081.png">
+<img width="300" alt="lsystem2" src="https://user-images.githubusercontent.com/20134338/49053899-04cd3a00-f1ea-11e8-98dd-b5b016090081.png">
 
 
 
