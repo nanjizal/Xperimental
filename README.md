@@ -26,10 +26,6 @@ From the Canvas version to the WebGL, with some Texture packing and Ascii art di
 
 In my exploration of Zeal I wanted quick display of images within the console using Neko.  
 [read more.. > ](https://github.com/nanjizal/Xperimental/blob/master/information/ZealOfZebra.md#ansi-and-asciihxpixels-art-diversions)
-  
-$~$
-$~$
-***
 
 ## JigsawX
 
@@ -37,27 +33,27 @@ $~$
 - [ Canvas/Dom ](https://nanjizal.github.io/JigsawX/bin/JigsawDivtastic.htm)
 
 _Flash, Swing, OpenFL, NME, Kha and Canvas versions, some with webcam or video._
-***
+
 ## Trilateral drawing contours with WebGL ( GL ).
-***
+
 ## Tetris, triangle crazy.
 I was asked if I could make Tetris, implemented it with triangles not an MVC framework! You can define your own shapes in the code easily and it runs on all Haxe toolkits, did add SVG target but meh, also emscriptem via NME. Two versions below.
 _Arrow keys to play._
 - [ WebGL ](https://nanjizal.github.io/PolyominoTriangles/binHeaps/index.html)
 - [ Canvas ](https://nanjizal.github.io/PolyominoTriangles/binCanvas/index.html?2)
-***
+
 ## hxSpiro
 Port of Spiro a fancy tool for making intuative curves.
 - [ code pen demo ](https://codepen.io/Nanjizal/pen/qReLLR)
 
 _TODO: upload better version to github as the code pen one move points is broken._
-***
+
 ## L-Systems 
 greatly improved this project adding cool examples, animation and implementing color and abstracting for use with both Kha and Luxe rendering or possibly other toolkits.
 - [ L-System animation ](https://nanjizal.github.io/L-System/bin/web/) _wait for 2nd page spoiler alert below:_
 
 <img width="300" alt="lsystem2" src="https://user-images.githubusercontent.com/20134338/49053899-04cd3a00-f1ea-11e8-98dd-b5b016090081.png">
-***
+
 
 
 
