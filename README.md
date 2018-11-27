@@ -21,8 +21,8 @@ Using my **Leaf** offset rotations, **folders** image/file **helper** and my por
 From the Canvas version to the WebGL, with some Texture packing and Ascii art diversions.  [read more.. > ](/information/ZealOfZebra.md)
 ***
 ## Ascii Art, hxPixel and Ansi
-<div width="300">
-<img width="150"  align="left" alt="haxeansi3" src="https://user-images.githubusercontent.com/20134338/49052755-18c26d00-f1e5-11e8-845a-9b4e29f4c114.png">
+<div width="300"  align="left" >
+<img width="150" alt="haxeansi3" src="https://user-images.githubusercontent.com/20134338/49052755-18c26d00-f1e5-11e8-845a-9b4e29f4c114.png">
 </div>
 
 In my exploration of Zeal I wanted quick display of images within the console using Neko.  
