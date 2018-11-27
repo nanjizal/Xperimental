@@ -61,6 +61,20 @@ _Flash, Swing Java, OpenFL, NME ( + android ), Kha and Canvas versions, some wit
 <br>
 
 ## Trilateral drawing contours with WebGL ( GL ).
+
+Trilateral converts drawing commands into contours built with triangles suitable for rendering vector graphics on the GPU.
+Mostly tested with Kha haxe toolkit with WebGL examples inconjunction with other trilateralXtra extension library and trilateralBazaar examples libraries.
+Features:
+- Different contour rendering from basic overlapping lines, basic triangle corner to complex rounded corners.
+- Integration with shape fill algorithms basic fill **hxPolyK**, **poly2trihx** and **hxGeomAlgo's Tess2**.
+- SVG path parsing, and support for some simple SVG images.
+- FXG, a depreciated adobe Vector format typically used with Flash.
+- Complex Linear Gradient Fill of arbitary shapes.
+- Fill of arbitary shapes with fill.
+- Support of wide range of basic shapes.
+- Dotmatrix scrolling.
+- Seven Segment LED.
+
 <img width="300" align="left" alt="twolineswithlines" src="https://user-images.githubusercontent.com/20134338/49059216-b88cf480-f1ff-11e8-9d52-a82b7c07ae20.png"><img height="225" align="left" src="https://user-images.githubusercontent.com/20134338/49059509-40273300-f201-11e8-8437-559dd4f1cd79.jpg"><img height="225" align="left" alt="trilateralkiwi" src="https://user-images.githubusercontent.com/20134338/49064013-4fae7800-f211-11e8-8308-0a9bc75c871c.jpg">
 
 <br>
