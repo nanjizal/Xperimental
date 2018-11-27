@@ -41,6 +41,12 @@ Using my **Leaf** offset rotations, **folders** image/file **helper** and my por
 #### Zeal Development 
 From the Canvas version to the WebGL, with some Texture packing and Ascii art diversions.  [read more.. > ](/information/ZealOfZebra.md)
 
+#### Code Links:
+| Canvas | Kha ( WebGL ) |
+| :-----------: | :-----------: |
+|[htmlHelper.canvas.Leaf](https://github.com/nanjizal/htmlHelper/blob/master/htmlHelper/canvas/Leaf.hx) |[Kha - MainApp](https://github.com/nanjizal/Xperimental/blob/master/zealAtlas/src/MainApp.hx) |
+|[zeal.Zebra](https://github.com/nanjizal/Zeal/blob/master/src/zeal/Zebra.hx) | |
+
 ## Ascii Art, hxPixel and Ansi
 
 <img width="10" align="left" src="https://user-images.githubusercontent.com/20134338/49057102-1e747e80-f1f6-11e8-9040-ff3f0ddefe85.png"><img width="150" align="left" alt="haxeansi3" src="https://user-images.githubusercontent.com/20134338/49052755-18c26d00-f1e5-11e8-845a-9b4e29f4c114.png">
