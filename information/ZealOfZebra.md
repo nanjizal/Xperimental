@@ -64,7 +64,15 @@ var CharSimple = " .:-=+*#%@";
 var CharComplex = " .'`^" + '",:;Il!i><~+_-?][}{1)(|' +'\\' + '/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$█';
 ```
 
-Then I would need to convert the pixels to grey but I knew that just an average would not account for differences in brightness between Red, Blue and Green so I found a true greyscale convertion equation.  Then rather naughtly added some faux color approximation, just fiddling with applying color weightings to the characters. Often it would over run the minimal screen dimensions of terminal so initially I copped images, later I added scaling.  To render correctly you need to skip vertical rows to look correct. Results were fun, scaling to fit and not crash was fiddly but was very exciting it's now in it's own project here is one of the results.
+Then I would need to convert the pixels to grey but I knew that just an average would not account for differences in brightness between Red, Blue and Green so I found a true greyscale convertion equation.  
+
+###### True greyscale conversion equation used
+```haxe
+l = p.fA*( 0.21*p.fR + 0.72*p.fG + 0.07*p.fB ) * scale;
+// later it is used to pick a character
+brightness.charAt( Std.int( Math.round( l ) ) );
+```
+Then rather naughtly added some faux color approximation, just fiddling with applying color weightings to the characters. Often it would over run the minimal screen dimensions of terminal so initially I copped images, later I added scaling.  To render correctly you need to skip vertical rows to look correct. Results were fun, scaling to fit and not crash was fiddly but was very exciting it's now in it's own project here is one of the results.
 
 <img width="200" alt="jlmansismall2" src="https://user-images.githubusercontent.com/20134338/49019946-14676700-f187-11e8-9080-a183483d2570.png">
 
