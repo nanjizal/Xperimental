@@ -21,7 +21,7 @@ From the Canvas version to the WebGL, with some Texture packing and Ascii art di
 ***
 ## Ascii Art, hxPixel and Ansi
 
-<img width="150" align="left" paddingLeft="150" alt="haxeansi3" src="https://user-images.githubusercontent.com/20134338/49052755-18c26d00-f1e5-11e8-845a-9b4e29f4c114.png">
+<img width="300" align="left" alt="haxeansi3" src="https://user-images.githubusercontent.com/20134338/49052755-18c26d00-f1e5-11e8-845a-9b4e29f4c114.png">
 
 In my exploration of Zeal I wanted quick display of images within the console using Neko.  
 [read more.. > ](https://github.com/nanjizal/Xperimental/blob/master/information/ZealOfZebra.md#ansi-and-asciihxpixels-art-diversions)
