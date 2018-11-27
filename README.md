@@ -203,6 +203,7 @@ greatly improved this project adding cool examples, animation and implementing c
 <br>
 <br>
 <br>
+
 ## SimpleText
 Simple Text provides more features than the minimal Kha text.  SimpleText parses characters as integers so it's quite low level and rather ugly inside. 
 
@@ -211,4 +212,3 @@ Features:
 - Horizontal justification, LEFT, CENTRE, RIGHT, ...
 - Highlight of word, character, sentences
 - Allows Equations to control x, y, scale coordinates of letters.
-- 
