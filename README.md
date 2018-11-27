@@ -44,7 +44,6 @@ From the Canvas version to the WebGL, with some Texture packing and Ascii art di
 ## Ascii Art, hxPixel and Ansi
 
 <img width="10" align="left" src="https://user-images.githubusercontent.com/20134338/49057102-1e747e80-f1f6-11e8-9040-ff3f0ddefe85.png"><img width="150" align="left" alt="haxeansi3" src="https://user-images.githubusercontent.com/20134338/49052755-18c26d00-f1e5-11e8-845a-9b4e29f4c114.png">
-<img width="80" align="left" src="https://user-images.githubusercontent.com/20134338/49057102-1e747e80-f1f6-11e8-9040-ff3f0ddefe85.png">
 
 In my exploration of Zeal, and and creating a console Neko texture packer. Was curious about a quick display of images within the terminal window - Ansi and ascii. 
 [read more.. > ](https://github.com/nanjizal/Xperimental/blob/master/information/ZealOfZebra.md#ansi-and-asciihxpixels-art-diversions)
