@@ -15,9 +15,9 @@ Using my **Leaf** offset rotations, **folders** image/file **helper** and my por
  - [ Canvas ](https://nanjizal.github.io/Zeal/deploy/index.html)
 
 #### Zeal Development 
-[From the Canvas version to the WebGL, with some Texture packing and Ascii art diversions, read more.. > ](/information/ZealOfZebra.md)
+From the Canvas version to the WebGL, with some Texture packing and Ascii art diversions, [read more.. > ](/information/ZealOfZebra.md)
 
-### Ascii Art, hxPixel and Ansi
+## Ascii Art, hxPixel and Ansi
 
 [In my exploration of Zeal I wanted quick display of images within the console, read more..](https://github.com/nanjizal/Xperimental/blob/master/information/ZealOfZebra.md#ansi-and-asciihxpixels-art-diversions)
 
