@@ -256,7 +256,7 @@ Nodule does very low level parsing of XML using character codes, so it's pretty 
 
 ## Divtastic drawing with just div's.
 
-<img width="300" align="left" alt="picker" src="https://user-images.githubusercontent.com/20134338/49088878-28c46600-f252-11e8-96ca-4e4e3d4ff5d6.png">
+<img width="300" alt="picker" src="https://user-images.githubusercontent.com/20134338/49088878-28c46600-f252-11e8-96ca-4e4e3d4ff5d6.png">
 
 ## JustDrawing
 
