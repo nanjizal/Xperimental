@@ -216,7 +216,9 @@ Features:
 - Allows Equations to control x, y, scale coordinates of letters.
 
 ## tryFlipSpin puzzle
+
 A puzzle where you flip triangles by clicking on thier corners to complete the image.
+
 <img width="300" align="left" alt="tryflip" src="https://user-images.githubusercontent.com/20134338/49084720-2d841c80-f248-11e8-9a47-2cdc925dd3a7.jpg">
 
 A puzzle with a similar concept to a slider puzzle but instead of sliding rectangular pieces you flip triangular pieces, very hard to play. Developed in NME/OpenFL/Flash uses lots of BitmapData.  It could be useful for triangular grid games in theory but the code is perhaps a bit complex for such reuse.
