@@ -17,7 +17,7 @@
 | Dot matrix | Trilateral ( Vectors for GPU ) | PolyminoTriangles ( tetris ) | SimpleText |
 | [<img width="150" alt="dotmatrix" src="https://user-images.githubusercontent.com/20134338/49063654-ec701600-f20f-11e8-8b35-6cc60027bedd.jpg">](/README.md#dot-matrix-with-trilateral)| [<img height="150" alt="trilateralkiwi" src="https://user-images.githubusercontent.com/20134338/49064013-4fae7800-f211-11e8-8308-0a9bc75c871c.jpg">](/README.md#trilateral) | [<img width="150" alt="polyminokha" src ="https://user-images.githubusercontent.com/20134338/49080453-987b2680-f23b-11e8-8666-3df3bd9bf7fd.jpg">](/README.md#tetris-triangle-crazy) | [<img width="150" alt="simpletext" src="https://user-images.githubusercontent.com/20134338/49083891-e2690a00-f245-11e8-9c13-7ce4e29aeb12.jpg">](/README.md#simpletext) |
 | tryflipSpin puzzle | Nodule ( XML -> LinkedList ) | | |
-| [<img width="150" alt="tryflip" src="https://user-images.githubusercontent.com/20134338/49084720-2d841c80-f248-11e8-9a47-2cdc925dd3a7.jpg">](README.md#tryflipspin-puzzle)| [<img width="150" alt="nodule" src="https://user-images.githubusercontent.com/20134338/49085424-e3039f80-f249-11e8-82c2-9f2535ea1f3b.jpg">](/README.md#nodule) | |
+| [<img width="150" alt="tryflip" src="https://user-images.githubusercontent.com/20134338/49084720-2d841c80-f248-11e8-9a47-2cdc925dd3a7.jpg">](README.md#tryflipspin-puzzle)| [<img width="150" alt="nodule" src="https://user-images.githubusercontent.com/20134338/49085424-e3039f80-f249-11e8-82c2-9f2535ea1f3b.jpg">](/README.md#nodule) | [<img width="150" alt="picker" src="https://user-images.githubusercontent.com/20134338/49088878-28c46600-f252-11e8-96ca-4e4e3d4ff5d6.png">](/README.md#divtastic) |
 
 *****
 
@@ -26,7 +26,7 @@
 | jsgl | hxSpiro     | hxDaedalus  | hxRectPack2D  |
 | [<img width="150" alt="jsgl" src="https://user-images.githubusercontent.com/20134338/49060532-d5c4c180-f205-11e8-8fec-d0e28266ffd1.jpg">]()| [<img width="150" alt="spiro" src="https://user-images.githubusercontent.com/20134338/49060726-a9f60b80-f206-11e8-8eb6-68bca429720e.png">](/README.md#spiro) |[<img width="150" alt="hxdaedalusimg" src="https://user-images.githubusercontent.com/20134338/49061204-09085000-f208-11e8-9672-8dea3cd4303e.png">](/README.md#hxDaedalus) | [<img width="150" alt="rectpack2d" src="https://user-images.githubusercontent.com/20134338/49061637-2a1d7080-f209-11e8-832c-6870dade4c1c.jpg">](/README.md#hxRectPack2D)|
 | triangulations | hxPolyK | divtastic drawing with just div's | |
-| [<img width="150" alt="ruppert" src="https://user-images.githubusercontent.com/20134338/49060882-356f9c80-f207-11e8-98d4-66c23021acb9.png">](#/README.md#triangulations)|[<img width="150" alt="polykdivtastic" src="https://user-images.githubusercontent.com/20134338/49060993-a1520500-f207-11e8-8e60-13e357b8b2c4.png">](/README.md#hxpolyk) | [<img width="150" alt="picker" src="https://user-images.githubusercontent.com/20134338/49088878-28c46600-f252-11e8-96ca-4e4e3d4ff5d6.png">](/README.md#divtastic)|
+| [<img width="150" alt="ruppert" src="https://user-images.githubusercontent.com/20134338/49060882-356f9c80-f207-11e8-98d4-66c23021acb9.png">](#/README.md#triangulations)|[<img width="150" alt="polykdivtastic" src="https://user-images.githubusercontent.com/20134338/49060993-a1520500-f207-11e8-8e60-13e357b8b2c4.png">](/README.md#hxpolyk) | |
 | | | |
 | | | |
 
