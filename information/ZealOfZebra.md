@@ -55,6 +55,7 @@ Now the next task was to save the Atlas to a **png**, although Kha compiles to c
 
 ##### Ansi and Ascii/hxPixels art diversions 
 
+
 Debugging via trace was a bit tricky with no graphics to see what was happening with pixels.  Mad thought...it would be interesting to actually see what I was drawing within console! I knew this was kind of possible using Ansi.  Ansi can draw characters to teriminal but only in a few colors, after a look on google I found some information on character sets that provide different brightness levels often used in ascii art so I setup to allow switching between sets. Then I would need to convert the pixels to grey but I knew that just an average would not account for differences in brightness between Red, Blue and Green so I found a true greyscale convertion equation.  Then rather naughtly added some faux color approximation, just fiddling with applying color weightings to the characters. Often it would over run the minimal screen dimensions of terminal so initially I copped images, later I added scaling.  To render correctly you need to skip vertical rows to look correct. Results were fun, scaling to fit and not crash was fiddly but was very exciting it's now in it's own project here is one of the results.
 
 <img width="200" alt="jlmansismall2" src="https://user-images.githubusercontent.com/20134338/49019946-14676700-f187-11e8-9080-a183483d2570.png">
