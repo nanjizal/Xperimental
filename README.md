@@ -69,18 +69,18 @@ Features:
 
 - Different contour rendering from basic overlapping lines, basic triangle corner to complex rounded corners.
 - Contour thickness control.
-- Simple MoveTo, LineTo, QuadTo, CurveTo.
-- Support for basic 2 triangle shapes: line, quad, star.
-- Support for basic multiple triangle shapes: polygon, star, diamond, square, rounded rectangle, circle, ellipse 
+- Simple **moveTo**, **lineTo**, **quadTo**, **curveTo**.
+- Support for basic 2 triangle shapes: **line**, **quad**, **star**.
+- Support for basic multiple triangle shapes: **polygon**, **star**, **diamond**, **square**, **rounded rectangle**, **circle**, **ellipse**. 
 - Integration with shape fill algorithms basic fill **hxPolyK**, **poly2trihx** and **hxGeomAlgo's Tess2**.
-- SVG path parsing, encluding Ellipses, and support for some simple SVG images.
-- FXG, a depreciated adobe Vector format typically used with Flash.
-- Complex linear gradient fill of arbitary shapes.
-- Image fill of arbitary shapes.
+- **SVG** path parsing, encluding Ellipses, and support for some simple SVG images.
+- **FXG**, a depreciated adobe Vector format typically used with Flash.
+- Complex **linear gradient** fill of arbitary shapes.
+- **Image** fill of arbitary shapes.
 - Support of wide range of basic shapes.
-- Dot matrix 5x7 character scrolling.
-- Seven Segment LED and 16 Segment LED.
-- Triangle HitTesting allowing shape perfect hit testing.
+- **Dot matrix** 5x7 character scrolling.
+- Seven Segment **LED** and 16 Segment LED.
+- Triangle **HitTesting** allowing shape perfect hit testing.
 - Tools for scaling, rotating and translating drawings, also useful for manipulating SVG paths.
 - Indexing for easy extraction and manipulation of triangulated structures.
 
