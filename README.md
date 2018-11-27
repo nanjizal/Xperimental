@@ -13,7 +13,7 @@ Using my **Leaf** offset rotations, **folders** image/file **helper** and my por
 
 <img width="300" align="left" alt="zeal canvas" src="https://user-images.githubusercontent.com/20134338/49017821-b2583300-f181-11e8-8e91-8a79fb2ffa59.png"> 
 
- - [ WebGL ](https://nanjizal.github.io/Xperimental/zealAtlas/bin/index.html) _mouse down and <- -> to rotate piece._
+ - [ WebGL ](https://nanjizal.github.io/Xperimental/zealAtlas/bin/index.html)
  - [ Canvas ](https://nanjizal.github.io/Zeal/deploy/index.html)
 
 #### Zeal Development 
@@ -40,7 +40,7 @@ Flexible jigsaw engine where you can adjust aspects of the curve generation and 
 
 WebGL Kha uses Trilateral mapping textures to the triangulation fill generated, rotation via arrow keys when mouse down. Canvas version uses one per Div piece.
 
-- [ WebGL ](https://nanjizal.github.io/TrilateralBazaar/jigsawX/bin/index.html)
+- [ WebGL ](https://nanjizal.github.io/TrilateralBazaar/jigsawX/bin/index.html) _mouse down and <- -> to rotate piece._
 - [ Canvas/Dom ](https://nanjizal.github.io/JigsawX/bin/JigsawDivtastic.htm)
 
 _Flash, Swing Java, OpenFL, NME ( + android ), Kha and Canvas versions, some with webcam or video._
