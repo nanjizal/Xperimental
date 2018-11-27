@@ -77,7 +77,6 @@ Features:
 - **FXG**, a depreciated adobe Vector format typically used with Flash.
 - Complex **linear gradient** fill of arbitary shapes.
 - **Image** fill of arbitary shapes.
-- Support of wide range of basic shapes.
 - **Dot matrix** 5x7 character scrolling.
 - Seven Segment **LED** and 16 Segment LED.
 - Triangle **HitTesting** allowing shape perfect hit testing.
