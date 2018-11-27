@@ -33,7 +33,7 @@
 ## Zeal of Zebra
 Using my **Leaf** offset rotations, **folders** image/file **helper** and my port of **RectPack2D**.
 
-<img width="300" align="left" alt="zeal canvas" src="https://user-images.githubusercontent.com/20134338/49017821-b2583300-f181-11e8-8e91-8a79fb2ffa59.png"> 
+[<img width="300" align="left" alt="zeal canvas" src="https://user-images.githubusercontent.com/20134338/49017821-b2583300-f181-11e8-8e91-8a79fb2ffa59.png">]((https://nanjizal.github.io/Xperimental/zealAtlas/bin/index.html)
 
  - [ WebGL ](https://nanjizal.github.io/Xperimental/zealAtlas/bin/index.html)
  - [ Canvas ](https://nanjizal.github.io/Zeal/deploy/index.html)
