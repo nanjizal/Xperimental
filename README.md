@@ -9,8 +9,8 @@
 | [<img width="150" alt="zeal canvas" src="https://user-images.githubusercontent.com/20134338/49017821-b2583300-f181-11e8-8e91-8a79fb2ffa59.png">](/README.md#zeal-of-zebra) | [<img width="150" alt="lsystem2" src="https://user-images.githubusercontent.com/20134338/49053899-04cd3a00-f1ea-11e8-98dd-b5b016090081.png">](/README.md#l-systems) | [<img width="100" alt="haxeansi3" src="https://user-images.githubusercontent.com/20134338/49052755-18c26d00-f1e5-11e8-845a-9b4e29f4c114.png">](/README.md#ascii-art-hxpixel-and-ansi)|[<img width="150" align="left" alt="jigsawximage" src="https://user-images.githubusercontent.com/20134338/49057707-a65b8800-f1f8-11e8-93af-f4f92a86ecbc.png">](/README.md#jigsawx)|
 | Letters | LED display | Ellipse SVG parsing | FXG Parrot |
 | [<img width="150" align="left" alt="lettersgrab" src="https://user-images.githubusercontent.com/20134338/49061470-b9765400-f208-11e8-800f-776aab0cc710.jpg">](/README.md#letters) ]| [<img width="150" alt="backtothefuture" src="https://user-images.githubusercontent.com/20134338/49062686-e7f62e00-f20c-11e8-9eb3-185faab51182.jpg">](/README.md#LED) | [<img width="150" alt="elipse" src="https://user-images.githubusercontent.com/20134338/49062944-af0a8900-f20d-11e8-9e1e-031eec3164d2.jpg">](README.md#ellipse-svg-parsing) | [<img width="150" alt="parrot" src="https://user-images.githubusercontent.com/20134338/49063282-c26a2400-f20e-11e8-897e-9980f11712c9.jpg">](/README.md#parrot-fxg-with-trilateral)|
-| Dot matrix | | | |
-| [<img width="150" alt="dotmatrix" src="https://user-images.githubusercontent.com/20134338/49063654-ec701600-f20f-11e8-8b35-6cc60027bedd.jpg">](/README.md#dot-matrix-with-trilateral)| | | |
+| Dot matrix | Trilateral | | |
+| [<img width="150" alt="dotmatrix" src="https://user-images.githubusercontent.com/20134338/49063654-ec701600-f20f-11e8-8b35-6cc60027bedd.jpg">](/README.md#dot-matrix-with-trilateral)| [<img height="150" align="left" alt="trilateralkiwi" src="https://user-images.githubusercontent.com/20134338/49064013-4fae7800-f211-11e8-8308-0a9bc75c871c.jpg">](/README.md#trilateral) | | |
 
 | Ports |  |  |  |
 | :-----------: | :-----------: | :-----------: | :-----------: |
@@ -59,7 +59,8 @@ _Flash, Swing Java, OpenFL, NME ( + android ), Kha and Canvas versions, some wit
 <br>
 
 ## Trilateral drawing contours with WebGL ( GL ).
-<img width="300" align="left" alt="twolineswithlines" src="https://user-images.githubusercontent.com/20134338/49059216-b88cf480-f1ff-11e8-9d52-a82b7c07ae20.png"><img height="225" align="left" src="https://user-images.githubusercontent.com/20134338/49059509-40273300-f201-11e8-8437-559dd4f1cd79.jpg">
+<img width="300" align="left" alt="twolineswithlines" src="https://user-images.githubusercontent.com/20134338/49059216-b88cf480-f1ff-11e8-9d52-a82b7c07ae20.png"><img height="225" align="left" src="https://user-images.githubusercontent.com/20134338/49059509-40273300-f201-11e8-8437-559dd4f1cd79.jpg"><img height="225" align="left" alt="trilateralkiwi" src="https://user-images.githubusercontent.com/20134338/49064013-4fae7800-f211-11e8-8308-0a9bc75c871c.jpg">
+
 <br>
 <br>
 <br>
