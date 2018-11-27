@@ -1,6 +1,6 @@
 # Xperimental
 
-Nanjizal has grown. Lot of the projects are graphical and experimental testing and abusing some boundaries of technologies, but there is no central point to collate some of the more interesting aspects or to store smaller tests, so I will collate them here for now.
+Nanjizal has grown. So here is a place to collate smaller projects and provide more natative on the experiments the development of concepts through experiments.
 
 ## Animation
 
