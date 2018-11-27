@@ -2,8 +2,8 @@
 
 **Nanjizal** has grown. Here I collate smaller projects and provide an overview narative on the development of concepts through experiments and libraries within Nanjizal ( and hxDaeadlus ). 
 
-<sup>Currently only Haxe code, as OOP language with functional typing, designed to cross compile to many languages.<sup>  
-<sup>Haxe targets including **c++** and **js** ideal for - mobile, web, desktop and console. Haxe **js** is often faster than handwritten javascript.<sup>
+<sup>Currently only Haxe code, as OOP language with functional typing, designed to cross compile to many languages.</sup>  
+<sup>Haxe targets including **c++** and **js** ideal for - mobile, web, desktop and console. Haxe **js** is often faster than handwritten javascript.</sup>
 
 ###### Click on the table image to go to the project section
 
