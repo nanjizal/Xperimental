@@ -27,7 +27,7 @@ _Flash, Swing, OpenFL, NME, Kha and Canvas versions, some with webcam or video._
 
 ## Tetris, triangle crazy.
 I was asked if I could make Tetris, implemented it with triangles not an MVC framework! You can define your own shapes in the code easily and it runs on all Haxe toolkits, did add SVG target but meh, also emscriptem via NME. Two versions below.
-Arrow keys to play.
+_Arrow keys to play._
 - [ WebGL ](https://nanjizal.github.io/PolyominoTriangles/binHeaps/index.html)
 - [ Canvas ](https://nanjizal.github.io/PolyominoTriangles/binCanvas/index.html?2)
 
