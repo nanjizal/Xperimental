@@ -16,7 +16,7 @@
 | Dot matrix | Trilateral ( Vectors for GPU ) | PolyminoTriangles ( tetris ) | SimpleText |
 | [<img width="150" alt="dotmatrix" src="https://user-images.githubusercontent.com/20134338/49063654-ec701600-f20f-11e8-8b35-6cc60027bedd.jpg">](/README.md#dot-matrix-with-trilateral)| [<img height="150" alt="trilateralkiwi" src="https://user-images.githubusercontent.com/20134338/49064013-4fae7800-f211-11e8-8308-0a9bc75c871c.jpg">](/README.md#trilateral) | [<img width="150" alt="polyminokha" src ="https://user-images.githubusercontent.com/20134338/49080453-987b2680-f23b-11e8-8666-3df3bd9bf7fd.jpg">](/README.md#tetris-triangle-crazy) | [<img width="150" alt="simpletext" src="https://user-images.githubusercontent.com/20134338/49083891-e2690a00-f245-11e8-9c13-7ce4e29aeb12.jpg">](/README.md#simpletext) |
 | tryflipSpin puzzle | | | |
-| [<img width="150" alt="tryflip" src="https://user-images.githubusercontent.com/20134338/49084720-2d841c80-f248-11e8-9a47-2cdc925dd3a7.jpg">](/README.md#tryflipspin)| | |
+| [<img width="150" alt="tryflip" src="https://user-images.githubusercontent.com/20134338/49084720-2d841c80-f248-11e8-9a47-2cdc925dd3a7.jpg">](README.md#tryflipspin-puzzle)| | |
 
 *****
 
