@@ -8,7 +8,7 @@ Using my **Leaf** offset rotations, **folders** image/file **helper** and my por
 #### Zeal Development 
 From the Canvas version to the WebGL, with some Texture packing and Ascii art diversions.
 
-##### Canvas, a Leaf Entity.
+##### Canvas, and a tree of Leaf Entities.
 I initially explored using two canvas to draw a Zeal of Zebra. Using lots of trig and pythag to calculate the offset rotation maths, it was possible to create structure that could be animated crudely with just a sine wave - with different weightings applied to each rotation joint. 
 When you rotate an image the bounding box that contains it changes and the rotation is normally from the top left corner so it needs to be moved by it's changing centre rotated and moved back, now if your hanging a leg off your body image then that as a join point that also rotates with the image and it's real position relative to the corner changes.
 
