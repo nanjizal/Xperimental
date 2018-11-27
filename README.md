@@ -2,7 +2,7 @@
 
 Nanjizal has grown. So here is a place to collate smaller projects and provide more natative on the experiments the development of concepts through experiments.
 
-## Click on image to go to project section:
+##### Click on image to go to project section:
 | Projects |  |  |  |
 | ------------- | ------------- | ------------- | ------------- |
 | Zeal of Zebra | L-Systems     | Ascii terminal |  |
