@@ -5,8 +5,7 @@
 <sup>Currently only Haxe code, as OOP language with functional typing, designed to cross compile to many languages.</sup>  
 <sup>Haxe targets including **c++** and **js** ideal for - mobile, web, desktop and console. Haxe **js** is often faster than handwritten javascript.</sup>
 
-<span style="color:red">Click<span> on the table <span style="color:red">image<span> to go to the project section
-
+Click on the table to go to the project section.
 | Projects |  |  |  |
 | :-----------: | :-----------: | :-----------: | :-----------: |
 | Zeal of Zebra | L-Systems     | Ascii terminal  | JigsawX  |
