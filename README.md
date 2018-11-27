@@ -26,6 +26,7 @@ From the Canvas version to the WebGL, with some Texture packing and Ascii art di
 In my exploration of Zeal I wanted quick display of images within the console using Neko.  
 [read more.. > ](https://github.com/nanjizal/Xperimental/blob/master/information/ZealOfZebra.md#ansi-and-asciihxpixels-art-diversions)
 
+
 ## JigsawX
 
 - [ WebGL ](https://nanjizal.github.io/TrilateralBazaar/jigsawX/bin/index.html)
