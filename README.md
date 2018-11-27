@@ -4,6 +4,7 @@ Nanjizal has grown. So here is a place to collate smaller projects and provide m
 
 ###### Table of Contents
 _click on image within table to go to the project section_
+
 | Projects |  |  |  |
 | ------------- | ------------- | ------------- | ------------- |
 | Zeal of Zebra | L-Systems     | Ascii terminal |  |
