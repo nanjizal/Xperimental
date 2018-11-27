@@ -48,6 +48,13 @@ _Flash, Swing Java, OpenFL, NME ( + android ), Kha and Canvas versions, some wit
 <br>
 
 ## Trilateral drawing contours with WebGL ( GL ).
+<img width="300" align="left" alt="twolineswithlines" src="https://user-images.githubusercontent.com/20134338/49059216-b88cf480-f1ff-11e8-9d52-a82b7c07ae20.png"><img width="10" align="right" src="https://user-images.githubusercontent.com/20134338/49057102-1e747e80-f1f6-11e8-9040-ff3f0ddefe85.png">
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 ## Tetris, triangle crazy.
 I was asked if I could make Tetris, implemented it with triangles not an MVC framework! You can define your own shapes in the code easily and it runs on all Haxe toolkits, did add SVG target but meh, also emscriptem via NME. Two versions below.
