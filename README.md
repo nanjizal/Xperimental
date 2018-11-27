@@ -137,7 +137,7 @@ greatly improved this project adding cool examples, animation and implementing c
 
 ## hxRectPack2D
 
-<img width="3000" alt="rectpack2d" src="https://user-images.githubusercontent.com/20134338/49061637-2a1d7080-f209-11e8-832c-6870dade4c1c.jpg">
+<img width="300" align="left" alt="rectpack2d" src="https://user-images.githubusercontent.com/20134338/49061637-2a1d7080-f209-11e8-832c-6870dade4c1c.jpg">
 
 <br>
 <br>
@@ -151,7 +151,7 @@ greatly improved this project adding cool examples, animation and implementing c
 
 ## Parrot FXG with Trilateral
 
-<img width="150" alt="parrot" src="https://user-images.githubusercontent.com/20134338/49063282-c26a2400-f20e-11e8-897e-9980f11712c9.jpg">
+<img width="300" align="left" alt="parrot" src="https://user-images.githubusercontent.com/20134338/49063282-c26a2400-f20e-11e8-897e-9980f11712c9.jpg">
 
 <br>
 <br>
