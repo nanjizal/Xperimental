@@ -42,7 +42,7 @@ Using my **Leaf** offset rotations, **folders** image/file **helper** and my por
 From the Canvas version to the WebGL, with some Texture packing and Ascii art diversions.  [read more.. > ](/information/ZealOfZebra.md)
 
 #### Code Links:
-| Canvas | Kha ( WebGL ) |
+| Canvas | Kha - WebGL |
 | :-----------: | :-----------: |
 |[htmlHelper.canvas.Leaf](https://github.com/nanjizal/htmlHelper/blob/master/htmlHelper/canvas/Leaf.hx) |[MainApp](https://github.com/nanjizal/Xperimental/blob/master/zealAtlas/src/MainApp.hx) |
 |[zeal.Zebra](https://github.com/nanjizal/Zeal/blob/master/src/zeal/Zebra.hx) | |
@@ -60,8 +60,8 @@ In my exploration of Zeal, and and creating a console Neko texture packer. Was c
 <br>
 
 #### Code Links:
-|               |               |
-| :-----------: |  :----------- |
+| info          |  link          |
+| :-----------: |  :-----------: |
 |Neko Main |[Main](https://github.com/nanjizal/Xperimental/blob/master/pngAnsi/src/Main.hx) |
 |folder |[folder.Folder](https://github.com/nanjizal/folder/blob/master/folder/Folder.hx) |
 
