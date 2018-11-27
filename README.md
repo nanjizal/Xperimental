@@ -34,10 +34,16 @@ In my exploration of Zeal I wanted quick display of images within the console us
 
 ## JigsawX
 
+<img width="300" align="left" alt="jigsawximage" src="https://user-images.githubusercontent.com/20134338/49057707-a65b8800-f1f8-11e8-93af-f4f92a86ecbc.png">
+
+Flexible jigsaw engine where you can adjust aspects of the curve generation and number of rows and columns.
+
 - [ WebGL ](https://nanjizal.github.io/TrilateralBazaar/jigsawX/bin/index.html)
 - [ Canvas/Dom ](https://nanjizal.github.io/JigsawX/bin/JigsawDivtastic.htm)
 
 _Flash, Swing, OpenFL, NME, Kha and Canvas versions, some with webcam or video._
+<br>
+<br>
 
 ## Trilateral drawing contours with WebGL ( GL ).
 
