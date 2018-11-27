@@ -11,7 +11,7 @@ Using my **Leaf** offset rotations, **folders** image/file **helper** and my por
  - [ Canvas ](https://nanjizal.github.io/Zeal/deploy/index.html)
 
 #### Zeal Development 
-[From the Canvas version to the WebGL, with some Texture packing and Ascii art diversions, read more.. ](
+From the Canvas version to the WebGL, with some Texture packing and Ascii art diversions, read more..
 https://nanjizal.github.io/Xperimental/information/ZealOfZebra.md)
 
 <img width="300" alt="zeal canvas" src="https://user-images.githubusercontent.com/20134338/49017821-b2583300-f181-11e8-8e91-8a79fb2ffa59.png">
