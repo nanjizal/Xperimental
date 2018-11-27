@@ -61,7 +61,7 @@ In my exploration of Zeal, and and creating a console Neko texture packer. Was c
 <br>
 
 #### Code Links:
-|              |               | 
+| info         |link           | 
 | :----------- |  :----------- |
 |Neko Main |[Main](https://github.com/nanjizal/Xperimental/blob/master/pngAnsi/src/Main.hx) |
 |folder |[folder.Folder](https://github.com/nanjizal/folder/blob/master/folder/Folder.hx) |
