@@ -9,10 +9,12 @@
 
 | Utilities |  |  |  |
 | :-----------: | :-----------: | :-----------: | :-----------: |
-| Trilateral ( Vectors for GPU ) | folder | Nodule ( XML -> LinkedList ) | |
-| [<img height="150" alt="trilateralkiwi" src="https://user-images.githubusercontent.com/20134338/49064013-4fae7800-f211-11e8-8308-0a9bc75c871c.jpg">](/README.md#trilateral) | [<img width="150" alt="directory-1294386_1280" src="https://user-images.githubusercontent.com/20134338/49188749-cd829880-f363-11e8-80f4-74291bae6fe9.png">](/README.md#folder) | [<img width="150" alt="nodule" src="https://user-images.githubusercontent.com/20134338/49085424-e3039f80-f249-11e8-82c2-9f2535ea1f3b.jpg">](/README.md#nodule) | |
-| justDrawing | pixelDrawing | |
-| [<img width="150" alt="justdrawingkiwi" src="https://user-images.githubusercontent.com/20134338/49090183-1861ba80-f255-11e8-8074-5b9a8acf2c38.png">](/README.md#justDrawing) | [<img width="150" alt="justdrawingkiwi" src="https://user-images.githubusercontent.com/20134338/49090183-1861ba80-f255-11e8-8074-5b9a8acf2c38.png">](/README.md#pixelDrawing)| |
+| Trilateral ( Vectors for GPU ) | justDrawing | pixelDrawing |
+| [<img height="150" alt="trilateralkiwi" src="https://user-images.githubusercontent.com/20134338/49064013-4fae7800-f211-11e8-8308-0a9bc75c871c.jpg">](/README.md#trilateral) | [<img width="150" alt="justdrawingkiwi" src="https://user-images.githubusercontent.com/20134338/49090183-1861ba80-f255-11e8-8074-5b9a8acf2c38.png">](/README.md#justDrawing) | [<img width="150" alt="justdrawingkiwi" src="https://user-images.githubusercontent.com/20134338/49090183-1861ba80-f255-11e8-8074-5b9a8acf2c38.png">](/README.md#pixelDrawing)| |
+|folder | Nodule ( XML -> LinkedList ) | SimpleText |
+| [<img width="150" alt="directory-1294386_1280" src="https://user-images.githubusercontent.com/20134338/49188749-cd829880-f363-11e8-80f4-74291bae6fe9.png">](/README.md#folder) | [<img width="150" alt="nodule" src="https://user-images.githubusercontent.com/20134338/49085424-e3039f80-f249-11e8-82c2-9f2535ea1f3b.jpg">](/README.md#nodule) | [<img width="150" alt="simpletext" src="https://user-images.githubusercontent.com/20134338/49083891-e2690a00-f245-11e8-9c13-7ce4e29aeb12.jpg">](/README.md#simpletext) |
+
+ 
 
 | Projects |  |  |  |
 | :-----------: | :-----------: | :-----------: | :-----------: |
