@@ -1,0 +1,85 @@
+%!PS-Adobe-3.0 
+%%Creator: Adobe Illustrator(r) 6.0
+%%For: (Macromedia Flash) ()
+%%Title: (arm0.ai)
+%%CreationDate: (11/28/18) (04:51:17)
+%%BoundingBox: 0 0 168 46
+%%HiResBoundingBox: 0.0 0.0 167.5 46.0
+%%DocumentProcessColors: Cyan Magenta Yellow Black
+%%DocumentNeededResources: procset Adobe_level2_AI5 1.0 0
+%%+ procset Adobe_screens_AI5 1.0 0
+%%+ procset Adobe_typography_AI5 1.0 0
+%%+ procset Adobe_blend_AI5 1.0 0
+%%+ procset Adobe_Illustrator_AI6_vars Adobe_Illustrator_AI6
+%%+ procset Adobe_Illustrator_AI5 1.0 0
+%AI5_FileFormat 2.0
+%AI3_ColorUsage: Color
+%AI3_TemplateBox: 306 396 306 396
+%AI3_TileBox: 18 -336 532 28
+%AI3_DocumentPreview: None
+%%EndComments
+%%BeginProlog
+%%IncludeResource: procset Adobe_level2_AI5 1.0 0
+%%IncludeResource: procset Adobe_screens_AI5 1.0 0
+%%IncludeResource: procset Adobe_typography_AI5 1.0 0
+%%IncludeResource: procset Adobe_blend_AI5 1.0 0
+%%IncludeResource: procset Adobe_Illustrator_AI6_vars Adobe_Illustrator_AI6
+%%IncludeResource: procset Adobe_Illustrator_AI5 1.0 0
+%%EndProlog
+%%BeginSetup
+Adobe_level2_AI5 /initialize get exec
+Adobe_screens_AI5 /initialize get exec
+Adobe_Illustrator_AI5_vars Adobe_Illustrator_AI5 Adobe_typography_AI5 /initialize get exec
+Adobe_Illustrator_AI5_vars Adobe_Illustrator_AI5 Adobe_blend_AI5 /initialize get exec
+Adobe_ColorImage_AI6 /initialize get exec
+Adobe_Illustrator_AI5 /initialize get exec
+0 Bn
+%%EndSetup
+u
+u
+*u
+0.000 0.800 0.800 0.200 k
+18.1 26.9 m
+18.1 27.0 L
+31.6 27.1 L
+41.0 28.0 L
+52.0 27.0 L
+69.0 23.9 L
+120.0 11.7 L
+129.0 9.0 L
+141.0 4.0 L
+151.0 0.9 L
+156.9 0.0 L
+159.9 3.5 L
+164.3 7.0 L
+167.5 11.0 L
+165.8 15.4 L
+163.0 19.0 L
+149.0 19.1 L
+132.0 20.1 L
+119.0 22.1 L
+89.0 30.0 L
+71.0 34.0 L
+37.0 44.0 L
+20.0 46.0 L
+9.8 46.0 L
+4.0 43.0 L
+0.0 32.0 L
+0.0 27.0 L
+7.0 22.0 L
+10.5 22.1 L
+18.1 26.9 L
+f
+*U
+U
+U
+%%PageTrailer
+gsave annotatepage grestore showpage
+%%Trailer
+Adobe_Illustrator_AI5 /terminate get exec
+Adobe_ColorImage_AI6 /terminate get exec
+Adobe_blend_AI5 /terminate get exec
+Adobe_typography_AI5 /terminate get exec
+Adobe_screens_AI5 /terminate get exec
+%Adobe_level2_AI5 /terminate get exec
+%%EOF
