@@ -279,3 +279,11 @@ Nodule does very low level parsing of XML using character codes, so it's pretty 
 Provides simple draw command API to Canvas, SVG, Swing, Flash and Pixels.
 
 <img width="300" alt="justdrawingkiwi" src="https://user-images.githubusercontent.com/20134338/49090183-1861ba80-f255-11e8-8074-5b9a8acf2c38.png">
+
+## folder
+
+folder provides wrappers for file browsing and getting images as hxPixels and then saving them again.
+
+[folder code](https://github.com/nanjizal/folder)
+
+[<img width="300" alt="directory-1294386_1280" src="https://user-images.githubusercontent.com/20134338/49188749-cd829880-f363-11e8-80f4-74291bae6fe9.png">](https://github.com/nanjizal/folder) <sup>[(folder image from pixabay)](https://pixabay.com/en/directory-folder-icon-map-symbol-1294386/)<sup>
