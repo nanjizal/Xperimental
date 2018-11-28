@@ -282,7 +282,7 @@ Provides simple draw command API to Canvas, SVG, Swing, Flash and Pixels.
 
 ## folder
 
-folder provides wrappers for file browsing and getting images as hxPixels and then saving them again.
+folder provides wrappers for file browsing and getting images as hxPixels and then saving them again, it was originally part of 'finda' but I decided it was more useful without graphics as a helper for other projects like RectPack2D.
 
 [folder code](https://github.com/nanjizal/folder)
 
