@@ -333,4 +333,4 @@ With key and mouse combinations you have complete control of rotations and trans
 
 Try **alt** + arrow **up/down** for Zoom. 
 
-Try **Enter** + **shift** + arrow **left/right** to adjust all heads rotation speed - super crazy!
+Try **Enter** + **shift** + arrow **left/right** to rotate all heads speed - super crazy!
