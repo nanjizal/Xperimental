@@ -117,7 +117,11 @@ Mostly tested with Kha's Haxe toolkit with WebGL examples. Trilateral is Haxe to
 - [trilateralXtra](https://github.com/nanjizal/TrilateralXtra)     ( platform specific and extras )
 - [trilateralBazaar](https://github.com/nanjizal/TrilateralBazaar) ( example use cases )
 
-Features:
+#### demo
+
+- [WebGL simple shape demo](https://nanjizal.github.io/TrilateralBazaar/demo/binWebGL/)
+
+#### features:
 
 - Different contour rendering from basic overlapping lines, basic triangle corner to complex rounded corners.
 - Contour thickness control.
