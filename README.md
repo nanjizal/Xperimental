@@ -329,3 +329,5 @@ Monkey is really cool, but totally useless, because it's all one file to run in 
 Due to the number of embedded assets it takes forever to load but runs as smooth as butter.
  
 [demo slow to load](https://nanjizal.github.io/Monkey/build/html5/index.html)
+With key and mouse combinations you have complete control of rotations and translation.
+Try alt + arrow up/down for Zoom. Try Enter + Shift + left/right arrow keys to adjust all heads rotation speed - super crazy!
