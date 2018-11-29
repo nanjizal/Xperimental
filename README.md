@@ -17,6 +17,7 @@ Here I collate smaller projects and provide a narative on **Nanjizal** and the d
 | [<img width="150" alt="directory-1294386_1280" src="https://user-images.githubusercontent.com/20134338/49188749-cd829880-f363-11e8-80f4-74291bae6fe9.png">](/README.md#folder) | [<img width="150" alt="document" src="https://user-images.githubusercontent.com/20134338/49190193-3b7d8e80-f369-11e8-8c49-2b1d0035b388.png">](/README.md#htmlHelper) | [<img width="150" alt="nodule" src="https://user-images.githubusercontent.com/20134338/49085424-e3039f80-f249-11e8-82c2-9f2535ea1f3b.jpg">](/README.md#nodule) | [<img width="150" alt="simpletext" src="https://user-images.githubusercontent.com/20134338/49083891-e2690a00-f245-11e8-9c13-7ce4e29aeb12.jpg">](/README.md#simpletext) |
 
 <br>
+<br>
 
 | Ports |  |  |  |
 | :-----------: | :-----------: | :-----------: | :-----------: |
@@ -26,12 +27,14 @@ Here I collate smaller projects and provide a narative on **Nanjizal** and the d
 | [<img width="150" alt="ruppert" src="https://user-images.githubusercontent.com/20134338/49060882-356f9c80-f207-11e8-98d4-66c23021acb9.png">](#/README.md#triangulations)|[<img width="150" alt="polykdivtastic" src="https://user-images.githubusercontent.com/20134338/49060993-a1520500-f207-11e8-8e60-13e357b8b2c4.png">](/README.md#hxpolyk) | | 
 
 <br>
+<br>
 
 | Puzzles/Games |  |  |  |
 | :-----------: | :-----------: | :-----------: | :-----------: |
 | JigsawX  | tryflipSpin puzzle | PolyminoTriangles ( tetris ) |
 [<img width="150" align="left" alt="jigsawximage" src="https://user-images.githubusercontent.com/20134338/49057707-a65b8800-f1f8-11e8-93af-f4f92a86ecbc.png">](/README.md#jigsawx)| [<img width="150" alt="tryflip" src="https://user-images.githubusercontent.com/20134338/49084720-2d841c80-f248-11e8-9a47-2cdc925dd3a7.jpg">](README.md#tryflipspin-puzzle) | [<img width="150" alt="polyminokha" src ="https://user-images.githubusercontent.com/20134338/49080453-987b2680-f23b-11e8-8666-3df3bd9bf7fd.jpg">](/README.md#tetris-triangle-crazy) |
 
+<br>
 <br>
 
 | Code Animations |  |  |  |
@@ -40,6 +43,7 @@ Here I collate smaller projects and provide a narative on **Nanjizal** and the d
 | [<img width="150" alt="zeal canvas" src="https://user-images.githubusercontent.com/20134338/49017821-b2583300-f181-11e8-8e91-8a79fb2ffa59.png">](/README.md#zeal-of-zebra) | [<img width="150" alt="lsystem2" src="https://user-images.githubusercontent.com/20134338/49053899-04cd3a00-f1ea-11e8-98dd-b5b016090081.png">](/README.md#l-systems) | [<img width="150" alt="backtothefuture" src="https://user-images.githubusercontent.com/20134338/49062686-e7f62e00-f20c-11e8-9eb3-185faab51182.jpg">](/README.md#LED) | [<img width="150" alt="dotmatrix" src="https://user-images.githubusercontent.com/20134338/49063654-ec701600-f20f-11e8-8b35-6cc60027bedd.jpg">](/README.md#dot-matrix-with-trilateral) | 
 
 <br>
+<br>
 
 | Interaction |  |  |  |
 | :-----------: | :-----------: | :-----------: | :-----------: |
@@ -47,12 +51,14 @@ Here I collate smaller projects and provide a narative on **Nanjizal** and the d
 | [<img width="150" alt="lettersgrab" src="https://user-images.githubusercontent.com/20134338/49061470-b9765400-f208-11e8-800f-776aab0cc710.jpg">](/README.md#letters) | [<img width="150" alt="monkeyimage" src="https://user-images.githubusercontent.com/20134338/49191937-a9798400-f370-11e8-9af5-5d636b410c90.png">](/README.md#monkey) |
 
 <br>
+<br>
 
 | Xperimental |  |  |  |
 | :-----------: | :-----------: | :-----------: | :-----------: |
 | Ascii terminal | Divtastic drawing with div's | Ellipse SVG parsing | FXG Parrot |
 | [<img width="100" alt="haxeansi3" src="https://user-images.githubusercontent.com/20134338/49052755-18c26d00-f1e5-11e8-845a-9b4e29f4c114.png">](/README.md#ascii-art-hxpixel-and-ansi) | [<img width="150" alt="picker" src="https://user-images.githubusercontent.com/20134338/49088878-28c46600-f252-11e8-96ca-4e4e3d4ff5d6.png">](/README.md#divtastic) | [<img width="150" alt="elipse" src="https://user-images.githubusercontent.com/20134338/49062944-af0a8900-f20d-11e8-9e1e-031eec3164d2.jpg">](README.md#ellipse-svg-parsing) | [<img width="150" alt="parrot" src="https://user-images.githubusercontent.com/20134338/49063282-c26a2400-f20e-11e8-897e-9980f11712c9.jpg">](/README.md#parrot-fxg-with-trilateral) |
 
+<br>
 <br>
 <br>
 
@@ -74,6 +80,8 @@ From the Canvas version to the WebGL, with some Texture packing and Ascii art di
 |[htmlHelper.canvas.Leaf](https://github.com/nanjizal/htmlHelper/blob/master/htmlHelper/canvas/Leaf.hx) |[MainApp](https://github.com/nanjizal/Xperimental/blob/master/zealAtlas/src/MainApp.hx) |
 |[zeal.Zebra](https://github.com/nanjizal/Zeal/blob/master/src/zeal/Zebra.hx) |  |
 
+<br>
+
 ## Ascii Art, hxPixel and Ansi
 
 <img width="10" align="left" src="https://user-images.githubusercontent.com/20134338/49057102-1e747e80-f1f6-11e8-9040-ff3f0ddefe85.png"><img width="150" align="left" alt="haxeansi3" src="https://user-images.githubusercontent.com/20134338/49052755-18c26d00-f1e5-11e8-845a-9b4e29f4c114.png">
@@ -93,6 +101,7 @@ In my exploration of Zeal, and and creating a console Neko texture packer. Was c
 |Neko Main |[Main](https://github.com/nanjizal/Xperimental/blob/master/pngAnsi/src/Main.hx) |
 |folder |[folder.Folder](https://github.com/nanjizal/folder/blob/master/folder/Folder.hx) |
 
+<br>
 
 ## JigsawX
 
@@ -176,17 +185,23 @@ _Arrow keys to play._
 - [ WebGL ](https://nanjizal.github.io/PolyominoTriangles/binHeaps/index.html)
 - [ Canvas ](https://nanjizal.github.io/PolyominoTriangles/binCanvas/index.html?2)
 
+<br>
+
 ## hxSpiro
 Port of Spiro a fancy tool for making intuative curves.
 - [ code pen demo ](https://codepen.io/Nanjizal/pen/qReLLR)
 
 _TODO: upload better version to github as the code pen one move points is broken._
 
+<br>
+
 ## L-Systems 
 greatly improved this project adding cool examples, animation and implementing color and abstracting for use with both Kha and Luxe rendering or possibly other toolkits.
 - [ L-System animation ](https://nanjizal.github.io/L-System/bin/web/) _wait for 2nd page spoiler alert below:_
 
 <img width="300" alt="lsystem2" src="https://user-images.githubusercontent.com/20134338/49053899-04cd3a00-f1ea-11e8-98dd-b5b016090081.png">
+
+<br>
 
 ## jsgl
 
@@ -270,6 +285,8 @@ Features:
 - Highlight of word, character, sentences
 - Allows Equations to control x, y, scale coordinates of letters.
 
+<br>
+
 ## tryFlipSpin puzzle
 
 A puzzle where you flip triangles by clicking on thier corners to complete the image.
@@ -310,11 +327,15 @@ Nodule does very low level parsing of XML using character codes, so it's pretty 
 
 <img width="300" alt="picker" src="https://user-images.githubusercontent.com/20134338/49088878-28c46600-f252-11e8-96ca-4e4e3d4ff5d6.png">
 
+<br>
+
 ## JustDrawing
 
 Provides simple draw command API to Canvas, SVG, Swing, Flash and Pixels.
 
 <img width="300" alt="justdrawingkiwi" src="https://user-images.githubusercontent.com/20134338/49090183-1861ba80-f255-11e8-8074-5b9a8acf2c38.png">
+
+<br>
 
 ## folder
 
@@ -324,12 +345,16 @@ folder provides wrappers for file browsing and getting images as hxPixels and th
 
 [<img width="300" alt="directory-1294386_1280" src="https://user-images.githubusercontent.com/20134338/49188749-cd829880-f363-11e8-80f4-74291bae6fe9.png">](https://github.com/nanjizal/folder) <sup>[(folder image from pixabay)](https://pixabay.com/en/directory-folder-icon-map-symbol-1294386/)<sup>
 
+<br>
+
 ## HtmlHelper
 
 HtmlHelper contains setup code such as basic WebGL and Canvas setup and more.
 
 [<img width="300" alt="document" src="https://user-images.githubusercontent.com/20134338/49190193-3b7d8e80-f369-11e8-8c49-2b1d0035b388.png">](https://github.com/nanjizal/htmlHelper) <sup>[(image from pixabay)](https://www.shareicon.net/htm-file-format-extension-folder-document-paper-887196)<sup>
  
+<br>
+
 ## Monkey
 
 Monkey is really cool, but totally useless, because it's all one file to run in an early version of Kodegarden with all assets encoded!
@@ -345,3 +370,7 @@ Try **alt** + arrow **up/down** for Zoom.
 Try **Enter** + **shift** + arrow **left/right** to rotate all heads speed - super crazy!
 
 [Monkey Code for the adventurous](https://github.com/nanjizal/monkey)
+
+<br>
+<br>
+<br>
