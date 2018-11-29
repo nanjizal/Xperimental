@@ -106,6 +106,12 @@ _Flash, Swing Java, OpenFL, NME ( + android ), Kha and Canvas versions, some wit
 Trilateral converts drawing commands into contours built with triangles suitable for rendering vector graphics on the GPU.
 Mostly tested with Kha's Haxe toolkit with WebGL examples. Trilateral is Haxe toolkit agnostic, but additional features are to be found both in **trilateralXtra** library and in **trilateralBazaar** the examples library.
 
+#### code
+
+- [trilateral](https://github.com/nanjizal/Trilateral)
+- [trilateralXtra](https://github.com/nanjizal/TrilateralXtra)
+- [trilateralBazaar](https://github.com/nanjizal/TrilateralBazaar)
+
 Features:
 
 - Different contour rendering from basic overlapping lines, basic triangle corner to complex rounded corners.
