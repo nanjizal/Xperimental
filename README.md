@@ -14,21 +14,6 @@
 |folder | Nodule ( XML -> LinkedList ) | SimpleText | htmlHelper |
 | [<img width="150" alt="directory-1294386_1280" src="https://user-images.githubusercontent.com/20134338/49188749-cd829880-f363-11e8-80f4-74291bae6fe9.png">](/README.md#folder) | [<img width="150" alt="nodule" src="https://user-images.githubusercontent.com/20134338/49085424-e3039f80-f249-11e8-82c2-9f2535ea1f3b.jpg">](/README.md#nodule) | [<img width="150" alt="simpletext" src="https://user-images.githubusercontent.com/20134338/49083891-e2690a00-f245-11e8-9c13-7ce4e29aeb12.jpg">](/README.md#simpletext) | [<img width="150" alt="document" src="https://user-images.githubusercontent.com/20134338/49190193-3b7d8e80-f369-11e8-8c49-2b1d0035b388.png">](/README.md#htmlHelper) |
 
- 
-
-| Projects |  |  |  |
-| :-----------: | :-----------: | :-----------: | :-----------: |
-| Zeal of Zebra | L-Systems     | Ascii terminal  | JigsawX  |
-| [<img width="150" alt="zeal canvas" src="https://user-images.githubusercontent.com/20134338/49017821-b2583300-f181-11e8-8e91-8a79fb2ffa59.png">](/README.md#zeal-of-zebra) | [<img width="150" alt="lsystem2" src="https://user-images.githubusercontent.com/20134338/49053899-04cd3a00-f1ea-11e8-98dd-b5b016090081.png">](/README.md#l-systems) | [<img width="100" alt="haxeansi3" src="https://user-images.githubusercontent.com/20134338/49052755-18c26d00-f1e5-11e8-845a-9b4e29f4c114.png">](/README.md#ascii-art-hxpixel-and-ansi)|[<img width="150" align="left" alt="jigsawximage" src="https://user-images.githubusercontent.com/20134338/49057707-a65b8800-f1f8-11e8-93af-f4f92a86ecbc.png">](/README.md#jigsawx)|
-| Letters | LED display | Ellipse SVG parsing | FXG Parrot |
-| [<img width="150" alt="lettersgrab" src="https://user-images.githubusercontent.com/20134338/49061470-b9765400-f208-11e8-800f-776aab0cc710.jpg">](/README.md#letters)| [<img width="150" alt="backtothefuture" src="https://user-images.githubusercontent.com/20134338/49062686-e7f62e00-f20c-11e8-9eb3-185faab51182.jpg">](/README.md#LED) | [<img width="150" alt="elipse" src="https://user-images.githubusercontent.com/20134338/49062944-af0a8900-f20d-11e8-9e1e-031eec3164d2.jpg">](README.md#ellipse-svg-parsing) | [<img width="150" alt="parrot" src="https://user-images.githubusercontent.com/20134338/49063282-c26a2400-f20e-11e8-897e-9980f11712c9.jpg">](/README.md#parrot-fxg-with-trilateral)|
-| Dot matrix | PolyminoTriangles ( tetris ) |
-| [<img width="150" alt="dotmatrix" src="https://user-images.githubusercontent.com/20134338/49063654-ec701600-f20f-11e8-8b35-6cc60027bedd.jpg">](/README.md#dot-matrix-with-trilateral) | [<img width="150" alt="polyminokha" src ="https://user-images.githubusercontent.com/20134338/49080453-987b2680-f23b-11e8-8666-3df3bd9bf7fd.jpg">](/README.md#tetris-triangle-crazy) |
-| tryflipSpin puzzle | Divtastic drawing with div's |
-| [<img width="150" alt="tryflip" src="https://user-images.githubusercontent.com/20134338/49084720-2d841c80-f248-11e8-9a47-2cdc925dd3a7.jpg">](README.md#tryflipspin-puzzle) | [<img width="150" alt="picker" src="https://user-images.githubusercontent.com/20134338/49088878-28c46600-f252-11e8-96ca-4e4e3d4ff5d6.png">](/README.md#divtastic) |
-|  | | |
-|  | | |
-
 *****
 
 | Ports |  |  |  |
@@ -36,9 +21,20 @@
 | jsgl | hxSpiro     | hxDaedalus  | hxRectPack2D  |
 | [<img width="150" alt="jsgl" src="https://user-images.githubusercontent.com/20134338/49060532-d5c4c180-f205-11e8-8fec-d0e28266ffd1.jpg">]()| [<img width="150" alt="spiro" src="https://user-images.githubusercontent.com/20134338/49060726-a9f60b80-f206-11e8-8eb6-68bca429720e.png">](/README.md#spiro) |[<img width="150" alt="hxdaedalusimg" src="https://user-images.githubusercontent.com/20134338/49061204-09085000-f208-11e8-9672-8dea3cd4303e.png">](/README.md#hxDaedalus) | [<img width="150" alt="rectpack2d" src="https://user-images.githubusercontent.com/20134338/49061637-2a1d7080-f209-11e8-832c-6870dade4c1c.jpg">](/README.md#hxRectPack2D)|
 | triangulations | hxPolyK | | |
-| [<img width="150" alt="ruppert" src="https://user-images.githubusercontent.com/20134338/49060882-356f9c80-f207-11e8-98d4-66c23021acb9.png">](#/README.md#triangulations)|[<img width="150" alt="polykdivtastic" src="https://user-images.githubusercontent.com/20134338/49060993-a1520500-f207-11e8-8e60-13e357b8b2c4.png">](/README.md#hxpolyk) | |
-| | | |
-| | | |
+| [<img width="150" alt="ruppert" src="https://user-images.githubusercontent.com/20134338/49060882-356f9c80-f207-11e8-98d4-66c23021acb9.png">](#/README.md#triangulations)|[<img width="150" alt="polykdivtastic" src="https://user-images.githubusercontent.com/20134338/49060993-a1520500-f207-11e8-8e60-13e357b8b2c4.png">](/README.md#hxpolyk) | | 
+
+*****
+
+| Projects |  |  |  |
+| :-----------: | :-----------: | :-----------: | :-----------: |
+| Zeal of Zebra | L-Systems     | Ascii terminal  | JigsawX  |
+| [<img width="150" alt="zeal canvas" src="https://user-images.githubusercontent.com/20134338/49017821-b2583300-f181-11e8-8e91-8a79fb2ffa59.png">](/README.md#zeal-of-zebra) | [<img width="150" alt="lsystem2" src="https://user-images.githubusercontent.com/20134338/49053899-04cd3a00-f1ea-11e8-98dd-b5b016090081.png">](/README.md#l-systems) | [<img width="100" alt="haxeansi3" src="https://user-images.githubusercontent.com/20134338/49052755-18c26d00-f1e5-11e8-845a-9b4e29f4c114.png">](/README.md#ascii-art-hxpixel-and-ansi)|[<img width="150" align="left" alt="jigsawximage" src="https://user-images.githubusercontent.com/20134338/49057707-a65b8800-f1f8-11e8-93af-f4f92a86ecbc.png">](/README.md#jigsawx)|
+| Letters | LED display | Ellipse SVG parsing | FXG Parrot |
+| [<img width="150" alt="lettersgrab" src="https://user-images.githubusercontent.com/20134338/49061470-b9765400-f208-11e8-800f-776aab0cc710.jpg">](/README.md#letters)| [<img width="150" alt="backtothefuture" src="https://user-images.githubusercontent.com/20134338/49062686-e7f62e00-f20c-11e8-9eb3-185faab51182.jpg">](/README.md#LED) | [<img width="150" alt="elipse" src="https://user-images.githubusercontent.com/20134338/49062944-af0a8900-f20d-11e8-9e1e-031eec3164d2.jpg">](README.md#ellipse-svg-parsing) | [<img width="150" alt="parrot" src="https://user-images.githubusercontent.com/20134338/49063282-c26a2400-f20e-11e8-897e-9980f11712c9.jpg">](/README.md#parrot-fxg-with-trilateral)|
+| Dot matrix | PolyminoTriangles ( tetris ) | tryflipSpin puzzle | Divtastic drawing with div's |
+| [<img width="150" alt="dotmatrix" src="https://user-images.githubusercontent.com/20134338/49063654-ec701600-f20f-11e8-8b35-6cc60027bedd.jpg">](/README.md#dot-matrix-with-trilateral) | [<img width="150" alt="polyminokha" src ="https://user-images.githubusercontent.com/20134338/49080453-987b2680-f23b-11e8-8666-3df3bd9bf7fd.jpg">](/README.md#tetris-triangle-crazy) | [<img width="150" alt="tryflip" src="https://user-images.githubusercontent.com/20134338/49084720-2d841c80-f248-11e8-9a47-2cdc925dd3a7.jpg">](README.md#tryflipspin-puzzle) | [<img width="150" alt="picker" src="https://user-images.githubusercontent.com/20134338/49088878-28c46600-f252-11e8-96ca-4e4e3d4ff5d6.png">](/README.md#divtastic) |
+
+*****
 
 ## Zeal of Zebra
 Using my **Leaf** offset rotations, **folders** image/file **helper** and my port of **RectPack2D**.
