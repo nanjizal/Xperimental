@@ -1,7 +1,13 @@
 [<img width="200" align="left" alt="jlmansismall2" src="https://user-images.githubusercontent.com/20134338/49019946-14676700-f187-11e8-9080-a183483d2570.png">]() 
 # Xperimental
 
-**Nanjizal** has grown. Here I collate smaller projects and provide an overview narative on the development of concepts through experiments and libraries within Nanjizal ( and hxDaeadlus ). 
+**Nanjizal** has grown to the point where it's helpful to have an overview.
+
+Here I collate smaller projects and provide an overview narative on the development of concepts through my experiments and helper libraries contained within Nanjizal github ( and hxDaeadlus ). 
+
+<br>
+<br>
+<br>
 
 <img width="300" src="https://user-images.githubusercontent.com/20134338/49088267-d0d92f80-f250-11e8-92fe-056c6dd2f962.png">
 
