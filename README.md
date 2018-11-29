@@ -108,6 +108,8 @@ _Flash, Swing Java, OpenFL, NME ( + android ), Kha and Canvas versions, some wit
 
 ## Trilateral drawing contours with WebGL ( GL ).
 
+![justtriangles](https://user-images.githubusercontent.com/20134338/49192977-56560000-f375-11e8-9ee7-1420bdd963f5.jpg)
+
 Trilateral converts drawing commands into contours built with triangles suitable for rendering vector graphics on the GPU.
 Mostly tested with Kha's Haxe toolkit with WebGL examples. Trilateral is Haxe toolkit agnostic, but additional features are to be found both in **trilateralXtra** library and in **trilateralBazaar** the examples library.
 
