@@ -1,7 +1,7 @@
 [<img width="200" align="left" alt="jlmansismall2" src="https://user-images.githubusercontent.com/20134338/49019946-14676700-f187-11e8-9080-a183483d2570.png">]() 
 # Xperimental
 
-**Nanjizal** has grown to the point where it is useful to have an overview of some of it's contents.
+**Nanjizal** has grown to the point where it is useful to have an overview.
 
 Here I collate smaller projects and provide a narative on Nanjizal and the development of concepts through my experiments and helper libraries. 
  
