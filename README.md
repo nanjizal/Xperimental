@@ -42,7 +42,7 @@
 | Interaction |  |  |  |
 | :-----------: | :-----------: | :-----------: | :-----------: |
 | Letters | Monkey |
-| [<img width="150" alt="lettersgrab" src="https://user-images.githubusercontent.com/20134338/49061470-b9765400-f208-11e8-800f-776aab0cc710.jpg">](/README.md#letters) | [<img width="150" alt="monkeyimage" src="https://user-images.githubusercontent.com/20134338/49191937-a9798400-f370-11e8-9af5-5d636b410c90.png">](/README.md#monkey |
+| [<img width="150" alt="lettersgrab" src="https://user-images.githubusercontent.com/20134338/49061470-b9765400-f208-11e8-800f-776aab0cc710.jpg">](/README.md#letters) | [<img width="150" alt="monkeyimage" src="https://user-images.githubusercontent.com/20134338/49191937-a9798400-f370-11e8-9af5-5d636b410c90.png">](/README.md#monkey) |
 
 *****
 
