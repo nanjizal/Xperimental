@@ -3,7 +3,9 @@
 
 **Nanjizal** has grown to the point where it's helpful to have an overview.
 
-Here I collate smaller projects and provide a narative on the development of concepts through my experiments and helper libraries contained within Nanjizal github ( and hxDaeadlus ). 
+Here I collate smaller projects and provide a narative on the development of concepts through my experiments and helper libraries contained within:
+
+Nanjizal github ( and hxDaeadlus ). 
 
 <br>
 <br>
