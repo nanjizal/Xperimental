@@ -3,9 +3,8 @@
 
 **Nanjizal** has grown to the point where it is useful to have an overview of some of it's contents.
 
-Here I collate smaller projects and provide a narative on the development of concepts through my experiments and helper libraries. 
+Here I collate smaller projects and provide a narative on Nanjizal and the development of concepts through my experiments and helper libraries. 
  
-<br>
 <br>
 
 <img width="300" src="https://user-images.githubusercontent.com/20134338/49088267-d0d92f80-f250-11e8-92fe-056c6dd2f962.png">
