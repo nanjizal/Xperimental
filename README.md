@@ -330,4 +330,7 @@ Due to the number of embedded assets it takes forever to load but runs as smooth
  
 [demo slow to load](https://nanjizal.github.io/Monkey/build/html5/index.html)
 With key and mouse combinations you have complete control of rotations and translation.
-Try **alt** + arrow **up/down** for Zoom. Try **Enter** + **shift** + arrow **left/right** to adjust all heads rotation speed - super crazy!
+
+Try **alt** + arrow **up/down** for Zoom. 
+
+Try **Enter** + **shift** + arrow **left/right** to adjust all heads rotation speed - super crazy!
