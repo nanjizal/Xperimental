@@ -108,9 +108,9 @@ Mostly tested with Kha's Haxe toolkit with WebGL examples. Trilateral is Haxe to
 
 #### code
 
-- [trilateral](https://github.com/nanjizal/Trilateral)
-- [trilateralXtra](https://github.com/nanjizal/TrilateralXtra)
-- [trilateralBazaar](https://github.com/nanjizal/TrilateralBazaar)
+- [trilateral](https://github.com/nanjizal/Trilateral)             ( core generic )
+- [trilateralXtra](https://github.com/nanjizal/TrilateralXtra)     ( platform specific and extras )
+- [trilateralBazaar](https://github.com/nanjizal/TrilateralBazaar) ( example use cases )
 
 Features:
 
