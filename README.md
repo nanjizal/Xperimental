@@ -8,8 +8,6 @@ Here I collate smaller projects and provide a narative on the development of con
 Nanjizal github ( and hxDaeadlus ). 
 
 <br>
-<br>
-<br>
 
 <img width="300" src="https://user-images.githubusercontent.com/20134338/49088267-d0d92f80-f250-11e8-92fe-056c6dd2f962.png">
 
