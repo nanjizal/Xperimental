@@ -320,3 +320,12 @@ folder provides wrappers for file browsing and getting images as hxPixels and th
 HtmlHelper contains setup code such as basic WebGL and Canvas setup and more.
 
 [<img width="300" alt="document" src="https://user-images.githubusercontent.com/20134338/49190193-3b7d8e80-f369-11e8-8c49-2b1d0035b388.png">](https://github.com/nanjizal/htmlHelper) <sup>[(image from pixabay)](https://www.shareicon.net/htm-file-format-extension-folder-document-paper-887196)<sup>
+ 
+## Monkey
+
+Monkey is really cool, but totally useless, because it's all one file to run in an early version of Kodegarden with all assets encoded!
+
+[<img width="300" align="left" alt="monkeyimage" src="https://user-images.githubusercontent.com/20134338/49191937-a9798400-f370-11e8-9af5-5d636b410c90.png">](https://nanjizal.github.io/Monkey/build/html5/index.html) Originally a complete rework of Kharira a demo on Kha. Monkey uses hundreds of Suzanne heads with a 100 different textures. It uses Quaternions so that rotation in 3D works well. 
+Due to the number of embedded assets it takes forever to load but runs as smooth as butter.
+ 
+[demo slow to load](https://nanjizal.github.io/Monkey/build/html5/index.html)
