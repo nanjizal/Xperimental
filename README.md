@@ -1,4 +1,4 @@
-[<img width="180" alt="jlmansismall3" src="https://user-images.githubusercontent.com/20134338/49196525-26155e00-f383-11e8-995c-db20236ef7ac.png">]() 
+[<img width="180" align="left" alt="jlmansismall3" src="https://user-images.githubusercontent.com/20134338/49196601-742a6180-f383-11e8-9394-3779f263d8d7.png">]() 
 # Xperimental
 
 **Nanjizal** has grown to the point where it is useful to have an overview.
