@@ -111,7 +111,7 @@ var Main = function() {
 $hxClasses["Main"] = Main;
 Main.__name__ = "Main";
 Main.main = function() {
-	kha_System.init({ title : "Empty", width : Main.wid, height : Main.hi, samplesPerPixel : 4},function() {
+	kha_System.init({ title : "Iron with Trilateral", width : Main.wid, height : Main.hi, samplesPerPixel : 4},function() {
 		new Main();
 	});
 };
@@ -18882,49 +18882,49 @@ $hxClasses["kha.Shaders"] = kha_Shaders;
 kha_Shaders.__name__ = "kha.Shaders";
 kha_Shaders.init = function() {
 	var blobs = [];
-	var data = Reflect.field(kha_Shaders,"mesh_fragData" + 0);
+	var data = Reflect.field(kha_Shaders,"mesh2_vertData" + 0);
 	var bytes = haxe_Unserializer.run(data);
 	blobs.push(kha_internal_BytesBlob.fromBytes(bytes));
-	var data1 = Reflect.field(kha_Shaders,"mesh_fragData" + 1);
+	var data1 = Reflect.field(kha_Shaders,"mesh2_vertData" + 1);
 	var bytes1 = haxe_Unserializer.run(data1);
 	blobs.push(kha_internal_BytesBlob.fromBytes(bytes1));
-	var data2 = Reflect.field(kha_Shaders,"mesh_fragData" + 2);
+	var data2 = Reflect.field(kha_Shaders,"mesh2_vertData" + 2);
 	var bytes2 = haxe_Unserializer.run(data2);
 	blobs.push(kha_internal_BytesBlob.fromBytes(bytes2));
-	kha_Shaders.mesh_frag = new kha_graphics4_FragmentShader(blobs,["mesh.frag.essl","mesh-relaxed.frag.essl","mesh-webgl2.frag.essl"]);
+	kha_Shaders.mesh2_vert = new kha_graphics4_VertexShader(blobs,["mesh2.vert.essl","mesh2-relaxed.vert.essl","mesh2-webgl2.vert.essl"]);
 	var blobs1 = [];
-	var data3 = Reflect.field(kha_Shaders,"mesh_vertData" + 0);
+	var data3 = Reflect.field(kha_Shaders,"mesh2_fragData" + 0);
 	var bytes3 = haxe_Unserializer.run(data3);
 	blobs1.push(kha_internal_BytesBlob.fromBytes(bytes3));
-	var data4 = Reflect.field(kha_Shaders,"mesh_vertData" + 1);
+	var data4 = Reflect.field(kha_Shaders,"mesh2_fragData" + 1);
 	var bytes4 = haxe_Unserializer.run(data4);
 	blobs1.push(kha_internal_BytesBlob.fromBytes(bytes4));
-	var data5 = Reflect.field(kha_Shaders,"mesh_vertData" + 2);
+	var data5 = Reflect.field(kha_Shaders,"mesh2_fragData" + 2);
 	var bytes5 = haxe_Unserializer.run(data5);
 	blobs1.push(kha_internal_BytesBlob.fromBytes(bytes5));
-	kha_Shaders.mesh_vert = new kha_graphics4_VertexShader(blobs1,["mesh.vert.essl","mesh-relaxed.vert.essl","mesh-webgl2.vert.essl"]);
+	kha_Shaders.mesh2_frag = new kha_graphics4_FragmentShader(blobs1,["mesh2.frag.essl","mesh2-relaxed.frag.essl","mesh2-webgl2.frag.essl"]);
 	var blobs2 = [];
-	var data6 = Reflect.field(kha_Shaders,"painter_colored_fragData" + 0);
+	var data6 = Reflect.field(kha_Shaders,"painter_colored_vertData" + 0);
 	var bytes6 = haxe_Unserializer.run(data6);
 	blobs2.push(kha_internal_BytesBlob.fromBytes(bytes6));
-	var data7 = Reflect.field(kha_Shaders,"painter_colored_fragData" + 1);
+	var data7 = Reflect.field(kha_Shaders,"painter_colored_vertData" + 1);
 	var bytes7 = haxe_Unserializer.run(data7);
 	blobs2.push(kha_internal_BytesBlob.fromBytes(bytes7));
-	var data8 = Reflect.field(kha_Shaders,"painter_colored_fragData" + 2);
+	var data8 = Reflect.field(kha_Shaders,"painter_colored_vertData" + 2);
 	var bytes8 = haxe_Unserializer.run(data8);
 	blobs2.push(kha_internal_BytesBlob.fromBytes(bytes8));
-	kha_Shaders.painter_colored_frag = new kha_graphics4_FragmentShader(blobs2,["painter-colored.frag.essl","painter-colored-relaxed.frag.essl","painter-colored-webgl2.frag.essl"]);
+	kha_Shaders.painter_colored_vert = new kha_graphics4_VertexShader(blobs2,["painter-colored.vert.essl","painter-colored-relaxed.vert.essl","painter-colored-webgl2.vert.essl"]);
 	var blobs3 = [];
-	var data9 = Reflect.field(kha_Shaders,"painter_colored_vertData" + 0);
+	var data9 = Reflect.field(kha_Shaders,"painter_colored_fragData" + 0);
 	var bytes9 = haxe_Unserializer.run(data9);
 	blobs3.push(kha_internal_BytesBlob.fromBytes(bytes9));
-	var data10 = Reflect.field(kha_Shaders,"painter_colored_vertData" + 1);
+	var data10 = Reflect.field(kha_Shaders,"painter_colored_fragData" + 1);
 	var bytes10 = haxe_Unserializer.run(data10);
 	blobs3.push(kha_internal_BytesBlob.fromBytes(bytes10));
-	var data11 = Reflect.field(kha_Shaders,"painter_colored_vertData" + 2);
+	var data11 = Reflect.field(kha_Shaders,"painter_colored_fragData" + 2);
 	var bytes11 = haxe_Unserializer.run(data11);
 	blobs3.push(kha_internal_BytesBlob.fromBytes(bytes11));
-	kha_Shaders.painter_colored_vert = new kha_graphics4_VertexShader(blobs3,["painter-colored.vert.essl","painter-colored-relaxed.vert.essl","painter-colored-webgl2.vert.essl"]);
+	kha_Shaders.painter_colored_frag = new kha_graphics4_FragmentShader(blobs3,["painter-colored.frag.essl","painter-colored-relaxed.frag.essl","painter-colored-webgl2.frag.essl"]);
 	var blobs4 = [];
 	var data12 = Reflect.field(kha_Shaders,"painter_image_fragData" + 0);
 	var bytes12 = haxe_Unserializer.run(data12);
@@ -94413,10 +94413,11 @@ trilateralXtra_iron_IronMesh.prototype = {
 		this.vb = this1;
 		var this2 = new Uint32Array(3 * len | 0);
 		this.ib = this2;
-		var this3 = new Float32Array(3 * len | 0);
+		var this3 = new Float32Array(9 * len | 0);
 		this.col = this3;
 		var j = 0;
 		var k = 0;
+		var c = 0;
 		var scaleX = 1 / wid;
 		var scaleY = 1 / hi;
 		var offX = wid / 2;
@@ -94441,11 +94442,20 @@ trilateralXtra_iron_IronMesh.prototype = {
 			this.vb[j++] = -(tri.cy - offY) * scaleY;
 			this.vb[j++] = z;
 			color = colors[tri.colorID];
-			this.col[k] = (color >> 16 & 255) / 255;
+			r = (color >> 16 & 255) / 255;
+			g = (color >> 8 & 255) / 255;
+			b = (color & 255) / 255;
+			this.col[c++] = r;
+			this.col[c++] = g;
+			this.col[c++] = b;
+			this.col[c++] = r;
+			this.col[c++] = g;
+			this.col[c++] = b;
+			this.col[c++] = r;
+			this.col[c++] = g;
+			this.col[c++] = b;
 			this.ib[k++] = k - 1;
-			this.col[k] = (color >> 8 & 255) / 255;
 			this.ib[k++] = k - 1;
-			this.col[k] = (color & 255) / 255;
 			this.ib[k++] = k - 1;
 		}
 	}
@@ -94476,13 +94486,13 @@ trilateralXtra_iron_IronMesh.prototype = {
 		iron_Scene.create(this.raw,$bind(this,this.sceneReady));
 	}
 	,triangleMeshCreate: function() {
-		return { name : "TriangleMesh", vertex_arrays : [{ attrib : "pos", size : 3, values : this.vb}], index_arrays : [{ material : 0, values : this.ib}]};
+		return { name : "TriangleMesh", vertex_arrays : [{ attrib : "pos", size : 3, values : this.vb},{ attrib : "col", size : 3, values : this.col}], index_arrays : [{ material : 0, values : this.ib}]};
 	}
 	,materialDataCreate: function() {
-		return { name : "MyMaterial", shader : "MyShader", contexts : [{ name : this.meshName, bind_constants : [{ name : "color", vec3 : this.col}]}]};
+		return { name : "MyMaterial", shader : "MyShader", contexts : [{ name : this.meshName, bind_constants : []}]};
 	}
 	,shaderDataCreate: function() {
-		return { name : "MyShader", contexts : [{ name : this.meshName, vertex_shader : "mesh.vert", fragment_shader : "mesh.frag", compare_mode : "less", cull_mode : "clockwise", depth_write : true, constants : [{ name : "color", type : "vec3"}], vertex_structure : [{ name : "pos", size : 3}]}]};
+		return { name : "MyShader", contexts : [{ name : this.meshName, vertex_shader : "mesh2.vert", fragment_shader : "mesh2.frag", compare_mode : "less", cull_mode : "clockwise", depth_write : true, vertex_structure : [{ name : "pos", size : 3},{ name : "col", size : 3}]}]};
 	}
 	,sceneReady: function(scene) {
 		var _gthis = this;
@@ -94504,7 +94514,7 @@ trilateralXtra_iron_IronMesh.prototype = {
 		var tri = this.meshObjectCreate();
 		this.raw.objects.push(tri);
 		iron_Scene.active.parseObject(this.raw.name,tri.name,null,function(o) {
-			haxe_Log.trace("Triangle ready",{ fileName : "trilateralXtra/iron/IronMesh.hx", lineNumber : 131, className : "trilateralXtra.iron.IronMesh", methodName : "dataReady"});
+			haxe_Log.trace("Triangle ready",{ fileName : "trilateralXtra/iron/IronMesh.hx", lineNumber : 145, className : "trilateralXtra.iron.IronMesh", methodName : "dataReady"});
 		});
 	}
 	,__class__: trilateralXtra_iron_IronMesh
@@ -95145,18 +95155,18 @@ kha_Scheduler.timeWarpSaveTime = 10.0;
 kha_Scheduler.DIF_COUNT = 3;
 kha_Scheduler.maxframetime = 0.5;
 kha_Scheduler.startTime = 0;
-kha_Shaders.mesh_fragData0 = "s191:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCB2ZWMzIGNvbG9yOwoKdm9pZCBtYWluKCkKewogICAgZ2xfRnJhZ0RhdGFbMF0gPSB2ZWM0KGNvbG9yLCAxLjApOwp9Cgo";
-kha_Shaders.mesh_fragData1 = "s186:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gbWVkaXVtcCBpbnQ7Cgp1bmlmb3JtIHZlYzMgY29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9GcmFnRGF0YVswXSA9IHZlYzQoY29sb3IsIDEuMCk7Cn0KCg";
-kha_Shaders.mesh_fragData2 = "s224:I3ZlcnNpb24gMzAwIGVzCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCB2ZWMzIGNvbG9yOwoKb3V0IGhpZ2hwIHZlYzQgZnJhZ0NvbG9yOwoKdm9pZCBtYWluKCkKewogICAgZnJhZ0NvbG9yID0gdmVjNChjb2xvciwgMS4wKTsKfQoK";
-kha_Shaders.mesh_vertData0 = "s115:I3ZlcnNpb24gMTAwCgphdHRyaWJ1dGUgdmVjMyBwb3M7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9Qb3NpdGlvbiA9IHZlYzQocG9zLCAxLjApOwp9Cgo";
-kha_Shaders.mesh_vertData1 = "s126:I3ZlcnNpb24gMTAwCgphdHRyaWJ1dGUgbWVkaXVtcCB2ZWMzIHBvczsKCnZvaWQgbWFpbigpCnsKICAgIGdsX1Bvc2l0aW9uID0gdmVjNChwb3MsIDEuMCk7Cn0KCg";
-kha_Shaders.mesh_vertData2 = "s110:I3ZlcnNpb24gMzAwIGVzCgppbiB2ZWMzIHBvczsKCnZvaWQgbWFpbigpCnsKICAgIGdsX1Bvc2l0aW9uID0gdmVjNChwb3MsIDEuMCk7Cn0KCg";
-kha_Shaders.painter_colored_fragData0 = "s198:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdmFyeWluZyBoaWdocCB2ZWM0IGZyYWdtZW50Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9GcmFnRGF0YVswXSA9IGZyYWdtZW50Q29sb3I7Cn0KCg";
-kha_Shaders.painter_colored_fragData1 = "s192:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gbWVkaXVtcCBpbnQ7Cgp2YXJ5aW5nIHZlYzQgZnJhZ21lbnRDb2xvcjsKCnZvaWQgbWFpbigpCnsKICAgIGdsX0ZyYWdEYXRhWzBdID0gZnJhZ21lbnRDb2xvcjsKfQoK";
-kha_Shaders.painter_colored_fragData2 = "s223:I3ZlcnNpb24gMzAwIGVzCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKb3V0IGhpZ2hwIHZlYzQgRnJhZ0NvbG9yOwppbiBoaWdocCB2ZWM0IGZyYWdtZW50Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBGcmFnQ29sb3IgPSBmcmFnbWVudENvbG9yOwp9Cgo";
+kha_Shaders.mesh2_vertData0 = "s227:I3ZlcnNpb24gMTAwCgp2YXJ5aW5nIHZlYzQgZnJhZ21lbnRDb2xvcjsKYXR0cmlidXRlIHZlYzMgY29sOwphdHRyaWJ1dGUgdmVjMyBwb3M7Cgp2b2lkIG1haW4oKQp7CiAgICBmcmFnbWVudENvbG9yID0gdmVjNChjb2wsIDEuMCk7CiAgICBnbF9Qb3NpdGlvbiA9IHZlYzQocG9zLCAxLjApOwp9Cgo";
+kha_Shaders.mesh2_vertData1 = "s259:I3ZlcnNpb24gMTAwCgp2YXJ5aW5nIG1lZGl1bXAgdmVjNCBmcmFnbWVudENvbG9yOwphdHRyaWJ1dGUgbWVkaXVtcCB2ZWMzIGNvbDsKYXR0cmlidXRlIG1lZGl1bXAgdmVjMyBwb3M7Cgp2b2lkIG1haW4oKQp7CiAgICBmcmFnbWVudENvbG9yID0gdmVjNChjb2wsIDEuMCk7CiAgICBnbF9Qb3NpdGlvbiA9IHZlYzQocG9zLCAxLjApOwp9Cgo";
+kha_Shaders.mesh2_vertData2 = "s207:I3ZlcnNpb24gMzAwIGVzCgpvdXQgdmVjNCBmcmFnbWVudENvbG9yOwppbiB2ZWMzIGNvbDsKaW4gdmVjMyBwb3M7Cgp2b2lkIG1haW4oKQp7CiAgICBmcmFnbWVudENvbG9yID0gdmVjNChjb2wsIDEuMCk7CiAgICBnbF9Qb3NpdGlvbiA9IHZlYzQocG9zLCAxLjApOwp9Cgo";
+kha_Shaders.mesh2_fragData0 = "s198:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdmFyeWluZyBoaWdocCB2ZWM0IGZyYWdtZW50Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9GcmFnRGF0YVswXSA9IGZyYWdtZW50Q29sb3I7Cn0KCg";
+kha_Shaders.mesh2_fragData1 = "s192:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gbWVkaXVtcCBpbnQ7Cgp2YXJ5aW5nIHZlYzQgZnJhZ21lbnRDb2xvcjsKCnZvaWQgbWFpbigpCnsKICAgIGdsX0ZyYWdEYXRhWzBdID0gZnJhZ21lbnRDb2xvcjsKfQoK";
+kha_Shaders.mesh2_fragData2 = "s223:I3ZlcnNpb24gMzAwIGVzCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKb3V0IGhpZ2hwIHZlYzQgZnJhZ0NvbG9yOwppbiBoaWdocCB2ZWM0IGZyYWdtZW50Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBmcmFnQ29sb3IgPSBmcmFnbWVudENvbG9yOwp9Cgo";
 kha_Shaders.painter_colored_vertData0 = "s331:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1hdDQgcHJvamVjdGlvbk1hdHJpeDsKCmF0dHJpYnV0ZSB2ZWMzIHZlcnRleFBvc2l0aW9uOwp2YXJ5aW5nIHZlYzQgZnJhZ21lbnRDb2xvcjsKYXR0cmlidXRlIHZlYzQgdmVydGV4Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9Qb3NpdGlvbiA9IHByb2plY3Rpb25NYXRyaXggKiB2ZWM0KHZlcnRleFBvc2l0aW9uLCAxLjApOwogICAgZnJhZ21lbnRDb2xvciA9IHZlcnRleENvbG9yOwp9Cgo";
 kha_Shaders.painter_colored_vertData1 = "s374:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1lZGl1bXAgbWF0NCBwcm9qZWN0aW9uTWF0cml4OwoKYXR0cmlidXRlIG1lZGl1bXAgdmVjMyB2ZXJ0ZXhQb3NpdGlvbjsKdmFyeWluZyBtZWRpdW1wIHZlYzQgZnJhZ21lbnRDb2xvcjsKYXR0cmlidXRlIG1lZGl1bXAgdmVjNCB2ZXJ0ZXhDb2xvcjsKCnZvaWQgbWFpbigpCnsKICAgIGdsX1Bvc2l0aW9uID0gcHJvamVjdGlvbk1hdHJpeCAqIHZlYzQodmVydGV4UG9zaXRpb24sIDEuMCk7CiAgICBmcmFnbWVudENvbG9yID0gdmVydGV4Q29sb3I7Cn0KCg";
 kha_Shaders.painter_colored_vertData2 = "s311:I3ZlcnNpb24gMzAwIGVzCgp1bmlmb3JtIG1hdDQgcHJvamVjdGlvbk1hdHJpeDsKCmluIHZlYzMgdmVydGV4UG9zaXRpb247Cm91dCB2ZWM0IGZyYWdtZW50Q29sb3I7CmluIHZlYzQgdmVydGV4Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9Qb3NpdGlvbiA9IHByb2plY3Rpb25NYXRyaXggKiB2ZWM0KHZlcnRleFBvc2l0aW9uLCAxLjApOwogICAgZnJhZ21lbnRDb2xvciA9IHZlcnRleENvbG9yOwp9Cgo";
+kha_Shaders.painter_colored_fragData0 = "s198:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdmFyeWluZyBoaWdocCB2ZWM0IGZyYWdtZW50Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9GcmFnRGF0YVswXSA9IGZyYWdtZW50Q29sb3I7Cn0KCg";
+kha_Shaders.painter_colored_fragData1 = "s192:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gbWVkaXVtcCBpbnQ7Cgp2YXJ5aW5nIHZlYzQgZnJhZ21lbnRDb2xvcjsKCnZvaWQgbWFpbigpCnsKICAgIGdsX0ZyYWdEYXRhWzBdID0gZnJhZ21lbnRDb2xvcjsKfQoK";
+kha_Shaders.painter_colored_fragData2 = "s223:I3ZlcnNpb24gMzAwIGVzCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKb3V0IGhpZ2hwIHZlYzQgRnJhZ0NvbG9yOwppbiBoaWdocCB2ZWM0IGZyYWdtZW50Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBGcmFnQ29sb3IgPSBmcmFnbWVudENvbG9yOwp9Cgo";
 kha_Shaders.painter_image_fragData0 = "s471:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCBzYW1wbGVyMkQgdGV4OwoKdmFyeWluZyBoaWdocCB2ZWMyIHRleENvb3JkOwp2YXJ5aW5nIGhpZ2hwIHZlYzQgY29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBoaWdocCB2ZWM0IHRleGNvbG9yID0gdGV4dHVyZTJEKHRleCwgdGV4Q29vcmQpICogY29sb3I7CiAgICBoaWdocCB2ZWMzIF8zMiA9IHRleGNvbG9yLnh5eiAqIGNvbG9yLnc7CiAgICB0ZXhjb2xvciA9IHZlYzQoXzMyLngsIF8zMi55LCBfMzIueiwgdGV4Y29sb3Iudyk7CiAgICBnbF9GcmFnRGF0YVswXSA9IHRleGNvbG9yOwp9Cgo";
 kha_Shaders.painter_image_fragData1 = "s444:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gbWVkaXVtcCBpbnQ7Cgp1bmlmb3JtIG1lZGl1bXAgc2FtcGxlcjJEIHRleDsKCnZhcnlpbmcgdmVjMiB0ZXhDb29yZDsKdmFyeWluZyB2ZWM0IGNvbG9yOwoKdm9pZCBtYWluKCkKewogICAgdmVjNCB0ZXhjb2xvciA9IHRleHR1cmUyRCh0ZXgsIHRleENvb3JkKSAqIGNvbG9yOwogICAgdmVjMyBfMzIgPSB0ZXhjb2xvci54eXogKiBjb2xvci53OwogICAgdGV4Y29sb3IgPSB2ZWM0KF8zMi54LCBfMzIueSwgXzMyLnosIHRleGNvbG9yLncpOwogICAgZ2xfRnJhZ0RhdGFbMF0gPSB0ZXhjb2xvcjsKfQoK";
 kha_Shaders.painter_image_fragData2 = "s487:I3ZlcnNpb24gMzAwIGVzCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCBzYW1wbGVyMkQgdGV4OwoKaW4gaGlnaHAgdmVjMiB0ZXhDb29yZDsKaW4gaGlnaHAgdmVjNCBjb2xvcjsKb3V0IGhpZ2hwIHZlYzQgRnJhZ0NvbG9yOwoKdm9pZCBtYWluKCkKewogICAgaGlnaHAgdmVjNCB0ZXhjb2xvciA9IHRleHR1cmUodGV4LCB0ZXhDb29yZCkgKiBjb2xvcjsKICAgIGhpZ2hwIHZlYzMgXzMyID0gdGV4Y29sb3IueHl6ICogY29sb3IudzsKICAgIHRleGNvbG9yID0gdmVjNChfMzIueCwgXzMyLnksIF8zMi56LCB0ZXhjb2xvci53KTsKICAgIEZyYWdDb2xvciA9IHRleGNvbG9yOwp9Cgo";
