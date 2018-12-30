@@ -12,19 +12,18 @@ class SceneHelper {
 					children: [],
 				};
     }
-    public static function setup( sceneName: String = 'MyScene'
+    public static function setup( sceneName:  String = 'MyScene'
                                 , cameraName: String = 'MyCamera'
                                 , cameraData: String = 'MyCameraData' ): TSceneFormat {
-        var raw: TSceneFormat = {
-            name: sceneName,
-            camera_ref: cameraName,
-            camera_datas: [ CameraHelper.cameraData(cameraData) ],
-            shader_datas: [],
-            material_datas: [],
-            mesh_datas: [],
-            objects: [ cast SceneHelper.world()
-                     , cast CameraHelper.cameraObj( cameraName, cameraData, CameraHelper.transform() ) ]
-        }
+        var raw: TSceneFormat = { name:         sceneName
+                                , camera_ref:   cameraName
+                                , camera_datas: [ CameraHelper.cameraData(cameraData) ]
+                                , shader_datas: []
+                                , material_datas: []
+                                , mesh_datas:     []
+                                , objects: [  cast SceneHelper.world()
+                                            , cast CameraHelper.cameraObj( cameraName, cameraData, CameraHelper.transform() ) ]
+                                };
         Data.cachedSceneRaws.set( raw.name, raw );
         return raw;
     }

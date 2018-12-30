@@ -6,7 +6,13 @@ import kha.arrays.Uint32Array;
 import iron.data.*;
 import iron.data.SceneFormat;
 import kha.Color;
-class MultiColorMesh{
+class MultiColorMesh {
+    inline static var vert =         'painter_colored_iron.vert';
+    inline static var frag =         'painter_colored_iron.frag';
+    inline static var materialName = 'MultiColorMaterial';
+    inline static var shaderName   = 'MultiColorShader';
+    inline static var mesh_object  = 'mesh_object';
+    inline static var worldMatrix  = '_worldViewProjectionMatrix';
     var meshName:   String;
     var vb:         Float32Array;
     var ib:         Uint32Array;
@@ -74,40 +80,35 @@ class MultiColorMesh{
                ,  index_arrays: [ { material: 0, values: ib } ] };
     }
     public function materialDataCreate(): TMaterialData {
-        return { name: "MultiColorMaterial", shader: "MultiColorShader",contexts: [{ name: meshName, bind_constants: [] }] };
+        return { name: materialName, shader: shaderName, contexts: [{ name: meshName, bind_constants: [] }] };
     }
     public function shaderDataCreate(): TShaderData {
-        return { name: "MultiColorShader",
-                 contexts: [{  name: meshName
-                             , vertex_shader:   "painter_colored_iron.vert"
-                             , fragment_shader: "painter_colored_iron.frag"
-                             , compare_mode: "less"
-                             , cull_mode: "clockwise"
-                             , depth_write: true
-                             , constants: [ {
-                                 "link": "_worldViewProjectionMatrix",
-                                 "name": "WVP",
-                                 "type": "mat4"
-                              } ]   
+        return { name: shaderName,
+                 contexts: [{  name:            meshName
+                             , vertex_shader:   vert
+                             , fragment_shader: frag
+                             , compare_mode:    "less"
+                             , cull_mode:       "clockwise"
+                             , depth_write:     true
+                             , constants: [ {   "link": worldMatrix
+                                            ,   "name": "WVP"
+                                            ,   "type": "mat4" } ]   
                              , vertex_structure: [ { name: "pos", size: 3 }
                                                  , { name: "col", size: 3 } ]   
-                             }]
-        };
+                             }] };
     }
     public function meshObjectCreate( objName: String = 'Triangles' ): TObj {
-        return { name:     objName
-               , type:     "mesh_object"
-               , data_ref: meshName
-               , material_refs: [ "MultiColorMaterial" ]
-               , transform: null
+        return { name:          objName
+               , type:          mesh_object
+               , data_ref:      meshName
+               , material_refs: [ materialName ]
+               , transform:     null
                };
     }
     public static inline function _r( int: Int ) : Float
         return ((int >> 16) & 255) / 255;
- 
     public static inline function _g( int: Int ) : Float
         return ((int >> 8) & 255) / 255;
- 
     public static inline function _b( int: Int ) : Float
         return (int & 255) / 255;
 }

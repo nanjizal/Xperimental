@@ -37,7 +37,9 @@ class Main {
     var cameraDataName  = 'MyCameraData';
     var meshName        = 'mesh';
     public static function main() {
-        kha.System.init({title: "Iron with Trilateral", width: wid, height: hi, samplesPerPixel: 4}, function(){
+        kha.System.init( { title: "Iron with Trilateral"
+                         , width: wid, height: hi
+                         , samplesPerPixel: 4 }, function(){
             new Main();
         });
     }
@@ -46,36 +48,49 @@ class Main {
         Assets.loadEverything( loadAll );
     }
     function loadAll(){
-        ironHelper = new IronHelper( sceneName, cameraName, cameraDataName, meshName, bgColor );
+        ironHelper       = new IronHelper( sceneName
+                                         , cameraName
+                                         , cameraDataName
+                                         , meshName
+                                         , bgColor );
         ironHelper.ready = sceneReady;
         ironHelper.create();
     }
     function sceneReady( scene: Object ) {
-        var svgStr = Assets.blobs.salsaLogo_svg.toString();
+        svgToTriangles( Assets.blobs.salsaLogo_svg.toString() );
+        meshCreate();
+    }
+    function svgToTriangles( svgStr: String ): FillDraw {
         var nodule: Nodule  = ReadXML.toNodule( svgStr );
-        var svg: Svg = new Svg( nodule );
+        var svg: Svg        = new Svg( nodule );
         svg.render( fillDraw );
-        multiColorMesh = new MultiColorMesh( meshName, wid, hi );
+        return fillDraw;
+    }
+    function meshCreate( ){
+        multiColorMesh      = new MultiColorMesh( meshName, wid, hi );
         multiColorMesh.draw( fillDraw.triangles, fillDraw.colors );
-        var mesh = multiColorMesh.triangleMeshCreate();
-        ironHelper.raw.mesh_datas.push( mesh );
-        MeshData.parse( ironHelper.raw.name, mesh.name, materialSetup );
+        var mesh            = multiColorMesh.triangleMeshCreate();
+        var raw             = ironHelper.raw;
+        raw.mesh_datas.push( mesh );
+        MeshData.parse( raw.name, mesh.name, materialSetup );
     }
     function materialSetup( res: MeshData ){
-        ironHelper.raw.shader_datas.push( multiColorMesh.shaderDataCreate() );
+        var raw = ironHelper.raw;
+        raw.shader_datas.push( multiColorMesh.shaderDataCreate() );
         var md = multiColorMesh.materialDataCreate();
-        ironHelper.raw.material_datas.push( md );
-        MaterialData.parse( ironHelper.raw.name, md.name, materialCreated );
+        raw.material_datas.push( md );
+        MaterialData.parse( raw.name, md.name, materialCreated );
     }
     function materialCreated( res: MaterialData ) {
         var tri = multiColorMesh.meshObjectCreate( 'Triangles' );
-        ironHelper.raw.objects[0].children.push( tri );
-        Scene.active.parseObject( ironHelper.raw.name, tri.name, null, adjustPositions );    
+        var raw = ironHelper.raw;
+        raw.objects[ 0 ].children.push( tri );
+        Scene.active.parseObject( raw.name, tri.name, null, adjustPositions );    
     }
     function adjustPositions(o: Object){
         var camera = Scene.active.getCamera( cameraName );
-        var obj = Scene.active.getChild( 'Triangles' );
-        var v = new Vec4( 0.5, 0.5, 0 );
+        var obj    = Scene.active.getChild( 'Triangles' );
+        var v      = new Vec4( 0.5, 0.5, 0 );
         // obj.transform.move( v, 1 );   
     }
 }

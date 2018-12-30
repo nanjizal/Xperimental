@@ -20,27 +20,25 @@ import iron.helper.CameraHelper;
 import iron.helper.DataHelper;
 import iron.helper.SceneHelper;
 import iron.helper.MultiColorMesh;
-
 class IronHelper {
     public var raw:        TSceneFormat;
     public var sceneName:  String;
+    public var ready:      Object->Void;
     var cameraName:        String;
     var cameraDataName:    String;
     var meshName:          String;
     var bgColor:           Color;
-    public var ready:      Object->Void;
-    
     public function new(  sceneName_:       String
                         , cameraName_:      String
                         , cameraDataName_:  String
                         , meshName_:        String
                         , bgColor_:         Color ){
-        sceneName = sceneName_;
-        cameraName = cameraName_;
+        sceneName      = sceneName_;
+        cameraName     = cameraName_;
         cameraDataName = cameraDataName_;
         // NOT IDEAL RETHINK!!!
-        meshName = meshName_;
-        bgColor = bgColor_;
+        meshName       = meshName_;
+        bgColor        = bgColor_;
     }
     public function create(){
         App.init( init );
