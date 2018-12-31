@@ -26,18 +26,18 @@ class IronHelper {
     public var ready:      Object->Void;
     var cameraName:        String;
     var cameraDataName:    String;
-    var meshName:          String;
+    var meshNames:          Array<String>;
     var bgColor:           Color;
     public function new(  sceneName_:       String
                         , cameraName_:      String
                         , cameraDataName_:  String
-                        , meshName_:        String
+                        , meshNames_:       Array<String>
                         , bgColor_:         Color ){
         sceneName      = sceneName_;
         cameraName     = cameraName_;
         cameraDataName = cameraDataName_;
         // NOT IDEAL RETHINK!!!
-        meshName       = meshName_;
+        meshNames      = meshNames_;
         bgColor        = bgColor_;
     }
     public function create(){
@@ -54,7 +54,7 @@ class IronHelper {
         path.commands = function() {
             path.setTarget( "" );
             path.clearTarget( bgColor, 1.0 );
-            path.drawMeshes( meshName );
+            for( meshName in meshNames ) path.drawMeshes( meshName );
         };
         RenderPath.setActive( path );
     }

@@ -105,6 +105,8 @@ Lambda.array = function(it) {
 	return a;
 };
 var Main = function() {
+	this.mesh3Name = "mesh3";
+	this.mesh2Name = "mesh2";
 	this.meshName = "mesh";
 	this.cameraDataName = "MyCameraData";
 	this.cameraName = "MyCamera";
@@ -122,18 +124,25 @@ Main.main = function() {
 Main.prototype = {
 	ironHelper: null
 	,fillDraw: null
-	,multiColorMesh: null
+	,colorMesh: null
+	,singleMesh: null
+	,textureMesh: null
 	,sceneName: null
 	,cameraName: null
 	,cameraDataName: null
 	,meshName: null
+	,mesh2Name: null
+	,mesh3Name: null
 	,loadAll: function() {
-		this.ironHelper = new iron_helper_IronHelper(this.sceneName,this.cameraName,this.cameraDataName,this.meshName,Main.bgColor);
+		this.ironHelper = new iron_helper_IronHelper(this.sceneName,this.cameraName,this.cameraDataName,[this.mesh3Name,this.mesh2Name,this.meshName],Main.bgColor);
 		this.ironHelper.ready = $bind(this,this.sceneReady);
 		this.ironHelper.create();
 	}
 	,sceneReady: function(scene) {
-		var svgStr = kha_Assets.blobs.salsaLogo_svg.toString();
+		this.svgToTriangles(kha_Assets.blobs.salsaLogo_svg.toString());
+		this.meshCreate();
+	}
+	,svgToTriangles: function(svgStr) {
 		var s;
 		var spaces = 0;
 		var strIter = new trilateral_nodule_StringCodeIterator(svgStr);
@@ -295,30 +304,44 @@ Main.prototype = {
 		var nodule1 = rootNodule.firstChild;
 		var svg = new trilateral_parsing_svg_Svg(nodule1);
 		svg.render(this.fillDraw);
-		this.multiColorMesh = new iron_helper_MultiColorMesh(this.meshName,Main.wid,Main.hi);
-		this.multiColorMesh.draw(this.fillDraw.triangles,this.fillDraw.colors);
-		var mesh = this.multiColorMesh.triangleMeshCreate();
-		this.ironHelper.raw.mesh_datas.push(mesh);
-		iron_data_MeshData.parse(this.ironHelper.raw.name,mesh.name,$bind(this,this.materialSetup));
+		return this.fillDraw;
 	}
-	,materialSetup: function(res) {
-		this.ironHelper.raw.shader_datas.push(this.multiColorMesh.shaderDataCreate());
-		var md = this.multiColorMesh.materialDataCreate();
-		this.ironHelper.raw.material_datas.push(md);
-		iron_data_MaterialData.parse(this.ironHelper.raw.name,md.name,$bind(this,this.materialCreated));
+	,meshCreate: function() {
+		var blanks = [];
+		var _g = 0;
+		var _g1 = this.fillDraw.colors.length;
+		while(_g < _g1) {
+			var i = _g++;
+			blanks[i] = -1;
+		}
+		this.textureMesh = new iron_helper_TextureColorMesh(this.mesh3Name,Main.wid,Main.hi,"textureName","HueAlpha");
+		var materialMeshHelper3 = new iron_helper_MaterialMeshHelper(this.ironHelper.raw,this.textureMesh,this.fillDraw.triangles,blanks,"triangles3");
+		materialMeshHelper3.ready = $bind(this,this.adjustTriangles3);
+		materialMeshHelper3.create();
+		this.singleMesh = new iron_helper_SingleColorMesh(this.mesh2Name,Main.wid,Main.hi);
+		var materialMeshHelper2 = new iron_helper_MaterialMeshHelper(this.ironHelper.raw,this.singleMesh,this.fillDraw.triangles,[-65536],"triangles2");
+		materialMeshHelper2.ready = $bind(this,this.adjustTriangles2);
+		materialMeshHelper2.create();
+		this.colorMesh = new iron_helper_MultiColorMesh(this.meshName,Main.wid,Main.hi);
+		var materialMeshHelper = new iron_helper_MaterialMeshHelper(this.ironHelper.raw,this.colorMesh,this.fillDraw.triangles,this.fillDraw.colors,"triangles");
+		materialMeshHelper.ready = $bind(this,this.adjustPositions);
+		materialMeshHelper.create();
 	}
-	,materialCreated: function(res) {
-		var tri = this.multiColorMesh.meshObjectCreate("Triangles");
-		this.ironHelper.raw.objects[0].children.push(tri);
-		iron_Scene.active.parseObject(this.ironHelper.raw.name,tri.name,null,$bind(this,this.adjustPositions));
+	,adjustTriangles3: function(o) {
+		var camera = iron_Scene.active.getCamera(this.cameraName);
+		var obj = iron_Scene.active.getChild("triangles3");
+	}
+	,adjustTriangles2: function(o) {
+		var camera = iron_Scene.active.getCamera(this.cameraName);
+		var obj = iron_Scene.active.getChild("triangles2");
+		var v = new iron_math_Vec4(-0.5,-0.5,0);
+		obj.transform.move(v,1);
 	}
 	,adjustPositions: function(o) {
 		var camera = iron_Scene.active.getCamera(this.cameraName);
-		var obj = iron_Scene.active.getChild("Triangles");
-		var v_x = 0.5;
-		var v_y = 0.5;
-		var v_z = 0;
-		var v_w = 1.0;
+		var obj = iron_Scene.active.getChild("triangles");
+		var v = new iron_math_Vec4(0.5,0.5,0);
+		obj.transform.move(v,1);
 	}
 	,__class__: Main
 };
@@ -7354,13 +7377,13 @@ iron_helper_CameraHelper.cameraObj = function(name,dataName,transform) {
 	if(name == null) {
 		name = "MyCamera";
 	}
-	return { name : name, type : "camera_object", data_ref : dataName, transform : { values : transform}};
+	return { name : name, type : iron_helper_CameraHelper.camera_object, data_ref : dataName, transform : { values : transform}};
 };
 iron_helper_CameraHelper.transformIdent = function() {
 	return iron_helper_DataHelper.m4to32Arr(new kha_math_FastMatrix4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1));
 };
 iron_helper_CameraHelper.transform = function() {
-	return iron_helper_DataHelper.m4to32Arr(new kha_math_FastMatrix4(2.,0,0,0.125,0,1.5,-Math.PI / 2,-1,0,0,1,2,0,0,0,1));
+	return iron_helper_DataHelper.m4to32Arr(new kha_math_FastMatrix4(2.,0.,0,0.125,0.,1.5,-Math.PI / 2,-1,0.,0.,1,2,0.,0.,0.,1));
 };
 var iron_helper_DataHelper = function() { };
 $hxClasses["iron.helper.DataHelper"] = iron_helper_DataHelper;
@@ -7397,11 +7420,11 @@ iron_helper_DataHelper.toFloat32Array = function(src) {
 	}
 	return f;
 };
-var iron_helper_IronHelper = function(sceneName_,cameraName_,cameraDataName_,meshName_,bgColor_) {
+var iron_helper_IronHelper = function(sceneName_,cameraName_,cameraDataName_,meshNames_,bgColor_) {
 	this.sceneName = sceneName_;
 	this.cameraName = cameraName_;
 	this.cameraDataName = cameraDataName_;
-	this.meshName = meshName_;
+	this.meshNames = meshNames_;
 	this.bgColor = bgColor_;
 };
 $hxClasses["iron.helper.IronHelper"] = iron_helper_IronHelper;
@@ -7409,11 +7432,11 @@ iron_helper_IronHelper.__name__ = "iron.helper.IronHelper";
 iron_helper_IronHelper.prototype = {
 	raw: null
 	,sceneName: null
+	,ready: null
 	,cameraName: null
 	,cameraDataName: null
-	,meshName: null
+	,meshNames: null
 	,bgColor: null
-	,ready: null
 	,create: function() {
 		iron_App.init($bind(this,this.init));
 	}
@@ -7429,11 +7452,58 @@ iron_helper_IronHelper.prototype = {
 		path.commands = function() {
 			path.setTarget("");
 			path.clearTarget(_gthis.bgColor,1.0);
-			path.drawMeshes(_gthis.meshName);
+			var _g = 0;
+			var _g1 = _gthis.meshNames;
+			while(_g < _g1.length) {
+				var meshName = _g1[_g];
+				++_g;
+				path.drawMeshes(meshName);
+			}
 		};
 		iron_RenderPath.setActive(path);
 	}
 	,__class__: iron_helper_IronHelper
+};
+var iron_helper_MaterialMeshHelper = function(raw_,meshWrapper_,triangles_,colors_,objName_) {
+	this.raw = raw_;
+	this.meshWrapper = meshWrapper_;
+	this.objName = objName_;
+	this.triangles = triangles_;
+	this.colors = colors_;
+};
+$hxClasses["iron.helper.MaterialMeshHelper"] = iron_helper_MaterialMeshHelper;
+iron_helper_MaterialMeshHelper.__name__ = "iron.helper.MaterialMeshHelper";
+iron_helper_MaterialMeshHelper.prototype = {
+	ready: null
+	,raw: null
+	,meshWrapper: null
+	,colors: null
+	,triangles: null
+	,objName: null
+	,create: function() {
+		if(this.ready == null) {
+			return;
+		}
+		this.meshBuild();
+	}
+	,meshBuild: function() {
+		this.meshWrapper.draw(this.triangles,this.colors);
+		var mesh = this.meshWrapper.triangleMeshCreate();
+		this.raw.mesh_datas.push(mesh);
+		iron_data_MeshData.parse(this.raw.name,mesh.name,$bind(this,this.materialSetup));
+	}
+	,materialSetup: function(res) {
+		this.raw.shader_datas.push(this.meshWrapper.shaderDataCreate());
+		var md = this.meshWrapper.materialDataCreate();
+		this.raw.material_datas.push(md);
+		iron_data_MaterialData.parse(this.raw.name,md.name,$bind(this,this.meshAdd));
+	}
+	,meshAdd: function(res) {
+		var tri = this.meshWrapper.meshObjectCreate(this.objName);
+		this.raw.objects[0].children.push(tri);
+		iron_Scene.active.parseObject(this.raw.name,tri.name,null,this.ready);
+	}
+	,__class__: iron_helper_MaterialMeshHelper
 };
 var iron_helper_MultiColorMesh = function(meshName_,wid_,hi_) {
 	this.z = 0.;
@@ -7559,6 +7629,225 @@ iron_helper_SceneHelper.setup = function(sceneName,cameraName,cameraData) {
 		_this.h[key] = raw;
 	}
 	return raw;
+};
+var iron_helper_SingleColorMesh = function(meshName_,wid_,hi_) {
+	this.z = 0.;
+	this.length = 0;
+	this.meshName = meshName_;
+	this.wid = wid_;
+	this.hi = hi_;
+};
+$hxClasses["iron.helper.SingleColorMesh"] = iron_helper_SingleColorMesh;
+iron_helper_SingleColorMesh.__name__ = "iron.helper.SingleColorMesh";
+iron_helper_SingleColorMesh._r = function(int) {
+	return (int >> 16 & 255) / 255;
+};
+iron_helper_SingleColorMesh._g = function(int) {
+	return (int >> 8 & 255) / 255;
+};
+iron_helper_SingleColorMesh._b = function(int) {
+	return (int & 255) / 255;
+};
+iron_helper_SingleColorMesh.prototype = {
+	meshName: null
+	,vb: null
+	,ib: null
+	,col: null
+	,wid: null
+	,hi: null
+	,length: null
+	,z: null
+	,draw: function(triangles,colors) {
+		var len = this.length + (triangles.length | 0);
+		var this1 = new Float32Array(9 * len | 0);
+		this.vb = this1;
+		var this2 = new Uint32Array(3 * len | 0);
+		this.ib = this2;
+		var j = 0;
+		var k = 0;
+		var scaleX = 1 / this.wid;
+		var scaleY = 1 / this.hi;
+		var offX = this.wid / 2;
+		var offY = this.hi / 2;
+		var tri = triangles[0];
+		var color = colors[0];
+		var this3 = new Float32Array(3);
+		this.col = this3;
+		this.col[0] = (color >> 16 & 255) / 255;
+		this.col[1] = (color >> 8 & 255) / 255;
+		this.col[2] = (color & 255) / 255;
+		var _g = this.length;
+		var _g1 = len;
+		while(_g < _g1) {
+			var i = _g++;
+			tri = triangles[i];
+			this.vb[j++] = (tri.ax - offX) * scaleX;
+			this.vb[j++] = -(tri.ay - offY) * scaleY;
+			this.vb[j++] = this.z;
+			this.vb[j++] = (tri.bx - offX) * scaleX;
+			this.vb[j++] = -(tri.by - offY) * scaleY;
+			this.vb[j++] = this.z;
+			this.vb[j++] = (tri.cx - offX) * scaleX;
+			this.vb[j++] = -(tri.cy - offY) * scaleY;
+			this.vb[j++] = this.z;
+			this.ib[k++] = k - 1;
+			this.ib[k++] = k - 1;
+			this.ib[k++] = k - 1;
+		}
+	}
+	,triangleMeshCreate: function() {
+		return { name : this.meshName, vertex_arrays : [{ attrib : "pos", size : 3, values : this.vb}], index_arrays : [{ material : 0, values : this.ib}]};
+	}
+	,materialDataCreate: function() {
+		return { name : "SingleColorMaterial", shader : "SingleColorShader", contexts : [{ name : this.meshName, bind_constants : [{ name : "color", vec3 : this.col}]}]};
+	}
+	,shaderDataCreate: function() {
+		return { name : "SingleColorShader", contexts : [{ name : this.meshName, vertex_shader : "painter_single_iron.vert", fragment_shader : "painter_single_iron.frag", compare_mode : "less", cull_mode : "clockwise", depth_write : true, constants : [{ name : "color", type : "vec3"},{ "link" : "_worldViewProjectionMatrix", "name" : "WVP", "type" : "mat4"}], vertex_structure : [{ name : "pos", size : 3}]}]};
+	}
+	,meshObjectCreate: function(objName) {
+		if(objName == null) {
+			objName = "Triangles";
+		}
+		return { name : objName, type : "mesh_object", data_ref : this.meshName, material_refs : ["SingleColorMaterial"], transform : null};
+	}
+	,__class__: iron_helper_SingleColorMesh
+};
+var iron_helper_TextureColorMesh = function(meshName_,wid_,hi_,textureName_,textureFile_) {
+	this.z = 0.;
+	this.length = 0;
+	this.meshName = meshName_;
+	this.wid = wid_;
+	this.hi = hi_;
+	this.textureName = textureName_;
+	this.textureFile = textureFile_;
+	var from01 = function(x) {
+		return (x + 0.5) * 0.5;
+	};
+	this.u = from01;
+	this.v = from01;
+};
+$hxClasses["iron.helper.TextureColorMesh"] = iron_helper_TextureColorMesh;
+iron_helper_TextureColorMesh.__name__ = "iron.helper.TextureColorMesh";
+iron_helper_TextureColorMesh._a = function(int) {
+	return (int >> 24 & 255) / 255;
+};
+iron_helper_TextureColorMesh._r = function(int) {
+	return (int >> 16 & 255) / 255;
+};
+iron_helper_TextureColorMesh._g = function(int) {
+	return (int >> 8 & 255) / 255;
+};
+iron_helper_TextureColorMesh._b = function(int) {
+	return (int & 255) / 255;
+};
+iron_helper_TextureColorMesh.prototype = {
+	u: null
+	,v: null
+	,meshName: null
+	,vb: null
+	,tx: null
+	,ib: null
+	,col: null
+	,wid: null
+	,hi: null
+	,length: null
+	,z: null
+	,textureName: null
+	,textureFile: null
+	,draw: function(triangles,colors) {
+		var tri;
+		var len = this.length + (triangles.length | 0);
+		var this1 = new Float32Array(9 * len | 0);
+		this.vb = this1;
+		var this2 = new Uint32Array(3 * len | 0);
+		this.ib = this2;
+		var this3 = new Float32Array(len | 0);
+		this.tx = this3;
+		var this4 = new Float32Array(12 * len | 0);
+		this.col = this4;
+		var j = 0;
+		var k = 0;
+		var c = 0;
+		var t = 0;
+		var scaleX = 1 / this.wid;
+		var scaleY = 1 / this.hi;
+		var offX = this.wid / 2;
+		var offY = this.hi / 2;
+		var color;
+		var a;
+		var r;
+		var g;
+		var b;
+		var ax;
+		var ay;
+		var bx;
+		var by;
+		var cx;
+		var cy;
+		var _g = this.length;
+		var _g1 = len;
+		while(_g < _g1) {
+			var i = _g++;
+			tri = triangles[i];
+			ax = (tri.ax - offX) * scaleX;
+			ay = (tri.ay - offY) * scaleY;
+			bx = (tri.bx - offX) * scaleX;
+			by = (tri.by - offY) * scaleY;
+			cx = (tri.cx - offX) * scaleX;
+			cy = (tri.cy - offY) * scaleY;
+			this.vb[j++] = ax;
+			this.vb[j++] = -ay;
+			this.vb[j++] = this.z;
+			this.vb[j++] = bx;
+			this.vb[j++] = -by;
+			this.vb[j++] = this.z;
+			this.vb[j++] = cx;
+			this.vb[j++] = -cy;
+			this.vb[j++] = this.z;
+			this.tx[t++] = this.u(ax);
+			this.tx[t++] = this.v(ay);
+			this.tx[t++] = this.u(bx);
+			this.tx[t++] = this.v(by);
+			this.tx[t++] = this.u(cx);
+			this.tx[t++] = this.v(cy);
+			color = colors[tri.colorID];
+			a = (color >> 24 & 255) / 255;
+			r = (color >> 16 & 255) / 255;
+			g = (color >> 8 & 255) / 255;
+			b = (color & 255) / 255;
+			this.col[c++] = a;
+			this.col[c++] = r;
+			this.col[c++] = g;
+			this.col[c++] = b;
+			this.col[c++] = a;
+			this.col[c++] = r;
+			this.col[c++] = g;
+			this.col[c++] = b;
+			this.col[c++] = a;
+			this.col[c++] = r;
+			this.col[c++] = g;
+			this.col[c++] = b;
+			this.ib[k++] = k - 1;
+			this.ib[k++] = k - 1;
+			this.ib[k++] = k - 1;
+		}
+	}
+	,triangleMeshCreate: function() {
+		return { name : this.meshName, vertex_arrays : [{ attrib : "pos", size : 3, values : this.vb},{ attrib : "col", size : 4, values : this.col},{ attrib : "uvs", size : 3, values : this.tx}], index_arrays : [{ material : 0, values : this.ib}]};
+	}
+	,materialDataCreate: function() {
+		return { name : "ImageColorMaterial", shader : "ImageColorShader", contexts : [{ name : this.meshName, bind_constants : [], bind_textures : [{ "name" : this.textureName, "file" : this.textureFile}]}]};
+	}
+	,shaderDataCreate: function() {
+		return { name : "ImageColorShader", contexts : [{ name : this.meshName, vertex_shader : "painter_image_iron.vert", fragment_shader : "painter_image_iron.frag", compare_mode : "less", cull_mode : "clockwise", depth_write : true, constants : [{ "link" : "_worldViewProjectionMatrix", "name" : "WVP", "type" : "mat4"}], texture_units : [{ "name" : this.textureName}], vertex_structure : [{ name : "pos", size : 3},{ name : "col", size : 4},{ name : "uvs", size : 3}]}]};
+	}
+	,meshObjectCreate: function(objName) {
+		if(objName == null) {
+			objName = "Triangles";
+		}
+		return { name : objName, type : "mesh_object", data_ref : this.meshName, material_refs : ["ImageColorMaterial"], transform : null};
+	}
+	,__class__: iron_helper_TextureColorMesh
 };
 var iron_math_Mat3 = function(_00,_10,_20,_01,_11,_21,_02,_12,_22) {
 	this.self = new kha_math_FastMatrix3(_00,_10,_20,_01,_11,_21,_02,_12,_22);
@@ -17139,13 +17428,38 @@ js_html__$ArrayBuffer_ArrayBufferCompat.sliceImpl = function(begin,end) {
 	return resultArray.buffer;
 };
 var kha__$Assets_ImageList = function() {
-	this.names = [];
+	this.names = ["HueAlpha"];
+	this.HueAlphaDescription = { name : "HueAlpha", original_height : 2048, original_width : 2048, files : ["HueAlpha.png"], type : "image"};
+	this.HueAlphaName = "HueAlpha";
+	this.HueAlpha = null;
 };
 $hxClasses["kha._Assets.ImageList"] = kha__$Assets_ImageList;
 kha__$Assets_ImageList.__name__ = "kha._Assets.ImageList";
 kha__$Assets_ImageList.prototype = {
 	get: function(name) {
 		return Reflect.field(this,name);
+	}
+	,HueAlpha: null
+	,HueAlphaName: null
+	,HueAlphaDescription: null
+	,HueAlphaLoad: function(done,failure) {
+		var tmp;
+		if(failure != null) {
+			tmp = failure;
+		} else {
+			var f = haxe_Log.trace;
+			var infos = { fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 130, className : "kha._Assets.ImageList", methodName : "HueAlphaLoad"};
+			tmp = function(v) {
+				f(v,infos);
+			};
+		}
+		kha_Assets.loadImage("HueAlpha",function(image) {
+			done();
+		},tmp,{ fileName : "kha/internal/AssetsBuilder.hx", lineNumber : 130, className : "kha._Assets.ImageList", methodName : "HueAlphaLoad"});
+	}
+	,HueAlphaUnload: function() {
+		this.HueAlpha.unload();
+		this.HueAlpha = null;
 	}
 	,names: null
 	,__class__: kha__$Assets_ImageList
@@ -19181,137 +19495,115 @@ kha_Shaders.init = function() {
 	blobs3.push(kha_internal_BytesBlob.fromBytes(bytes11));
 	kha_Shaders.painter_image_iron_vert = new kha_graphics4_VertexShader(blobs3,["painter-image-iron.vert.essl","painter-image-iron-relaxed.vert.essl","painter-image-iron-webgl2.vert.essl"]);
 	var blobs4 = [];
-	var data12 = Reflect.field(kha_Shaders,"painter_text_iron_fragData" + 0);
+	var data12 = Reflect.field(kha_Shaders,"painter_single_iron_fragData" + 0);
 	var bytes12 = haxe_Unserializer.run(data12);
 	blobs4.push(kha_internal_BytesBlob.fromBytes(bytes12));
-	var data13 = Reflect.field(kha_Shaders,"painter_text_iron_fragData" + 1);
+	var data13 = Reflect.field(kha_Shaders,"painter_single_iron_fragData" + 1);
 	var bytes13 = haxe_Unserializer.run(data13);
 	blobs4.push(kha_internal_BytesBlob.fromBytes(bytes13));
-	var data14 = Reflect.field(kha_Shaders,"painter_text_iron_fragData" + 2);
+	var data14 = Reflect.field(kha_Shaders,"painter_single_iron_fragData" + 2);
 	var bytes14 = haxe_Unserializer.run(data14);
 	blobs4.push(kha_internal_BytesBlob.fromBytes(bytes14));
-	kha_Shaders.painter_text_iron_frag = new kha_graphics4_FragmentShader(blobs4,["painter-text-iron.frag.essl","painter-text-iron-relaxed.frag.essl","painter-text-iron-webgl2.frag.essl"]);
+	kha_Shaders.painter_single_iron_frag = new kha_graphics4_FragmentShader(blobs4,["painter-single-iron.frag.essl","painter-single-iron-relaxed.frag.essl","painter-single-iron-webgl2.frag.essl"]);
 	var blobs5 = [];
-	var data15 = Reflect.field(kha_Shaders,"painter_text_iron_vertData" + 0);
+	var data15 = Reflect.field(kha_Shaders,"painter_single_iron_vertData" + 0);
 	var bytes15 = haxe_Unserializer.run(data15);
 	blobs5.push(kha_internal_BytesBlob.fromBytes(bytes15));
-	var data16 = Reflect.field(kha_Shaders,"painter_text_iron_vertData" + 1);
+	var data16 = Reflect.field(kha_Shaders,"painter_single_iron_vertData" + 1);
 	var bytes16 = haxe_Unserializer.run(data16);
 	blobs5.push(kha_internal_BytesBlob.fromBytes(bytes16));
-	var data17 = Reflect.field(kha_Shaders,"painter_text_iron_vertData" + 2);
+	var data17 = Reflect.field(kha_Shaders,"painter_single_iron_vertData" + 2);
 	var bytes17 = haxe_Unserializer.run(data17);
 	blobs5.push(kha_internal_BytesBlob.fromBytes(bytes17));
-	kha_Shaders.painter_text_iron_vert = new kha_graphics4_VertexShader(blobs5,["painter-text-iron.vert.essl","painter-text-iron-relaxed.vert.essl","painter-text-iron-webgl2.vert.essl"]);
+	kha_Shaders.painter_single_iron_vert = new kha_graphics4_VertexShader(blobs5,["painter-single-iron.vert.essl","painter-single-iron-relaxed.vert.essl","painter-single-iron-webgl2.vert.essl"]);
 	var blobs6 = [];
-	var data18 = Reflect.field(kha_Shaders,"painter_video_iron_fragData" + 0);
+	var data18 = Reflect.field(kha_Shaders,"painter_colored_fragData" + 0);
 	var bytes18 = haxe_Unserializer.run(data18);
 	blobs6.push(kha_internal_BytesBlob.fromBytes(bytes18));
-	var data19 = Reflect.field(kha_Shaders,"painter_video_iron_fragData" + 1);
+	var data19 = Reflect.field(kha_Shaders,"painter_colored_fragData" + 1);
 	var bytes19 = haxe_Unserializer.run(data19);
 	blobs6.push(kha_internal_BytesBlob.fromBytes(bytes19));
-	var data20 = Reflect.field(kha_Shaders,"painter_video_iron_fragData" + 2);
+	var data20 = Reflect.field(kha_Shaders,"painter_colored_fragData" + 2);
 	var bytes20 = haxe_Unserializer.run(data20);
 	blobs6.push(kha_internal_BytesBlob.fromBytes(bytes20));
-	kha_Shaders.painter_video_iron_frag = new kha_graphics4_FragmentShader(blobs6,["painter-video-iron.frag.essl","painter-video-iron-relaxed.frag.essl","painter-video-iron-webgl2.frag.essl"]);
+	kha_Shaders.painter_colored_frag = new kha_graphics4_FragmentShader(blobs6,["painter-colored.frag.essl","painter-colored-relaxed.frag.essl","painter-colored-webgl2.frag.essl"]);
 	var blobs7 = [];
-	var data21 = Reflect.field(kha_Shaders,"painter_video_iron_vertData" + 0);
+	var data21 = Reflect.field(kha_Shaders,"painter_colored_vertData" + 0);
 	var bytes21 = haxe_Unserializer.run(data21);
 	blobs7.push(kha_internal_BytesBlob.fromBytes(bytes21));
-	var data22 = Reflect.field(kha_Shaders,"painter_video_iron_vertData" + 1);
+	var data22 = Reflect.field(kha_Shaders,"painter_colored_vertData" + 1);
 	var bytes22 = haxe_Unserializer.run(data22);
 	blobs7.push(kha_internal_BytesBlob.fromBytes(bytes22));
-	var data23 = Reflect.field(kha_Shaders,"painter_video_iron_vertData" + 2);
+	var data23 = Reflect.field(kha_Shaders,"painter_colored_vertData" + 2);
 	var bytes23 = haxe_Unserializer.run(data23);
 	blobs7.push(kha_internal_BytesBlob.fromBytes(bytes23));
-	kha_Shaders.painter_video_iron_vert = new kha_graphics4_VertexShader(blobs7,["painter-video-iron.vert.essl","painter-video-iron-relaxed.vert.essl","painter-video-iron-webgl2.vert.essl"]);
+	kha_Shaders.painter_colored_vert = new kha_graphics4_VertexShader(blobs7,["painter-colored.vert.essl","painter-colored-relaxed.vert.essl","painter-colored-webgl2.vert.essl"]);
 	var blobs8 = [];
-	var data24 = Reflect.field(kha_Shaders,"painter_colored_fragData" + 0);
+	var data24 = Reflect.field(kha_Shaders,"painter_image_fragData" + 0);
 	var bytes24 = haxe_Unserializer.run(data24);
 	blobs8.push(kha_internal_BytesBlob.fromBytes(bytes24));
-	var data25 = Reflect.field(kha_Shaders,"painter_colored_fragData" + 1);
+	var data25 = Reflect.field(kha_Shaders,"painter_image_fragData" + 1);
 	var bytes25 = haxe_Unserializer.run(data25);
 	blobs8.push(kha_internal_BytesBlob.fromBytes(bytes25));
-	var data26 = Reflect.field(kha_Shaders,"painter_colored_fragData" + 2);
+	var data26 = Reflect.field(kha_Shaders,"painter_image_fragData" + 2);
 	var bytes26 = haxe_Unserializer.run(data26);
 	blobs8.push(kha_internal_BytesBlob.fromBytes(bytes26));
-	kha_Shaders.painter_colored_frag = new kha_graphics4_FragmentShader(blobs8,["painter-colored.frag.essl","painter-colored-relaxed.frag.essl","painter-colored-webgl2.frag.essl"]);
+	kha_Shaders.painter_image_frag = new kha_graphics4_FragmentShader(blobs8,["painter-image.frag.essl","painter-image-relaxed.frag.essl","painter-image-webgl2.frag.essl"]);
 	var blobs9 = [];
-	var data27 = Reflect.field(kha_Shaders,"painter_colored_vertData" + 0);
+	var data27 = Reflect.field(kha_Shaders,"painter_image_vertData" + 0);
 	var bytes27 = haxe_Unserializer.run(data27);
 	blobs9.push(kha_internal_BytesBlob.fromBytes(bytes27));
-	var data28 = Reflect.field(kha_Shaders,"painter_colored_vertData" + 1);
+	var data28 = Reflect.field(kha_Shaders,"painter_image_vertData" + 1);
 	var bytes28 = haxe_Unserializer.run(data28);
 	blobs9.push(kha_internal_BytesBlob.fromBytes(bytes28));
-	var data29 = Reflect.field(kha_Shaders,"painter_colored_vertData" + 2);
+	var data29 = Reflect.field(kha_Shaders,"painter_image_vertData" + 2);
 	var bytes29 = haxe_Unserializer.run(data29);
 	blobs9.push(kha_internal_BytesBlob.fromBytes(bytes29));
-	kha_Shaders.painter_colored_vert = new kha_graphics4_VertexShader(blobs9,["painter-colored.vert.essl","painter-colored-relaxed.vert.essl","painter-colored-webgl2.vert.essl"]);
+	kha_Shaders.painter_image_vert = new kha_graphics4_VertexShader(blobs9,["painter-image.vert.essl","painter-image-relaxed.vert.essl","painter-image-webgl2.vert.essl"]);
 	var blobs10 = [];
-	var data30 = Reflect.field(kha_Shaders,"painter_image_fragData" + 0);
+	var data30 = Reflect.field(kha_Shaders,"painter_text_fragData" + 0);
 	var bytes30 = haxe_Unserializer.run(data30);
 	blobs10.push(kha_internal_BytesBlob.fromBytes(bytes30));
-	var data31 = Reflect.field(kha_Shaders,"painter_image_fragData" + 1);
+	var data31 = Reflect.field(kha_Shaders,"painter_text_fragData" + 1);
 	var bytes31 = haxe_Unserializer.run(data31);
 	blobs10.push(kha_internal_BytesBlob.fromBytes(bytes31));
-	var data32 = Reflect.field(kha_Shaders,"painter_image_fragData" + 2);
+	var data32 = Reflect.field(kha_Shaders,"painter_text_fragData" + 2);
 	var bytes32 = haxe_Unserializer.run(data32);
 	blobs10.push(kha_internal_BytesBlob.fromBytes(bytes32));
-	kha_Shaders.painter_image_frag = new kha_graphics4_FragmentShader(blobs10,["painter-image.frag.essl","painter-image-relaxed.frag.essl","painter-image-webgl2.frag.essl"]);
+	kha_Shaders.painter_text_frag = new kha_graphics4_FragmentShader(blobs10,["painter-text.frag.essl","painter-text-relaxed.frag.essl","painter-text-webgl2.frag.essl"]);
 	var blobs11 = [];
-	var data33 = Reflect.field(kha_Shaders,"painter_image_vertData" + 0);
+	var data33 = Reflect.field(kha_Shaders,"painter_text_vertData" + 0);
 	var bytes33 = haxe_Unserializer.run(data33);
 	blobs11.push(kha_internal_BytesBlob.fromBytes(bytes33));
-	var data34 = Reflect.field(kha_Shaders,"painter_image_vertData" + 1);
+	var data34 = Reflect.field(kha_Shaders,"painter_text_vertData" + 1);
 	var bytes34 = haxe_Unserializer.run(data34);
 	blobs11.push(kha_internal_BytesBlob.fromBytes(bytes34));
-	var data35 = Reflect.field(kha_Shaders,"painter_image_vertData" + 2);
+	var data35 = Reflect.field(kha_Shaders,"painter_text_vertData" + 2);
 	var bytes35 = haxe_Unserializer.run(data35);
 	blobs11.push(kha_internal_BytesBlob.fromBytes(bytes35));
-	kha_Shaders.painter_image_vert = new kha_graphics4_VertexShader(blobs11,["painter-image.vert.essl","painter-image-relaxed.vert.essl","painter-image-webgl2.vert.essl"]);
+	kha_Shaders.painter_text_vert = new kha_graphics4_VertexShader(blobs11,["painter-text.vert.essl","painter-text-relaxed.vert.essl","painter-text-webgl2.vert.essl"]);
 	var blobs12 = [];
-	var data36 = Reflect.field(kha_Shaders,"painter_text_fragData" + 0);
+	var data36 = Reflect.field(kha_Shaders,"painter_video_fragData" + 0);
 	var bytes36 = haxe_Unserializer.run(data36);
 	blobs12.push(kha_internal_BytesBlob.fromBytes(bytes36));
-	var data37 = Reflect.field(kha_Shaders,"painter_text_fragData" + 1);
+	var data37 = Reflect.field(kha_Shaders,"painter_video_fragData" + 1);
 	var bytes37 = haxe_Unserializer.run(data37);
 	blobs12.push(kha_internal_BytesBlob.fromBytes(bytes37));
-	var data38 = Reflect.field(kha_Shaders,"painter_text_fragData" + 2);
+	var data38 = Reflect.field(kha_Shaders,"painter_video_fragData" + 2);
 	var bytes38 = haxe_Unserializer.run(data38);
 	blobs12.push(kha_internal_BytesBlob.fromBytes(bytes38));
-	kha_Shaders.painter_text_frag = new kha_graphics4_FragmentShader(blobs12,["painter-text.frag.essl","painter-text-relaxed.frag.essl","painter-text-webgl2.frag.essl"]);
+	kha_Shaders.painter_video_frag = new kha_graphics4_FragmentShader(blobs12,["painter-video.frag.essl","painter-video-relaxed.frag.essl","painter-video-webgl2.frag.essl"]);
 	var blobs13 = [];
-	var data39 = Reflect.field(kha_Shaders,"painter_text_vertData" + 0);
+	var data39 = Reflect.field(kha_Shaders,"painter_video_vertData" + 0);
 	var bytes39 = haxe_Unserializer.run(data39);
 	blobs13.push(kha_internal_BytesBlob.fromBytes(bytes39));
-	var data40 = Reflect.field(kha_Shaders,"painter_text_vertData" + 1);
+	var data40 = Reflect.field(kha_Shaders,"painter_video_vertData" + 1);
 	var bytes40 = haxe_Unserializer.run(data40);
 	blobs13.push(kha_internal_BytesBlob.fromBytes(bytes40));
-	var data41 = Reflect.field(kha_Shaders,"painter_text_vertData" + 2);
+	var data41 = Reflect.field(kha_Shaders,"painter_video_vertData" + 2);
 	var bytes41 = haxe_Unserializer.run(data41);
 	blobs13.push(kha_internal_BytesBlob.fromBytes(bytes41));
-	kha_Shaders.painter_text_vert = new kha_graphics4_VertexShader(blobs13,["painter-text.vert.essl","painter-text-relaxed.vert.essl","painter-text-webgl2.vert.essl"]);
-	var blobs14 = [];
-	var data42 = Reflect.field(kha_Shaders,"painter_video_fragData" + 0);
-	var bytes42 = haxe_Unserializer.run(data42);
-	blobs14.push(kha_internal_BytesBlob.fromBytes(bytes42));
-	var data43 = Reflect.field(kha_Shaders,"painter_video_fragData" + 1);
-	var bytes43 = haxe_Unserializer.run(data43);
-	blobs14.push(kha_internal_BytesBlob.fromBytes(bytes43));
-	var data44 = Reflect.field(kha_Shaders,"painter_video_fragData" + 2);
-	var bytes44 = haxe_Unserializer.run(data44);
-	blobs14.push(kha_internal_BytesBlob.fromBytes(bytes44));
-	kha_Shaders.painter_video_frag = new kha_graphics4_FragmentShader(blobs14,["painter-video.frag.essl","painter-video-relaxed.frag.essl","painter-video-webgl2.frag.essl"]);
-	var blobs15 = [];
-	var data45 = Reflect.field(kha_Shaders,"painter_video_vertData" + 0);
-	var bytes45 = haxe_Unserializer.run(data45);
-	blobs15.push(kha_internal_BytesBlob.fromBytes(bytes45));
-	var data46 = Reflect.field(kha_Shaders,"painter_video_vertData" + 1);
-	var bytes46 = haxe_Unserializer.run(data46);
-	blobs15.push(kha_internal_BytesBlob.fromBytes(bytes46));
-	var data47 = Reflect.field(kha_Shaders,"painter_video_vertData" + 2);
-	var bytes47 = haxe_Unserializer.run(data47);
-	blobs15.push(kha_internal_BytesBlob.fromBytes(bytes47));
-	kha_Shaders.painter_video_vert = new kha_graphics4_VertexShader(blobs15,["painter-video.vert.essl","painter-video-relaxed.vert.essl","painter-video-webgl2.vert.essl"]);
+	kha_Shaders.painter_video_vert = new kha_graphics4_VertexShader(blobs13,["painter-video.vert.essl","painter-video-relaxed.vert.essl","painter-video-webgl2.vert.essl"]);
 };
 var kha_Sound = function() {
 };
@@ -95218,6 +95510,25 @@ iron_data_Data.loadingVideos = new haxe_ds_StringMap();
 iron_data_Data.loadingFonts = new haxe_ds_StringMap();
 iron_data_MaterialData.uidCounter = 0;
 iron_data_MaterialContext.num = 0;
+iron_helper_CameraHelper.camera_object = "camera_object";
+iron_helper_MultiColorMesh.vert = "painter_colored_iron.vert";
+iron_helper_MultiColorMesh.frag = "painter_colored_iron.frag";
+iron_helper_MultiColorMesh.materialName = "MultiColorMaterial";
+iron_helper_MultiColorMesh.shaderName = "MultiColorShader";
+iron_helper_MultiColorMesh.mesh_object = "mesh_object";
+iron_helper_MultiColorMesh.worldMatrix = "_worldViewProjectionMatrix";
+iron_helper_SingleColorMesh.vert = "painter_single_iron.vert";
+iron_helper_SingleColorMesh.frag = "painter_single_iron.frag";
+iron_helper_SingleColorMesh.materialName = "SingleColorMaterial";
+iron_helper_SingleColorMesh.shaderName = "SingleColorShader";
+iron_helper_SingleColorMesh.mesh_object = "mesh_object";
+iron_helper_SingleColorMesh.worldMatrix = "_worldViewProjectionMatrix";
+iron_helper_TextureColorMesh.vert = "painter_image_iron.vert";
+iron_helper_TextureColorMesh.frag = "painter_image_iron.frag";
+iron_helper_TextureColorMesh.materialName = "ImageColorMaterial";
+iron_helper_TextureColorMesh.shaderName = "ImageColorShader";
+iron_helper_TextureColorMesh.mesh_object = "mesh_object";
+iron_helper_TextureColorMesh.worldMatrix = "_worldViewProjectionMatrix";
 kha_math_FastMatrix4.width = 4;
 kha_math_FastMatrix4.height = 4;
 iron_math_Mat4.helpVec = new iron_math_Vec4();
@@ -95344,24 +95655,18 @@ kha_Shaders.painter_colored_iron_fragData2 = "s223:I3ZlcnNpb24gMzAwIGVzCnByZWNpc
 kha_Shaders.painter_colored_iron_vertData0 = "s260:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1hdDQgV1ZQOwoKdmFyeWluZyB2ZWM0IGZyYWdtZW50Q29sb3I7CmF0dHJpYnV0ZSB2ZWMzIGNvbDsKYXR0cmlidXRlIHZlYzMgcG9zOwoKdm9pZCBtYWluKCkKewogICAgZnJhZ21lbnRDb2xvciA9IHZlYzQoY29sLCAxLjApOwogICAgZ2xfUG9zaXRpb24gPSBXVlAgKiB2ZWM0KHBvcywgMS4wKTsKfQoK";
 kha_Shaders.painter_colored_iron_vertData1 = "s303:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1lZGl1bXAgbWF0NCBXVlA7Cgp2YXJ5aW5nIG1lZGl1bXAgdmVjNCBmcmFnbWVudENvbG9yOwphdHRyaWJ1dGUgbWVkaXVtcCB2ZWMzIGNvbDsKYXR0cmlidXRlIG1lZGl1bXAgdmVjMyBwb3M7Cgp2b2lkIG1haW4oKQp7CiAgICBmcmFnbWVudENvbG9yID0gdmVjNChjb2wsIDEuMCk7CiAgICBnbF9Qb3NpdGlvbiA9IFdWUCAqIHZlYzQocG9zLCAxLjApOwp9Cgo";
 kha_Shaders.painter_colored_iron_vertData2 = "s240:I3ZlcnNpb24gMzAwIGVzCgp1bmlmb3JtIG1hdDQgV1ZQOwoKb3V0IHZlYzQgZnJhZ21lbnRDb2xvcjsKaW4gdmVjMyBjb2w7CmluIHZlYzMgcG9zOwoKdm9pZCBtYWluKCkKewogICAgZnJhZ21lbnRDb2xvciA9IHZlYzQoY29sLCAxLjApOwogICAgZ2xfUG9zaXRpb24gPSBXVlAgKiB2ZWM0KHBvcywgMS4wKTsKfQoK";
-kha_Shaders.painter_image_iron_fragData0 = "s471:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCBzYW1wbGVyMkQgdGV4OwoKdmFyeWluZyBoaWdocCB2ZWMyIHRleENvb3JkOwp2YXJ5aW5nIGhpZ2hwIHZlYzQgY29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBoaWdocCB2ZWM0IHRleGNvbG9yID0gdGV4dHVyZTJEKHRleCwgdGV4Q29vcmQpICogY29sb3I7CiAgICBoaWdocCB2ZWMzIF8zMiA9IHRleGNvbG9yLnh5eiAqIGNvbG9yLnc7CiAgICB0ZXhjb2xvciA9IHZlYzQoXzMyLngsIF8zMi55LCBfMzIueiwgdGV4Y29sb3Iudyk7CiAgICBnbF9GcmFnRGF0YVswXSA9IHRleGNvbG9yOwp9Cgo";
-kha_Shaders.painter_image_iron_fragData1 = "s444:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gbWVkaXVtcCBpbnQ7Cgp1bmlmb3JtIG1lZGl1bXAgc2FtcGxlcjJEIHRleDsKCnZhcnlpbmcgdmVjMiB0ZXhDb29yZDsKdmFyeWluZyB2ZWM0IGNvbG9yOwoKdm9pZCBtYWluKCkKewogICAgdmVjNCB0ZXhjb2xvciA9IHRleHR1cmUyRCh0ZXgsIHRleENvb3JkKSAqIGNvbG9yOwogICAgdmVjMyBfMzIgPSB0ZXhjb2xvci54eXogKiBjb2xvci53OwogICAgdGV4Y29sb3IgPSB2ZWM0KF8zMi54LCBfMzIueSwgXzMyLnosIHRleGNvbG9yLncpOwogICAgZ2xfRnJhZ0RhdGFbMF0gPSB0ZXhjb2xvcjsKfQoK";
-kha_Shaders.painter_image_iron_fragData2 = "s487:I3ZlcnNpb24gMzAwIGVzCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCBzYW1wbGVyMkQgdGV4OwoKaW4gaGlnaHAgdmVjMiB0ZXhDb29yZDsKaW4gaGlnaHAgdmVjNCBjb2xvcjsKb3V0IGhpZ2hwIHZlYzQgRnJhZ0NvbG9yOwoKdm9pZCBtYWluKCkKewogICAgaGlnaHAgdmVjNCB0ZXhjb2xvciA9IHRleHR1cmUodGV4LCB0ZXhDb29yZCkgKiBjb2xvcjsKICAgIGhpZ2hwIHZlYzMgXzMyID0gdGV4Y29sb3IueHl6ICogY29sb3IudzsKICAgIHRleGNvbG9yID0gdmVjNChfMzIueCwgXzMyLnksIF8zMi56LCB0ZXhjb2xvci53KTsKICAgIEZyYWdDb2xvciA9IHRleGNvbG9yOwp9Cgo";
-kha_Shaders.painter_image_iron_vertData0 = "s415:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1hdDQgcHJvamVjdGlvbk1hdHJpeDsKCmF0dHJpYnV0ZSB2ZWMzIHZlcnRleFBvc2l0aW9uOwp2YXJ5aW5nIHZlYzIgdGV4Q29vcmQ7CmF0dHJpYnV0ZSB2ZWMyIHRleFBvc2l0aW9uOwp2YXJ5aW5nIHZlYzQgY29sb3I7CmF0dHJpYnV0ZSB2ZWM0IHZlcnRleENvbG9yOwoKdm9pZCBtYWluKCkKewogICAgZ2xfUG9zaXRpb24gPSBwcm9qZWN0aW9uTWF0cml4ICogdmVjNCh2ZXJ0ZXhQb3NpdGlvbiwgMS4wKTsKICAgIHRleENvb3JkID0gdGV4UG9zaXRpb247CiAgICBjb2xvciA9IHZlcnRleENvbG9yOwp9Cgo";
-kha_Shaders.painter_image_iron_vertData1 = "s479:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1lZGl1bXAgbWF0NCBwcm9qZWN0aW9uTWF0cml4OwoKYXR0cmlidXRlIG1lZGl1bXAgdmVjMyB2ZXJ0ZXhQb3NpdGlvbjsKdmFyeWluZyBtZWRpdW1wIHZlYzIgdGV4Q29vcmQ7CmF0dHJpYnV0ZSBtZWRpdW1wIHZlYzIgdGV4UG9zaXRpb247CnZhcnlpbmcgbWVkaXVtcCB2ZWM0IGNvbG9yOwphdHRyaWJ1dGUgbWVkaXVtcCB2ZWM0IHZlcnRleENvbG9yOwoKdm9pZCBtYWluKCkKewogICAgZ2xfUG9zaXRpb24gPSBwcm9qZWN0aW9uTWF0cml4ICogdmVjNCh2ZXJ0ZXhQb3NpdGlvbiwgMS4wKTsKICAgIHRleENvb3JkID0gdGV4UG9zaXRpb247CiAgICBjb2xvciA9IHZlcnRleENvbG9yOwp9Cgo";
-kha_Shaders.painter_image_iron_vertData2 = "s380:I3ZlcnNpb24gMzAwIGVzCgp1bmlmb3JtIG1hdDQgcHJvamVjdGlvbk1hdHJpeDsKCmluIHZlYzMgdmVydGV4UG9zaXRpb247Cm91dCB2ZWMyIHRleENvb3JkOwppbiB2ZWMyIHRleFBvc2l0aW9uOwpvdXQgdmVjNCBjb2xvcjsKaW4gdmVjNCB2ZXJ0ZXhDb2xvcjsKCnZvaWQgbWFpbigpCnsKICAgIGdsX1Bvc2l0aW9uID0gcHJvamVjdGlvbk1hdHJpeCAqIHZlYzQodmVydGV4UG9zaXRpb24sIDEuMCk7CiAgICB0ZXhDb29yZCA9IHRleFBvc2l0aW9uOwogICAgY29sb3IgPSB2ZXJ0ZXhDb2xvcjsKfQoK";
-kha_Shaders.painter_text_iron_fragData0 = "s351:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCBzYW1wbGVyMkQgdGV4OwoKdmFyeWluZyBoaWdocCB2ZWM0IGZyYWdtZW50Q29sb3I7CnZhcnlpbmcgaGlnaHAgdmVjMiB0ZXhDb29yZDsKCnZvaWQgbWFpbigpCnsKICAgIGdsX0ZyYWdEYXRhWzBdID0gdmVjNChmcmFnbWVudENvbG9yLnh5eiwgdGV4dHVyZTJEKHRleCwgdGV4Q29vcmQpLnggKiBmcmFnbWVudENvbG9yLncpOwp9Cgo";
-kha_Shaders.painter_text_iron_fragData1 = "s340:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gbWVkaXVtcCBpbnQ7Cgp1bmlmb3JtIG1lZGl1bXAgc2FtcGxlcjJEIHRleDsKCnZhcnlpbmcgdmVjNCBmcmFnbWVudENvbG9yOwp2YXJ5aW5nIHZlYzIgdGV4Q29vcmQ7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9GcmFnRGF0YVswXSA9IHZlYzQoZnJhZ21lbnRDb2xvci54eXosIHRleHR1cmUyRCh0ZXgsIHRleENvb3JkKS54ICogZnJhZ21lbnRDb2xvci53KTsKfQoK";
-kha_Shaders.painter_text_iron_fragData2 = "s367:I3ZlcnNpb24gMzAwIGVzCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCBzYW1wbGVyMkQgdGV4OwoKb3V0IGhpZ2hwIHZlYzQgRnJhZ0NvbG9yOwppbiBoaWdocCB2ZWM0IGZyYWdtZW50Q29sb3I7CmluIGhpZ2hwIHZlYzIgdGV4Q29vcmQ7Cgp2b2lkIG1haW4oKQp7CiAgICBGcmFnQ29sb3IgPSB2ZWM0KGZyYWdtZW50Q29sb3IueHl6LCB0ZXh0dXJlKHRleCwgdGV4Q29vcmQpLnggKiBmcmFnbWVudENvbG9yLncpOwp9Cgo";
-kha_Shaders.painter_text_iron_vertData0 = "s436:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1hdDQgcHJvamVjdGlvbk1hdHJpeDsKCmF0dHJpYnV0ZSB2ZWMzIHZlcnRleFBvc2l0aW9uOwp2YXJ5aW5nIHZlYzIgdGV4Q29vcmQ7CmF0dHJpYnV0ZSB2ZWMyIHRleFBvc2l0aW9uOwp2YXJ5aW5nIHZlYzQgZnJhZ21lbnRDb2xvcjsKYXR0cmlidXRlIHZlYzQgdmVydGV4Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9Qb3NpdGlvbiA9IHByb2plY3Rpb25NYXRyaXggKiB2ZWM0KHZlcnRleFBvc2l0aW9uLCAxLjApOwogICAgdGV4Q29vcmQgPSB0ZXhQb3NpdGlvbjsKICAgIGZyYWdtZW50Q29sb3IgPSB2ZXJ0ZXhDb2xvcjsKfQoK";
-kha_Shaders.painter_text_iron_vertData1 = "s500:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1lZGl1bXAgbWF0NCBwcm9qZWN0aW9uTWF0cml4OwoKYXR0cmlidXRlIG1lZGl1bXAgdmVjMyB2ZXJ0ZXhQb3NpdGlvbjsKdmFyeWluZyBtZWRpdW1wIHZlYzIgdGV4Q29vcmQ7CmF0dHJpYnV0ZSBtZWRpdW1wIHZlYzIgdGV4UG9zaXRpb247CnZhcnlpbmcgbWVkaXVtcCB2ZWM0IGZyYWdtZW50Q29sb3I7CmF0dHJpYnV0ZSBtZWRpdW1wIHZlYzQgdmVydGV4Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9Qb3NpdGlvbiA9IHByb2plY3Rpb25NYXRyaXggKiB2ZWM0KHZlcnRleFBvc2l0aW9uLCAxLjApOwogICAgdGV4Q29vcmQgPSB0ZXhQb3NpdGlvbjsKICAgIGZyYWdtZW50Q29sb3IgPSB2ZXJ0ZXhDb2xvcjsKfQoK";
-kha_Shaders.painter_text_iron_vertData2 = "s402:I3ZlcnNpb24gMzAwIGVzCgp1bmlmb3JtIG1hdDQgcHJvamVjdGlvbk1hdHJpeDsKCmluIHZlYzMgdmVydGV4UG9zaXRpb247Cm91dCB2ZWMyIHRleENvb3JkOwppbiB2ZWMyIHRleFBvc2l0aW9uOwpvdXQgdmVjNCBmcmFnbWVudENvbG9yOwppbiB2ZWM0IHZlcnRleENvbG9yOwoKdm9pZCBtYWluKCkKewogICAgZ2xfUG9zaXRpb24gPSBwcm9qZWN0aW9uTWF0cml4ICogdmVjNCh2ZXJ0ZXhQb3NpdGlvbiwgMS4wKTsKICAgIHRleENvb3JkID0gdGV4UG9zaXRpb247CiAgICBmcmFnbWVudENvbG9yID0gdmVydGV4Q29sb3I7Cn0KCg";
-kha_Shaders.painter_video_iron_fragData0 = "s471:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCBzYW1wbGVyMkQgdGV4OwoKdmFyeWluZyBoaWdocCB2ZWMyIHRleENvb3JkOwp2YXJ5aW5nIGhpZ2hwIHZlYzQgY29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBoaWdocCB2ZWM0IHRleGNvbG9yID0gdGV4dHVyZTJEKHRleCwgdGV4Q29vcmQpICogY29sb3I7CiAgICBoaWdocCB2ZWMzIF8zMiA9IHRleGNvbG9yLnh5eiAqIGNvbG9yLnc7CiAgICB0ZXhjb2xvciA9IHZlYzQoXzMyLngsIF8zMi55LCBfMzIueiwgdGV4Y29sb3Iudyk7CiAgICBnbF9GcmFnRGF0YVswXSA9IHRleGNvbG9yOwp9Cgo";
-kha_Shaders.painter_video_iron_fragData1 = "s444:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gbWVkaXVtcCBpbnQ7Cgp1bmlmb3JtIG1lZGl1bXAgc2FtcGxlcjJEIHRleDsKCnZhcnlpbmcgdmVjMiB0ZXhDb29yZDsKdmFyeWluZyB2ZWM0IGNvbG9yOwoKdm9pZCBtYWluKCkKewogICAgdmVjNCB0ZXhjb2xvciA9IHRleHR1cmUyRCh0ZXgsIHRleENvb3JkKSAqIGNvbG9yOwogICAgdmVjMyBfMzIgPSB0ZXhjb2xvci54eXogKiBjb2xvci53OwogICAgdGV4Y29sb3IgPSB2ZWM0KF8zMi54LCBfMzIueSwgXzMyLnosIHRleGNvbG9yLncpOwogICAgZ2xfRnJhZ0RhdGFbMF0gPSB0ZXhjb2xvcjsKfQoK";
-kha_Shaders.painter_video_iron_fragData2 = "s487:I3ZlcnNpb24gMzAwIGVzCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCBzYW1wbGVyMkQgdGV4OwoKaW4gaGlnaHAgdmVjMiB0ZXhDb29yZDsKaW4gaGlnaHAgdmVjNCBjb2xvcjsKb3V0IGhpZ2hwIHZlYzQgRnJhZ0NvbG9yOwoKdm9pZCBtYWluKCkKewogICAgaGlnaHAgdmVjNCB0ZXhjb2xvciA9IHRleHR1cmUodGV4LCB0ZXhDb29yZCkgKiBjb2xvcjsKICAgIGhpZ2hwIHZlYzMgXzMyID0gdGV4Y29sb3IueHl6ICogY29sb3IudzsKICAgIHRleGNvbG9yID0gdmVjNChfMzIueCwgXzMyLnksIF8zMi56LCB0ZXhjb2xvci53KTsKICAgIEZyYWdDb2xvciA9IHRleGNvbG9yOwp9Cgo";
-kha_Shaders.painter_video_iron_vertData0 = "s415:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1hdDQgcHJvamVjdGlvbk1hdHJpeDsKCmF0dHJpYnV0ZSB2ZWMzIHZlcnRleFBvc2l0aW9uOwp2YXJ5aW5nIHZlYzIgdGV4Q29vcmQ7CmF0dHJpYnV0ZSB2ZWMyIHRleFBvc2l0aW9uOwp2YXJ5aW5nIHZlYzQgY29sb3I7CmF0dHJpYnV0ZSB2ZWM0IHZlcnRleENvbG9yOwoKdm9pZCBtYWluKCkKewogICAgZ2xfUG9zaXRpb24gPSBwcm9qZWN0aW9uTWF0cml4ICogdmVjNCh2ZXJ0ZXhQb3NpdGlvbiwgMS4wKTsKICAgIHRleENvb3JkID0gdGV4UG9zaXRpb247CiAgICBjb2xvciA9IHZlcnRleENvbG9yOwp9Cgo";
-kha_Shaders.painter_video_iron_vertData1 = "s479:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1lZGl1bXAgbWF0NCBwcm9qZWN0aW9uTWF0cml4OwoKYXR0cmlidXRlIG1lZGl1bXAgdmVjMyB2ZXJ0ZXhQb3NpdGlvbjsKdmFyeWluZyBtZWRpdW1wIHZlYzIgdGV4Q29vcmQ7CmF0dHJpYnV0ZSBtZWRpdW1wIHZlYzIgdGV4UG9zaXRpb247CnZhcnlpbmcgbWVkaXVtcCB2ZWM0IGNvbG9yOwphdHRyaWJ1dGUgbWVkaXVtcCB2ZWM0IHZlcnRleENvbG9yOwoKdm9pZCBtYWluKCkKewogICAgZ2xfUG9zaXRpb24gPSBwcm9qZWN0aW9uTWF0cml4ICogdmVjNCh2ZXJ0ZXhQb3NpdGlvbiwgMS4wKTsKICAgIHRleENvb3JkID0gdGV4UG9zaXRpb247CiAgICBjb2xvciA9IHZlcnRleENvbG9yOwp9Cgo";
-kha_Shaders.painter_video_iron_vertData2 = "s380:I3ZlcnNpb24gMzAwIGVzCgp1bmlmb3JtIG1hdDQgcHJvamVjdGlvbk1hdHJpeDsKCmluIHZlYzMgdmVydGV4UG9zaXRpb247Cm91dCB2ZWMyIHRleENvb3JkOwppbiB2ZWMyIHRleFBvc2l0aW9uOwpvdXQgdmVjNCBjb2xvcjsKaW4gdmVjNCB2ZXJ0ZXhDb2xvcjsKCnZvaWQgbWFpbigpCnsKICAgIGdsX1Bvc2l0aW9uID0gcHJvamVjdGlvbk1hdHJpeCAqIHZlYzQodmVydGV4UG9zaXRpb24sIDEuMCk7CiAgICB0ZXhDb29yZCA9IHRleFBvc2l0aW9uOwogICAgY29sb3IgPSB2ZXJ0ZXhDb2xvcjsKfQoK";
+kha_Shaders.painter_image_iron_fragData0 = "s503:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCBzYW1wbGVyMkQgdGV4OwoKdmFyeWluZyBoaWdocCB2ZWMyIHRleENvb3JkOwp2YXJ5aW5nIGhpZ2hwIHZlYzQgZnJhZ21lbnRDb2xvcjsKCnZvaWQgbWFpbigpCnsKICAgIGhpZ2hwIHZlYzQgdGV4Y29sb3IgPSB0ZXh0dXJlMkQodGV4LCB0ZXhDb29yZCkgKiBmcmFnbWVudENvbG9yOwogICAgaGlnaHAgdmVjMyBfMzIgPSB0ZXhjb2xvci54eXogKiBmcmFnbWVudENvbG9yLnc7CiAgICB0ZXhjb2xvciA9IHZlYzQoXzMyLngsIF8zMi55LCBfMzIueiwgdGV4Y29sb3Iudyk7CiAgICBnbF9GcmFnRGF0YVswXSA9IHRleGNvbG9yOwp9Cgo";
+kha_Shaders.painter_image_iron_fragData1 = "s476:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gbWVkaXVtcCBpbnQ7Cgp1bmlmb3JtIG1lZGl1bXAgc2FtcGxlcjJEIHRleDsKCnZhcnlpbmcgdmVjMiB0ZXhDb29yZDsKdmFyeWluZyB2ZWM0IGZyYWdtZW50Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICB2ZWM0IHRleGNvbG9yID0gdGV4dHVyZTJEKHRleCwgdGV4Q29vcmQpICogZnJhZ21lbnRDb2xvcjsKICAgIHZlYzMgXzMyID0gdGV4Y29sb3IueHl6ICogZnJhZ21lbnRDb2xvci53OwogICAgdGV4Y29sb3IgPSB2ZWM0KF8zMi54LCBfMzIueSwgXzMyLnosIHRleGNvbG9yLncpOwogICAgZ2xfRnJhZ0RhdGFbMF0gPSB0ZXhjb2xvcjsKfQoK";
+kha_Shaders.painter_image_iron_fragData2 = "s519:I3ZlcnNpb24gMzAwIGVzCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCBzYW1wbGVyMkQgdGV4OwoKaW4gaGlnaHAgdmVjMiB0ZXhDb29yZDsKaW4gaGlnaHAgdmVjNCBmcmFnbWVudENvbG9yOwpvdXQgaGlnaHAgdmVjNCBGcmFnQ29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBoaWdocCB2ZWM0IHRleGNvbG9yID0gdGV4dHVyZSh0ZXgsIHRleENvb3JkKSAqIGZyYWdtZW50Q29sb3I7CiAgICBoaWdocCB2ZWMzIF8zMiA9IHRleGNvbG9yLnh5eiAqIGZyYWdtZW50Q29sb3IudzsKICAgIHRleGNvbG9yID0gdmVjNChfMzIueCwgXzMyLnksIF8zMi56LCB0ZXhjb2xvci53KTsKICAgIEZyYWdDb2xvciA9IHRleGNvbG9yOwp9Cgo";
+kha_Shaders.painter_image_iron_vertData0 = "s330:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1hdDQgV1ZQOwoKYXR0cmlidXRlIHZlYzMgcG9zOwp2YXJ5aW5nIHZlYzIgdGV4Q29vcmQ7CmF0dHJpYnV0ZSB2ZWMyIHV2czsKdmFyeWluZyB2ZWM0IGZyYWdtZW50Q29sb3I7CmF0dHJpYnV0ZSB2ZWM0IGNvbDsKCnZvaWQgbWFpbigpCnsKICAgIGdsX1Bvc2l0aW9uID0gV1ZQICogdmVjNChwb3MsIDEuMCk7CiAgICB0ZXhDb29yZCA9IHV2czsKICAgIGZyYWdtZW50Q29sb3IgPSBjb2w7Cn0KCg";
+kha_Shaders.painter_image_iron_vertData1 = "s394:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1lZGl1bXAgbWF0NCBXVlA7CgphdHRyaWJ1dGUgbWVkaXVtcCB2ZWMzIHBvczsKdmFyeWluZyBtZWRpdW1wIHZlYzIgdGV4Q29vcmQ7CmF0dHJpYnV0ZSBtZWRpdW1wIHZlYzIgdXZzOwp2YXJ5aW5nIG1lZGl1bXAgdmVjNCBmcmFnbWVudENvbG9yOwphdHRyaWJ1dGUgbWVkaXVtcCB2ZWM0IGNvbDsKCnZvaWQgbWFpbigpCnsKICAgIGdsX1Bvc2l0aW9uID0gV1ZQICogdmVjNChwb3MsIDEuMCk7CiAgICB0ZXhDb29yZCA9IHV2czsKICAgIGZyYWdtZW50Q29sb3IgPSBjb2w7Cn0KCg";
+kha_Shaders.painter_image_iron_vertData2 = "s295:I3ZlcnNpb24gMzAwIGVzCgp1bmlmb3JtIG1hdDQgV1ZQOwoKaW4gdmVjMyBwb3M7Cm91dCB2ZWMyIHRleENvb3JkOwppbiB2ZWMyIHV2czsKb3V0IHZlYzQgZnJhZ21lbnRDb2xvcjsKaW4gdmVjNCBjb2w7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9Qb3NpdGlvbiA9IFdWUCAqIHZlYzQocG9zLCAxLjApOwogICAgdGV4Q29vcmQgPSB1dnM7CiAgICBmcmFnbWVudENvbG9yID0gY29sOwp9Cgo";
+kha_Shaders.painter_single_iron_fragData0 = "s191:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCB2ZWMzIGNvbG9yOwoKdm9pZCBtYWluKCkKewogICAgZ2xfRnJhZ0RhdGFbMF0gPSB2ZWM0KGNvbG9yLCAxLjApOwp9Cgo";
+kha_Shaders.painter_single_iron_fragData1 = "s186:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gbWVkaXVtcCBpbnQ7Cgp1bmlmb3JtIHZlYzMgY29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9GcmFnRGF0YVswXSA9IHZlYzQoY29sb3IsIDEuMCk7Cn0KCg";
+kha_Shaders.painter_single_iron_fragData2 = "s224:I3ZlcnNpb24gMzAwIGVzCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdW5pZm9ybSBoaWdocCB2ZWMzIGNvbG9yOwoKb3V0IGhpZ2hwIHZlYzQgZnJhZ0NvbG9yOwoKdm9pZCBtYWluKCkKewogICAgZnJhZ0NvbG9yID0gdmVjNChjb2xvciwgMS4wKTsKfQoK";
+kha_Shaders.painter_single_iron_vertData0 = "s148:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1hdDQgV1ZQOwoKYXR0cmlidXRlIHZlYzMgcG9zOwoKdm9pZCBtYWluKCkKewogICAgZ2xfUG9zaXRpb24gPSBXVlAgKiB2ZWM0KHBvcywgMS4wKTsKfQoK";
+kha_Shaders.painter_single_iron_vertData1 = "s170:I3ZlcnNpb24gMTAwCgp1bmlmb3JtIG1lZGl1bXAgbWF0NCBXVlA7CgphdHRyaWJ1dGUgbWVkaXVtcCB2ZWMzIHBvczsKCnZvaWQgbWFpbigpCnsKICAgIGdsX1Bvc2l0aW9uID0gV1ZQICogdmVjNChwb3MsIDEuMCk7Cn0KCg";
+kha_Shaders.painter_single_iron_vertData2 = "s143:I3ZlcnNpb24gMzAwIGVzCgp1bmlmb3JtIG1hdDQgV1ZQOwoKaW4gdmVjMyBwb3M7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9Qb3NpdGlvbiA9IFdWUCAqIHZlYzQocG9zLCAxLjApOwp9Cgo";
 kha_Shaders.painter_colored_fragData0 = "s198:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKdmFyeWluZyBoaWdocCB2ZWM0IGZyYWdtZW50Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBnbF9GcmFnRGF0YVswXSA9IGZyYWdtZW50Q29sb3I7Cn0KCg";
 kha_Shaders.painter_colored_fragData1 = "s192:I3ZlcnNpb24gMTAwCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gbWVkaXVtcCBpbnQ7Cgp2YXJ5aW5nIHZlYzQgZnJhZ21lbnRDb2xvcjsKCnZvaWQgbWFpbigpCnsKICAgIGdsX0ZyYWdEYXRhWzBdID0gZnJhZ21lbnRDb2xvcjsKfQoK";
 kha_Shaders.painter_colored_fragData2 = "s223:I3ZlcnNpb24gMzAwIGVzCnByZWNpc2lvbiBtZWRpdW1wIGZsb2F0OwpwcmVjaXNpb24gaGlnaHAgaW50OwoKb3V0IGhpZ2hwIHZlYzQgRnJhZ0NvbG9yOwppbiBoaWdocCB2ZWM0IGZyYWdtZW50Q29sb3I7Cgp2b2lkIG1haW4oKQp7CiAgICBGcmFnQ29sb3IgPSBmcmFnbWVudENvbG9yOwp9Cgo";

@@ -1,14 +1,12 @@
 #version 450
-
-in vec3 vertexPosition;
-in vec2 texPosition;
-in vec4 vertexColor;
-uniform mat4 projectionMatrix;
+in vec3 pos;
+in vec2 uvs;
+in vec4 col;
+uniform mat4 WVP;
 out vec2 texCoord;
-out vec4 color;
-
+out vec4 fragmentColor;
 void main() {
-	gl_Position = projectionMatrix * vec4(vertexPosition, 1.0);
-	texCoord = texPosition;
-	color = vertexColor;
+	gl_Position = WVP * vec4( pos, 1.0);
+	texCoord = uvs;
+	fragmentColor = col;
 }
