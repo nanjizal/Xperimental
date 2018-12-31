@@ -122,7 +122,7 @@ class TextureColorMesh {
         return { name: materialName, shader: shaderName
                , contexts: [ { name: meshName
                              , bind_constants: [] 
-                             , bind_textures: [ { "name": textureName , "file": textureFile  } ] 
+                             , bind_textures: [ { "name": textureName , "file": textureFile, "format": "ARGB"  } ] 
                              } ] };
     }
     public function shaderDataCreate(): TShaderData {
@@ -139,7 +139,7 @@ class TextureColorMesh {
                              , texture_units: [ { "name": textureName } ]
                              , vertex_structure: [ { name: "pos", size: 3 }
                                                  , { name: "col", size: 4 }
-                                                 , { name: "uvs", size: 3 }, ]   
+                                                 , { name: "uvs", size: 2 }, ]   
                              }] };
     }
     public function meshObjectCreate( objName: String = 'Triangles' ): TObj {

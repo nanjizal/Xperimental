@@ -79,7 +79,7 @@ class Main {
         var blanks = new Array<Color>();
         for( i in 0...fillDraw.colors.length ) blanks[ i ] = Color.White;
         
-        textureMesh          = new TextureColorMesh( mesh3Name, wid, hi, 'textureName', 'HueAlpha' ); 
+        textureMesh          = new TextureColorMesh( mesh3Name, wid, hi, 'linearGradient', 'linearGradient.png' ); 
         var materialMeshHelper3 = new MaterialMeshHelper( ironHelper.raw
                                                         , cast textureMesh 
                                                         , fillDraw.triangles
@@ -110,8 +110,8 @@ class Main {
     function adjustTriangles3( o: Object ){
         var camera = Scene.active.getCamera( cameraName );
         var obj    = Scene.active.getChild( 'triangles3' );
-        //var v      = new Vec4( -0.5, -0.5, 0 );
-        //obj.transform.move( v, 1 ); 
+        var v      = new Vec4( 0.5, 0.5, 0 );
+        obj.transform.move( v, 1 ); 
     }
     function adjustTriangles2( o: Object ){
         var camera = Scene.active.getCamera( cameraName );
@@ -122,7 +122,7 @@ class Main {
     function adjustPositions( o: Object ){
         var camera = Scene.active.getCamera( cameraName );
         var obj    = Scene.active.getChild( 'triangles' );
-        var v      = new Vec4( 0.5, 0.5, 0 );
+        var v      = new Vec4( -0.5, 0.5, 0 );
         obj.transform.move( v, 1 );
     }
 }
