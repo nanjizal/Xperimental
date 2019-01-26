@@ -1,0 +1,3 @@
+-main MainInventory
+-neko MainInventory.n
+#-cmd neko MainInventory.n 'in.csv' 'mod.csv' 'handle.csv' 'out.csv'
