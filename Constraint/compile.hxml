@@ -1,0 +1,14 @@
+-js bin/constraintTest.js
+-cp src
+-lib htmlHelper
+-lib trilateral
+-lib trilateralXtra
+-lib khaMath
+-lib justDrawing
+-debug
+-main Main
+#-D js-flatten 
+#-dce full
+--next
+-cmd echo '<!DOCTYPE html><meta charset="UTF-8"><html><body><script src="constraintTest.js"></script></body></html>' >bin/index.html
+-cmd open bin/index.html
