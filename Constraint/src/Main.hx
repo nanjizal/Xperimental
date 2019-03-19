@@ -70,8 +70,8 @@ class Main {
         // collision
         var collisionArea = 300;
         for( i in 0...places ) {
-            var x0 = dx/2 + collisionArea*Math.random();//(dx - collisionArea/2) + 
-            var y0 = dy/2 + collisionArea*Math.random();//(dy - collisionArea/2) + 
+            var x0 = dx/2 + collisionArea*Math.random(); 
+            var y0 = dy/2 + collisionArea*Math.random();
             bodies[ i ] = new Vector4( x0, y0, 0 );
         }
     }
