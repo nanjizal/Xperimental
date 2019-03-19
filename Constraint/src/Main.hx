@@ -187,8 +187,8 @@ class Main {
         }
         for( i in 0...places ){
             body = bodies[ i ];
-            var col = findColorID( Red ) + i - 1;
-            if( col > 7 ) col = col - 8; // wrap colors
+            var col = findColorID( Red ) + i;
+            if( col > 7 ) col = col - 7; // wrap colors
             shapes.circle( body.x, body.y, circleSize, col );
         }
     }
