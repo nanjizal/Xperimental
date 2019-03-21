@@ -5,6 +5,7 @@
 -lib trilateralXtra
 -lib khaMath
 -lib justDrawing
+-lib constraints
 -debug
 -main Main
 #-D js-flatten 
