@@ -22,12 +22,9 @@ HxOverrides.substr = function(s,pos,len) {
 	return s.substr(pos,len);
 };
 var Main = function() {
-	this.appColors = [0,16711680,16744192,16776960,65280,255,4915330,9699539,4473924,3355443,789516,1118481,16777215,255,65280,16711680];
+	this.appColors = [0,16711680,16744192,16776960,65280,255,4915330,9699539,4473924,3355443,789516,1118481,16777215];
 	this.showMouse = true;
 	this.mouseIsDown = false;
-	this.jointsF = [];
-	this.joints = [];
-	this.bodies = [];
 	this.places = 12;
 	this.points = 7;
 	var t = [];
@@ -41,6 +38,7 @@ var Main = function() {
 	}
 	var this1 = this2;
 	this.triangles = this1;
+	this.lineWidth = 0.3;
 	this.circleSize = 5.;
 	var this11;
 	var canvas = window.document.createElement("canvas");
@@ -57,34 +55,17 @@ var Main = function() {
 	var doc = window.document;
 	this.canvas.width = 2048;
 	this.canvas.height = 1536;
+	this.centreX = this.canvas.width / 2;
+	this.centreY = this.canvas.height / 2;
 	doc.body.appendChild(this.canvas);
 	this.surface = new justDrawing_Surface(this.canvas.getContext("2d",null));
 	this.shapes = new trilateral_polys_Shapes(this.triangles,this.appColors);
 	this.mousePos = new khaMath_Vector4(100,100,0);
-	this.point = new khaMath_Vector4(100,100,0);
-	var dx = this.canvas.width / 2;
-	var dy = this.canvas.height / 2;
-	var _g = 0;
-	var _g1 = this.points;
-	while(_g < _g1) {
-		var i = _g++;
-		this.joints[i] = new khaMath_Vector4(dx + i * this.distance,dy,0);
-	}
-	var _g2 = 0;
-	var _g3 = this.points;
-	while(_g2 < _g3) {
-		var i1 = _g2++;
-		this.jointsF[i1] = new khaMath_Vector4(dx + i1 * this.distance,dy,0);
-	}
+	this.innerDemo = new constraints_demo_Inner(100,100,this.distance);
+	this.chainDemo = new constraints_demo_Chain(this.centreX,this.centreY,this.points,this.distance);
+	this.fabrikDemo = new constraints_demo_Fabrik(this.centreX / 2,this.centreY / 2,this.points,this.distance);
 	var collisionArea = 300;
-	var _g4 = 0;
-	var _g5 = this.places;
-	while(_g4 < _g5) {
-		var i2 = _g4++;
-		var x0 = dx / 2 + collisionArea * Math.random();
-		var y0 = dy / 2 + collisionArea * Math.random();
-		this.bodies[i2] = new khaMath_Vector4(x0,y0,0);
-	}
+	this.collisionDemo = new constraints_demo_Collision(this.centreX,this.centreY,this.places,this.circleSize,collisionArea,this.distance);
 	htmlHelper_tools_AnimateTimer.onFrame = $bind(this,this.render);
 	if(htmlHelper_tools_AnimateTimer.s == null) {
 		htmlHelper_tools_AnimateTimer.s = window.document.createElement("style");
@@ -103,30 +84,11 @@ Main.main = function() {
 };
 Main.prototype = {
 	setupExperiments: function() {
-		this.point = new khaMath_Vector4(100,100,0);
-		var dx = this.canvas.width / 2;
-		var dy = this.canvas.height / 2;
-		var _g = 0;
-		var _g1 = this.points;
-		while(_g < _g1) {
-			var i = _g++;
-			this.joints[i] = new khaMath_Vector4(dx + i * this.distance,dy,0);
-		}
-		var _g2 = 0;
-		var _g3 = this.points;
-		while(_g2 < _g3) {
-			var i1 = _g2++;
-			this.jointsF[i1] = new khaMath_Vector4(dx + i1 * this.distance,dy,0);
-		}
+		this.innerDemo = new constraints_demo_Inner(100,100,this.distance);
+		this.chainDemo = new constraints_demo_Chain(this.centreX,this.centreY,this.points,this.distance);
+		this.fabrikDemo = new constraints_demo_Fabrik(this.centreX / 2,this.centreY / 2,this.points,this.distance);
 		var collisionArea = 300;
-		var _g4 = 0;
-		var _g5 = this.places;
-		while(_g4 < _g5) {
-			var i2 = _g4++;
-			var x0 = dx / 2 + collisionArea * Math.random();
-			var y0 = dy / 2 + collisionArea * Math.random();
-			this.bodies[i2] = new khaMath_Vector4(x0,y0,0);
-		}
+		this.collisionDemo = new constraints_demo_Collision(this.centreX,this.centreY,this.places,this.circleSize,collisionArea,this.distance);
 	}
 	,findColorID: function(col) {
 		return this.appColors.indexOf(col);
@@ -591,203 +553,13 @@ Main.prototype = {
 		this.shapes.triangles = this.triangles;
 	}
 	,simple: function() {
-		if(this.showMouse) {
-			var x = this.mousePos.x;
-			var y = this.mousePos.y;
-			var radius = this.distance;
-			var this1 = this.triangles;
-			var gamma = 2 * Math.PI;
-			var t = [];
-			var this2;
-			if(t == null) {
-				var t1 = [];
-				var this3 = t1 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t1;
-				this2 = this3;
-			} else {
-				this2 = t;
-			}
-			var this4 = this2;
-			var out = this4;
-			var pi = Math.PI;
-			var step = pi * 2 / 36;
-			var dif;
-			switch(trilateral_angle_DifferencePreference.CLOCKWISE._hx_index) {
-			case 0:
-				var f;
-				if(0 > Math.PI) {
-					f = 0;
-				} else {
-					var a = 0 % (2 * Math.PI);
-					f = a >= 0 ? a : a + 2 * Math.PI;
-				}
-				var this5 = f;
-				var za = this5;
-				var f1;
-				if(gamma >= 0 && gamma > Math.PI) {
-					f1 = gamma;
-				} else {
-					var a1 = gamma % (2 * Math.PI);
-					f1 = a1 >= 0 ? a1 : a1 + 2 * Math.PI;
-				}
-				var this6 = f1;
-				var zb = this6;
-				var fa = za;
-				var fb = zb;
-				var theta = Math.abs(0 - gamma);
-				var clockwise = 0 < gamma;
-				var dif1 = clockwise ? theta : -theta;
-				dif = dif1 > 0 ? dif1 : 2 * Math.PI + dif1;
-				break;
-			case 1:
-				var f2;
-				if(0 > Math.PI) {
-					f2 = 0;
-				} else {
-					var a2 = 0 % (2 * Math.PI);
-					f2 = a2 >= 0 ? a2 : a2 + 2 * Math.PI;
-				}
-				var this7 = f2;
-				var za1 = this7;
-				var f3;
-				if(gamma >= 0 && gamma > Math.PI) {
-					f3 = gamma;
-				} else {
-					var a3 = gamma % (2 * Math.PI);
-					f3 = a3 >= 0 ? a3 : a3 + 2 * Math.PI;
-				}
-				var this8 = f3;
-				var zb1 = this8;
-				var fa1 = za1;
-				var fb1 = zb1;
-				var theta1 = Math.abs(0 - gamma);
-				var clockwise1 = 0 < gamma;
-				var dif2 = clockwise1 ? theta1 : -theta1;
-				dif = dif2 < 0 ? dif2 : -2 * Math.PI + dif2;
-				break;
-			case 2:
-				var f4;
-				if(0 > Math.PI) {
-					f4 = 0;
-				} else {
-					var a4 = 0 % (2 * Math.PI);
-					f4 = a4 >= 0 ? a4 : a4 + 2 * Math.PI;
-				}
-				var this9 = f4;
-				var za2 = this9;
-				var f5;
-				if(gamma >= 0 && gamma > Math.PI) {
-					f5 = gamma;
-				} else {
-					var a5 = gamma % (2 * Math.PI);
-					f5 = a5 >= 0 ? a5 : a5 + 2 * Math.PI;
-				}
-				var this10 = f5;
-				var zb2 = this10;
-				var fa2 = 0;
-				var fb2 = gamma;
-				var theta2 = Math.abs(0 - gamma);
-				var smallest = theta2 <= Math.PI;
-				var clockwise2 = 0 < gamma;
-				var dif3 = clockwise2 ? theta2 : -theta2;
-				dif = smallest ? dif3 : clockwise2 ? -(2 * Math.PI - theta2) : 2 * Math.PI - theta2;
-				break;
-			case 3:
-				var f6;
-				if(0 > Math.PI) {
-					f6 = 0;
-				} else {
-					var a6 = 0 % (2 * Math.PI);
-					f6 = a6 >= 0 ? a6 : a6 + 2 * Math.PI;
-				}
-				var this11 = f6;
-				var za3 = this11;
-				var f7;
-				if(gamma >= 0 && gamma > Math.PI) {
-					f7 = gamma;
-				} else {
-					var a7 = gamma % (2 * Math.PI);
-					f7 = a7 >= 0 ? a7 : a7 + 2 * Math.PI;
-				}
-				var this12 = f7;
-				var zb3 = this12;
-				var fa3 = 0;
-				var fb3 = gamma;
-				var theta3 = Math.abs(0 - gamma);
-				var largest = theta3 > Math.PI;
-				var clockwise3 = 0 < gamma;
-				var dif4 = clockwise3 ? theta3 : -theta3;
-				dif = largest ? dif4 : clockwise3 ? -(2 * Math.PI - theta3) : 2 * Math.PI - theta3;
-				break;
-			}
-			var positive = dif >= 0;
-			var totalSteps = Math.ceil(Math.abs(dif) / step);
-			var step1 = dif / totalSteps;
-			var angle = 0;
-			var cx;
-			var cy;
-			var bx = 0;
-			var by = 0;
-			var dx = 0;
-			var dy = 0;
-			var ex = 0;
-			var ey = 0;
-			var r2 = radius - 1;
-			var _g = 0;
-			var _g1 = totalSteps + 1;
-			while(_g < _g1) {
-				var i = _g++;
-				cx = x + radius * Math.sin(angle);
-				cy = y + radius * Math.cos(angle);
-				ex = x + r2 * Math.sin(angle);
-				ey = y + r2 * Math.cos(angle);
-				if(i != 0) {
-					var t0 = new trilateral_tri_Trilateral(dx,dy,bx,by,cx,cy);
-					var t11 = new trilateral_tri_Trilateral(dx,dy,cx,cy,ex,ey);
-					out[out.length] = t0;
-					out[out.length] = t11;
-				}
-				angle += step1;
-				bx = cx;
-				by = cy;
-				dx = ex;
-				dy = ey;
-			}
-			var triArr = out;
-			var colorID = this.appColors.indexOf(3355443);
-			var tri;
-			var _g2 = 0;
-			while(_g2 < triArr.length) {
-				var t2 = triArr[_g2];
-				++_g2;
-				if(t2 != null) {
-					var t3 = Object.create(trilateral_tri_Triangle.prototype);
-					t3.id = 0;
-					t3.ax = t2.ax;
-					t3.ay = t2.ay;
-					t3.bx = t2.bx;
-					t3.by = t2.by;
-					t3.cx = t2.cx;
-					t3.cy = t2.cy;
-					t3.mark = t2.mark;
-					t3.depth = 0;
-					t3.alpha = 1.;
-					t3.colorID = colorID;
-					t3.colorA = colorID;
-					t3.colorB = colorID;
-					t3.colorC = colorID;
-					t3.windingAdjusted = t2.windingAdjusted;
-					tri = t3;
-					this1[this1.length] = tri;
-				}
-			}
-		}
+		var _this = this.innerDemo;
 		var anchor = this.mousePos;
-		var _this = this.mousePos;
-		var vec = this.point;
-		var toNext = new khaMath_Vector4(_this.x - vec.x,_this.y - vec.y,_this.z - vec.z,_this.w - vec.w);
-		if(toNext.get_length() > this.distance) {
-			var _this1 = this.point;
-			var distance = this.distance;
+		var vec = _this.point;
+		var toNext = new khaMath_Vector4(anchor.x - vec.x,anchor.y - vec.y,anchor.z - vec.z,anchor.w - vec.w);
+		if(toNext.get_length() > _this.distance) {
+			var _this1 = _this.point;
+			var distance = _this.distance;
 			var _this2 = new khaMath_Vector4(_this1.x - anchor.x,_this1.y - anchor.y,_this1.z - anchor.z,_this1.w - anchor.w);
 			_this2.set_length(1);
 			var _this3 = _this2;
@@ -795,532 +567,83 @@ Main.prototype = {
 			var _this_y = _this3.y * distance;
 			var _this_z = _this3.z * distance;
 			var _this_w = _this3.w * distance;
-			this.point = new khaMath_Vector4(_this_x + anchor.x,_this_y + anchor.y,_this_z + anchor.z,_this_w + anchor.w);
+			_this.point = new khaMath_Vector4(_this_x + anchor.x,_this_y + anchor.y,_this_z + anchor.z,_this_w + anchor.w);
 		}
-		var x1 = this.point.x;
-		var y1 = this.point.y;
+		var x = this.innerDemo.point.x;
+		var y = this.innerDemo.point.y;
 		var _this4 = this.shapes;
-		var radius1 = this.circleSize;
+		var radius = this.circleSize;
 		var color = this.appColors.indexOf(16777215);
-		var this13 = _this4.triangles;
+		var this1 = _this4.triangles;
 		var id = _this4.refCount++;
-		var t4 = [];
-		var this14;
-		if(t4 == null) {
-			var t5 = [];
-			var this15 = t5 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t5;
-			this14 = this15;
+		var t = [];
+		var this2;
+		if(t == null) {
+			var t1 = [];
+			var this3 = t1 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t1;
+			this2 = this3;
 		} else {
-			this14 = t4;
+			this2 = t;
 		}
-		var this16 = this14;
-		var out1 = this16;
-		var pi1 = Math.PI;
-		var theta4 = pi1 / 2;
-		var step2 = pi1 * 2 / 36;
-		var bx1;
-		var by1;
-		var cx1;
-		var cy1;
-		var _g3 = 0;
-		var _g11 = 36;
-		while(_g3 < _g11) {
-			var i1 = _g3++;
-			bx1 = x1 + radius1 * Math.sin(theta4);
-			by1 = y1 + radius1 * Math.cos(theta4);
-			theta4 += step2;
-			cx1 = x1 + radius1 * Math.sin(theta4);
-			cy1 = y1 + radius1 * Math.cos(theta4);
-			var tri1 = new trilateral_tri_Trilateral(x1,y1,bx1,by1,cx1,cy1);
-			out1[out1.length] = tri1;
+		var this4 = this2;
+		var out = this4;
+		var pi = Math.PI;
+		var theta = pi / 2;
+		var step = pi * 2 / 36;
+		var bx;
+		var by;
+		var cx;
+		var cy;
+		var _g = 0;
+		var _g1 = 36;
+		while(_g < _g1) {
+			var i = _g++;
+			bx = x + radius * Math.sin(theta);
+			by = y + radius * Math.cos(theta);
+			theta += step;
+			cx = x + radius * Math.sin(theta);
+			cy = y + radius * Math.cos(theta);
+			var tri = new trilateral_tri_Trilateral(x,y,bx,by,cx,cy);
+			out[out.length] = tri;
 		}
-		var triArr1 = out1;
-		var tri2;
-		var _g4 = 0;
-		while(_g4 < triArr1.length) {
-			var t6 = triArr1[_g4];
-			++_g4;
-			if(t6 != null) {
-				var t7 = Object.create(trilateral_tri_Triangle.prototype);
-				t7.id = id;
-				t7.ax = t6.ax;
-				t7.ay = t6.ay;
-				t7.bx = t6.bx;
-				t7.by = t6.by;
-				t7.cx = t6.cx;
-				t7.cy = t6.cy;
-				t7.mark = t6.mark;
-				t7.depth = 0;
-				t7.alpha = 1.;
-				t7.colorID = color;
-				t7.colorA = color;
-				t7.colorB = color;
-				t7.colorC = color;
-				t7.windingAdjusted = t6.windingAdjusted;
-				tri2 = t7;
-				this13[this13.length] = tri2;
+		var triArr = out;
+		var tri1;
+		var _g2 = 0;
+		while(_g2 < triArr.length) {
+			var t2 = triArr[_g2];
+			++_g2;
+			if(t2 != null) {
+				var t3 = Object.create(trilateral_tri_Triangle.prototype);
+				t3.id = id;
+				t3.ax = t2.ax;
+				t3.ay = t2.ay;
+				t3.bx = t2.bx;
+				t3.by = t2.by;
+				t3.cx = t2.cx;
+				t3.cy = t2.cy;
+				t3.mark = t2.mark;
+				t3.depth = 0;
+				t3.alpha = 1.;
+				t3.colorID = color;
+				t3.colorA = color;
+				t3.colorB = color;
+				t3.colorC = color;
+				t3.windingAdjusted = t2.windingAdjusted;
+				tri1 = t3;
+				this1[this1.length] = tri1;
 			}
 		}
 	}
 	,chain: function() {
-		var joint = this.joints[0];
-		joint.x = this.mousePos.x;
-		joint.y = this.mousePos.y;
-		var x = joint.x;
-		var y = joint.y;
-		var _this = this.shapes;
-		var radius = this.circleSize;
-		var color = this.appColors.indexOf(16711680);
-		var this1 = _this.triangles;
-		var id = _this.refCount++;
-		var t = [];
-		var this2;
-		if(t == null) {
-			var t1 = [];
-			var this3 = t1 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t1;
-			this2 = this3;
-		} else {
-			this2 = t;
-		}
-		var this4 = this2;
-		var out = this4;
-		var pi = Math.PI;
-		var theta = pi / 2;
-		var step = pi * 2 / 36;
-		var bx;
-		var by;
-		var cx;
-		var cy;
-		var _g = 0;
-		var _g1 = 36;
-		while(_g < _g1) {
-			var i = _g++;
-			bx = x + radius * Math.sin(theta);
-			by = y + radius * Math.cos(theta);
-			theta += step;
-			cx = x + radius * Math.sin(theta);
-			cy = y + radius * Math.cos(theta);
-			var tri = new trilateral_tri_Trilateral(x,y,bx,by,cx,cy);
-			out[out.length] = tri;
-		}
-		var triArr = out;
-		var tri1;
-		var _g2 = 0;
-		while(_g2 < triArr.length) {
-			var t2 = triArr[_g2];
-			++_g2;
-			if(t2 != null) {
-				var t3 = Object.create(trilateral_tri_Triangle.prototype);
-				t3.id = id;
-				t3.ax = t2.ax;
-				t3.ay = t2.ay;
-				t3.bx = t2.bx;
-				t3.by = t2.by;
-				t3.cx = t2.cx;
-				t3.cy = t2.cy;
-				t3.mark = t2.mark;
-				t3.depth = 0;
-				t3.alpha = 1.;
-				t3.colorID = color;
-				t3.colorA = color;
-				t3.colorB = color;
-				t3.colorC = color;
-				t3.windingAdjusted = t2.windingAdjusted;
-				tri1 = t3;
-				this1[this1.length] = tri1;
-			}
-		}
-		var _g3 = 0;
-		var _g11 = this.points - 1;
-		while(_g3 < _g11) {
-			var i1 = _g3++;
-			var tmp = this.joints;
-			var _this1 = this.joints[i1 + 1];
-			var anchor = this.joints[i1];
-			var distance = this.distance;
-			var _this2 = new khaMath_Vector4(_this1.x - anchor.x,_this1.y - anchor.y,_this1.z - anchor.z,_this1.w - anchor.w);
-			_this2.set_length(1);
-			var _this3 = _this2;
-			var _this_x = _this3.x * distance;
-			var _this_y = _this3.y * distance;
-			var _this_z = _this3.z * distance;
-			var _this_w = _this3.w * distance;
-			tmp[i1 + 1] = new khaMath_Vector4(_this_x + anchor.x,_this_y + anchor.y,_this_z + anchor.z,_this_w + anchor.w);
-			joint = this.joints[i1 + 1];
-			var _this4 = this.shapes;
-			var x1 = joint.x;
-			var y1 = joint.y;
-			var radius1 = this.circleSize;
-			var color1 = this.appColors.indexOf(16711680) + i1 + 1;
-			var this5 = _this4.triangles;
-			var id1 = _this4.refCount++;
-			var t4 = [];
-			var this6;
-			if(t4 == null) {
-				var t5 = [];
-				var this7 = t5 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t5;
-				this6 = this7;
-			} else {
-				this6 = t4;
-			}
-			var this8 = this6;
-			var out1 = this8;
-			var pi1 = Math.PI;
-			var theta1 = pi1 / 2;
-			var step1 = pi1 * 2 / 36;
-			var bx1;
-			var by1;
-			var cx1;
-			var cy1;
-			var _g4 = 0;
-			var _g12 = 36;
-			while(_g4 < _g12) {
-				var i2 = _g4++;
-				bx1 = x1 + radius1 * Math.sin(theta1);
-				by1 = y1 + radius1 * Math.cos(theta1);
-				theta1 += step1;
-				cx1 = x1 + radius1 * Math.sin(theta1);
-				cy1 = y1 + radius1 * Math.cos(theta1);
-				var tri2 = new trilateral_tri_Trilateral(x1,y1,bx1,by1,cx1,cy1);
-				out1[out1.length] = tri2;
-			}
-			var triArr1 = out1;
-			var tri3;
-			var _g5 = 0;
-			while(_g5 < triArr1.length) {
-				var t6 = triArr1[_g5];
-				++_g5;
-				if(t6 != null) {
-					var t7 = Object.create(trilateral_tri_Triangle.prototype);
-					t7.id = id1;
-					t7.ax = t6.ax;
-					t7.ay = t6.ay;
-					t7.bx = t6.bx;
-					t7.by = t6.by;
-					t7.cx = t6.cx;
-					t7.cy = t6.cy;
-					t7.mark = t6.mark;
-					t7.depth = 0;
-					t7.alpha = 1.;
-					t7.colorID = color1;
-					t7.colorA = color1;
-					t7.colorB = color1;
-					t7.colorC = color1;
-					t7.windingAdjusted = t6.windingAdjusted;
-					tri3 = t7;
-					this5[this5.length] = tri3;
-				}
-			}
-		}
-	}
-	,fabrik: function() {
-		var joint = this.jointsF[0];
-		joint.x = this.mousePos.x;
-		joint.y = this.mousePos.y;
-		var x = joint.x;
-		var y = joint.y;
-		var _this = this.shapes;
-		var radius = this.circleSize;
-		var color = this.appColors.indexOf(16711680);
-		var this1 = _this.triangles;
-		var id = _this.refCount++;
-		var t = [];
-		var this2;
-		if(t == null) {
-			var t1 = [];
-			var this3 = t1 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t1;
-			this2 = this3;
-		} else {
-			this2 = t;
-		}
-		var this4 = this2;
-		var out = this4;
-		var pi = Math.PI;
-		var theta = pi / 2;
-		var step = pi * 2 / 36;
-		var bx;
-		var by;
-		var cx;
-		var cy;
-		var _g = 0;
-		var _g1 = 36;
-		while(_g < _g1) {
-			var i = _g++;
-			bx = x + radius * Math.sin(theta);
-			by = y + radius * Math.cos(theta);
-			theta += step;
-			cx = x + radius * Math.sin(theta);
-			cy = y + radius * Math.cos(theta);
-			var tri = new trilateral_tri_Trilateral(x,y,bx,by,cx,cy);
-			out[out.length] = tri;
-		}
-		var triArr = out;
-		var tri1;
-		var _g2 = 0;
-		while(_g2 < triArr.length) {
-			var t2 = triArr[_g2];
-			++_g2;
-			if(t2 != null) {
-				var t3 = Object.create(trilateral_tri_Triangle.prototype);
-				t3.id = id;
-				t3.ax = t2.ax;
-				t3.ay = t2.ay;
-				t3.bx = t2.bx;
-				t3.by = t2.by;
-				t3.cx = t2.cx;
-				t3.cy = t2.cy;
-				t3.mark = t2.mark;
-				t3.depth = 0;
-				t3.alpha = 1.;
-				t3.colorID = color;
-				t3.colorA = color;
-				t3.colorB = color;
-				t3.colorC = color;
-				t3.windingAdjusted = t2.windingAdjusted;
-				tri1 = t3;
-				this1[this1.length] = tri1;
-			}
-		}
-		var _g3 = 1;
-		var _g11 = this.points;
-		while(_g3 < _g11) {
-			var i1 = _g3++;
-			var tmp = this.jointsF;
-			var _this1 = this.jointsF[i1];
-			var anchor = this.jointsF[i1 - 1];
-			var distance = this.distance;
-			var _this2 = new khaMath_Vector4(_this1.x - anchor.x,_this1.y - anchor.y,_this1.z - anchor.z,_this1.w - anchor.w);
-			_this2.set_length(1);
-			var _this3 = _this2;
-			var _this_x = _this3.x * distance;
-			var _this_y = _this3.y * distance;
-			var _this_z = _this3.z * distance;
-			var _this_w = _this3.w * distance;
-			tmp[i1] = new khaMath_Vector4(_this_x + anchor.x,_this_y + anchor.y,_this_z + anchor.z,_this_w + anchor.w);
-		}
-		var j;
-		var dx = this.canvas.width / 4;
-		var dy = this.canvas.height / 4;
-		var joint1 = this.jointsF[this.points - 1];
-		joint1.x = dx;
-		joint1.y = dy;
-		var _this4 = this.shapes;
-		var radius1 = this.circleSize;
-		var color1 = this.appColors.indexOf(16777215);
-		var this5 = _this4.triangles;
-		var id1 = _this4.refCount++;
-		var t4 = [];
-		var this6;
-		if(t4 == null) {
-			var t5 = [];
-			var this7 = t5 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t5;
-			this6 = this7;
-		} else {
-			this6 = t4;
-		}
-		var this8 = this6;
-		var out1 = this8;
-		var pi1 = Math.PI;
-		var theta1 = pi1 / 2;
-		var step1 = pi1 * 2 / 36;
-		var bx1;
-		var by1;
-		var cx1;
-		var cy1;
-		var _g4 = 0;
-		var _g12 = 36;
-		while(_g4 < _g12) {
-			var i2 = _g4++;
-			bx1 = dx + radius1 * Math.sin(theta1);
-			by1 = dy + radius1 * Math.cos(theta1);
-			theta1 += step1;
-			cx1 = dx + radius1 * Math.sin(theta1);
-			cy1 = dy + radius1 * Math.cos(theta1);
-			var tri2 = new trilateral_tri_Trilateral(dx,dy,bx1,by1,cx1,cy1);
-			out1[out1.length] = tri2;
-		}
-		var triArr1 = out1;
-		var tri3;
-		var _g5 = 0;
-		while(_g5 < triArr1.length) {
-			var t6 = triArr1[_g5];
-			++_g5;
-			if(t6 != null) {
-				var t7 = Object.create(trilateral_tri_Triangle.prototype);
-				t7.id = id1;
-				t7.ax = t6.ax;
-				t7.ay = t6.ay;
-				t7.bx = t6.bx;
-				t7.by = t6.by;
-				t7.cx = t6.cx;
-				t7.cy = t6.cy;
-				t7.mark = t6.mark;
-				t7.depth = 0;
-				t7.alpha = 1.;
-				t7.colorID = color1;
-				t7.colorA = color1;
-				t7.colorB = color1;
-				t7.colorC = color1;
-				t7.windingAdjusted = t6.windingAdjusted;
-				tri3 = t7;
-				this5[this5.length] = tri3;
-			}
-		}
-		var _g21 = 1;
-		var _g31 = this.points;
-		while(_g21 < _g31) {
-			var i3 = _g21++;
-			j = this.points - i3;
-			var tmp1 = this.jointsF;
-			var _this5 = this.jointsF[j - 1];
-			var anchor1 = this.jointsF[j];
-			var distance1 = this.distance;
-			var _this6 = new khaMath_Vector4(_this5.x - anchor1.x,_this5.y - anchor1.y,_this5.z - anchor1.z,_this5.w - anchor1.w);
-			_this6.set_length(1);
-			var _this7 = _this6;
-			var _this_x1 = _this7.x * distance1;
-			var _this_y1 = _this7.y * distance1;
-			var _this_z1 = _this7.z * distance1;
-			var _this_w1 = _this7.w * distance1;
-			tmp1[j - 1] = new khaMath_Vector4(_this_x1 + anchor1.x,_this_y1 + anchor1.y,_this_z1 + anchor1.z,_this_w1 + anchor1.w);
-			joint1 = this.jointsF[j - 1];
-			var _this8 = this.shapes;
-			var x1 = joint1.x;
-			var y1 = joint1.y;
-			var radius2 = this.circleSize;
-			var color2 = this.appColors.indexOf(16711680) + i3 - 1;
-			var this9 = _this8.triangles;
-			var id2 = _this8.refCount++;
-			var t8 = [];
-			var this10;
-			if(t8 == null) {
-				var t9 = [];
-				var this11 = t9 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t9;
-				this10 = this11;
-			} else {
-				this10 = t8;
-			}
-			var this12 = this10;
-			var out2 = this12;
-			var pi2 = Math.PI;
-			var theta2 = pi2 / 2;
-			var step2 = pi2 * 2 / 36;
-			var bx2;
-			var by2;
-			var cx2;
-			var cy2;
-			var _g6 = 0;
-			var _g13 = 36;
-			while(_g6 < _g13) {
-				var i4 = _g6++;
-				bx2 = x1 + radius2 * Math.sin(theta2);
-				by2 = y1 + radius2 * Math.cos(theta2);
-				theta2 += step2;
-				cx2 = x1 + radius2 * Math.sin(theta2);
-				cy2 = y1 + radius2 * Math.cos(theta2);
-				var tri4 = new trilateral_tri_Trilateral(x1,y1,bx2,by2,cx2,cy2);
-				out2[out2.length] = tri4;
-			}
-			var triArr2 = out2;
-			var tri5;
-			var _g7 = 0;
-			while(_g7 < triArr2.length) {
-				var t10 = triArr2[_g7];
-				++_g7;
-				if(t10 != null) {
-					var t11 = Object.create(trilateral_tri_Triangle.prototype);
-					t11.id = id2;
-					t11.ax = t10.ax;
-					t11.ay = t10.ay;
-					t11.bx = t10.bx;
-					t11.by = t10.by;
-					t11.cx = t10.cx;
-					t11.cy = t10.cy;
-					t11.mark = t10.mark;
-					t11.depth = 0;
-					t11.alpha = 1.;
-					t11.colorID = color2;
-					t11.colorA = color2;
-					t11.colorB = color2;
-					t11.colorC = color2;
-					t11.windingAdjusted = t10.windingAdjusted;
-					tri5 = t11;
-					this9[this9.length] = tri5;
-				}
-			}
-		}
-	}
-	,collision: function() {
-		var body;
-		var mouseEdge = 2;
-		var radius = this.distance + mouseEdge + this.circleSize / 2;
-		var _g = 0;
-		var _g1 = this.places;
-		while(_g < _g1) {
-			var i = _g++;
-			body = this.bodies[i];
-			var _this = this.mousePos;
-			var toNext = new khaMath_Vector4(_this.x - body.x,_this.y - body.y,_this.z - body.z,_this.w - body.w);
-			if(toNext.get_length() < radius) {
-				toNext.set_length(radius);
-				var _this1 = this.mousePos;
-				var _this_x = _this1.x - body.x;
-				var _this_y = _this1.y - body.y;
-				var _this_z = _this1.z - body.z;
-				var _this_w = _this1.w - body.w;
-				var offset_x = _this_x - toNext.x;
-				var offset_y = _this_y - toNext.y;
-				var offset_z = _this_z - toNext.z;
-				var offset_w = _this_w - toNext.w;
-				this.bodies[i] = new khaMath_Vector4(body.x + offset_x,body.y + offset_y,body.z + offset_z,body.w + offset_w);
-			}
-		}
-		var other;
-		var _g2 = 0;
-		var _g3 = this.places;
-		while(_g2 < _g3) {
-			var i1 = _g2++;
-			var _g21 = i1;
-			var _g31 = this.places;
-			while(_g21 < _g31) {
-				var j = _g21++;
-				body = this.bodies[i1];
-				other = this.bodies[j];
-				var toNext1 = new khaMath_Vector4(other.x - body.x,other.y - body.y,other.z - body.z,other.w - body.w);
-				if(toNext1.get_length() < this.circleSize * 2) {
-					toNext1.set_length(this.circleSize * 2);
-					var _this_x1 = other.x - body.x;
-					var _this_y1 = other.y - body.y;
-					var _this_z1 = other.z - body.z;
-					var _this_w1 = other.w - body.w;
-					var _this_x2 = _this_x1 - toNext1.x;
-					var _this_y2 = _this_y1 - toNext1.y;
-					var _this_z2 = _this_z1 - toNext1.z;
-					var _this_w2 = _this_w1 - toNext1.w;
-					var offset_x1 = _this_x2 * 0.5;
-					var offset_y1 = _this_y2 * 0.5;
-					var offset_z1 = _this_z2 * 0.5;
-					var offset_w1 = _this_w2 * 0.5;
-					this.bodies[i1] = new khaMath_Vector4(body.x + offset_x1,body.y + offset_y1,body.z + offset_z1,body.w + offset_w1);
-					this.bodies[j] = new khaMath_Vector4(other.x - offset_x1,other.y - offset_y1,other.z - offset_z1,other.w - offset_w1);
-				}
-			}
-		}
-		var _g4 = 0;
-		var _g5 = this.places;
-		while(_g4 < _g5) {
-			var i2 = _g4++;
-			body = this.bodies[i2];
-			var col = this.appColors.indexOf(16711680) + i2 - 1;
-			if(col > 7) {
-				col -= 8;
-			}
-			var _this2 = this.shapes;
-			var x = body.x;
-			var y = body.y;
-			var radius1 = this.circleSize;
-			var this1 = _this2.triangles;
-			var id = _this2.refCount++;
+		var _gthis = this;
+		var jointRender = function(i,joint) {
+			var _this = _gthis.shapes;
+			var x = joint.x;
+			var y = joint.y;
+			var radius = _gthis.circleSize;
+			var color = _gthis.appColors.indexOf(16711680) + i;
+			var this1 = _this.triangles;
+			var id = _this.refCount++;
 			var t = [];
 			var this2;
 			if(t == null) {
@@ -1339,24 +662,240 @@ Main.prototype = {
 			var by;
 			var cx;
 			var cy;
-			var _g6 = 0;
-			var _g11 = 36;
-			while(_g6 < _g11) {
-				var i3 = _g6++;
-				bx = x + radius1 * Math.sin(theta);
-				by = y + radius1 * Math.cos(theta);
+			var _g = 0;
+			var _g1 = 36;
+			while(_g < _g1) {
+				var i1 = _g++;
+				bx = x + radius * Math.sin(theta);
+				by = y + radius * Math.cos(theta);
 				theta += step;
-				cx = x + radius1 * Math.sin(theta);
-				cy = y + radius1 * Math.cos(theta);
+				cx = x + radius * Math.sin(theta);
+				cy = y + radius * Math.cos(theta);
 				var tri = new trilateral_tri_Trilateral(x,y,bx,by,cx,cy);
 				out[out.length] = tri;
 			}
 			var triArr = out;
 			var tri1;
-			var _g7 = 0;
-			while(_g7 < triArr.length) {
-				var t2 = triArr[_g7];
-				++_g7;
+			var _g2 = 0;
+			while(_g2 < triArr.length) {
+				var t2 = triArr[_g2];
+				++_g2;
+				if(t2 != null) {
+					var t3 = Object.create(trilateral_tri_Triangle.prototype);
+					t3.id = id;
+					t3.ax = t2.ax;
+					t3.ay = t2.ay;
+					t3.bx = t2.bx;
+					t3.by = t2.by;
+					t3.cx = t2.cx;
+					t3.cy = t2.cy;
+					t3.mark = t2.mark;
+					t3.depth = 0;
+					t3.alpha = 1.;
+					t3.colorID = color;
+					t3.colorA = color;
+					t3.colorB = color;
+					t3.colorC = color;
+					t3.windingAdjusted = t2.windingAdjusted;
+					tri1 = t3;
+					this1[this1.length] = tri1;
+				}
+			}
+			return _this.refCount - 1;
+		};
+		var _this1 = this.chainDemo;
+		var anchor = this.mousePos;
+		var joint1 = _this1.joints[0];
+		joint1.x = anchor.x;
+		joint1.y = anchor.y;
+		jointRender(0,joint1);
+		var _g3 = 1;
+		var _g11 = _this1.points;
+		while(_g3 < _g11) {
+			var i2 = _g3++;
+			var _this2 = _this1.joints;
+			var _this3 = _this1.joints[i2];
+			var anchor1 = _this1.joints[i2 - 1];
+			var distance = _this1.distance;
+			var _this4 = new khaMath_Vector4(_this3.x - anchor1.x,_this3.y - anchor1.y,_this3.z - anchor1.z,_this3.w - anchor1.w);
+			_this4.set_length(1);
+			var _this5 = _this4;
+			var _this_x = _this5.x * distance;
+			var _this_y = _this5.y * distance;
+			var _this_z = _this5.z * distance;
+			var _this_w = _this5.w * distance;
+			_this2[i2] = new khaMath_Vector4(_this_x + anchor1.x,_this_y + anchor1.y,_this_z + anchor1.z,_this_w + anchor1.w);
+			joint1 = _this1.joints[i2];
+			jointRender(i2,joint1);
+		}
+	}
+	,fabrik: function() {
+		var _gthis = this;
+		var jointRender = function(i,joint) {
+			var _this = _gthis.shapes;
+			var x = joint.x;
+			var y = joint.y;
+			var radius = _gthis.circleSize;
+			var color = _gthis.appColors.indexOf(16711680) + i;
+			var this1 = _this.triangles;
+			var id = _this.refCount++;
+			var t = [];
+			var this2;
+			if(t == null) {
+				var t1 = [];
+				var this3 = t1 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t1;
+				this2 = this3;
+			} else {
+				this2 = t;
+			}
+			var this4 = this2;
+			var out = this4;
+			var pi = Math.PI;
+			var theta = pi / 2;
+			var step = pi * 2 / 36;
+			var bx;
+			var by;
+			var cx;
+			var cy;
+			var _g = 0;
+			var _g1 = 36;
+			while(_g < _g1) {
+				var i1 = _g++;
+				bx = x + radius * Math.sin(theta);
+				by = y + radius * Math.cos(theta);
+				theta += step;
+				cx = x + radius * Math.sin(theta);
+				cy = y + radius * Math.cos(theta);
+				var tri = new trilateral_tri_Trilateral(x,y,bx,by,cx,cy);
+				out[out.length] = tri;
+			}
+			var triArr = out;
+			var tri1;
+			var _g2 = 0;
+			while(_g2 < triArr.length) {
+				var t2 = triArr[_g2];
+				++_g2;
+				if(t2 != null) {
+					var t3 = Object.create(trilateral_tri_Triangle.prototype);
+					t3.id = id;
+					t3.ax = t2.ax;
+					t3.ay = t2.ay;
+					t3.bx = t2.bx;
+					t3.by = t2.by;
+					t3.cx = t2.cx;
+					t3.cy = t2.cy;
+					t3.mark = t2.mark;
+					t3.depth = 0;
+					t3.alpha = 1.;
+					t3.colorID = color;
+					t3.colorA = color;
+					t3.colorB = color;
+					t3.colorC = color;
+					t3.windingAdjusted = t2.windingAdjusted;
+					tri1 = t3;
+					this1[this1.length] = tri1;
+				}
+			}
+			return _this.refCount - 1;
+		};
+		var _this1 = this.fabrikDemo;
+		var anchor = this.mousePos;
+		var joint1 = _this1.joints[0];
+		joint1.x = anchor.x;
+		joint1.y = anchor.y;
+		jointRender(0,joint1);
+		var _g3 = 1;
+		var _g11 = _this1.points;
+		while(_g3 < _g11) {
+			var i2 = _g3++;
+			var _this2 = _this1.joints;
+			var _this3 = _this1.joints[i2];
+			var anchor1 = _this1.joints[i2 - 1];
+			var distance = _this1.distance;
+			var _this4 = new khaMath_Vector4(_this3.x - anchor1.x,_this3.y - anchor1.y,_this3.z - anchor1.z,_this3.w - anchor1.w);
+			_this4.set_length(1);
+			var _this5 = _this4;
+			var _this_x = _this5.x * distance;
+			var _this_y = _this5.y * distance;
+			var _this_z = _this5.z * distance;
+			var _this_w = _this5.w * distance;
+			_this2[i2] = new khaMath_Vector4(_this_x + anchor1.x,_this_y + anchor1.y,_this_z + anchor1.z,_this_w + anchor1.w);
+		}
+		var j;
+		var joint2 = _this1.joints[_this1.points - 1];
+		joint2.x = _this1.x;
+		joint2.y = _this1.y;
+		jointRender(_this1.points - 1,joint2);
+		var _g21 = 1;
+		var _g31 = _this1.points;
+		while(_g21 < _g31) {
+			var i3 = _g21++;
+			j = _this1.points - i3;
+			var _this6 = _this1.joints;
+			var _this7 = _this1.joints[j - 1];
+			var anchor2 = _this1.joints[j];
+			var distance1 = _this1.distance;
+			var _this8 = new khaMath_Vector4(_this7.x - anchor2.x,_this7.y - anchor2.y,_this7.z - anchor2.z,_this7.w - anchor2.w);
+			_this8.set_length(1);
+			var _this9 = _this8;
+			var _this_x1 = _this9.x * distance1;
+			var _this_y1 = _this9.y * distance1;
+			var _this_z1 = _this9.z * distance1;
+			var _this_w1 = _this9.w * distance1;
+			_this6[j - 1] = new khaMath_Vector4(_this_x1 + anchor2.x,_this_y1 + anchor2.y,_this_z1 + anchor2.z,_this_w1 + anchor2.w);
+			joint2 = _this1.joints[j - 1];
+			jointRender(j,joint2);
+		}
+	}
+	,collision: function() {
+		var _gthis = this;
+		var jointRender = function(i,joint) {
+			var col = _gthis.appColors.indexOf(16711680) + i;
+			if(col > 7) {
+				col -= 7;
+			}
+			var _this = _gthis.shapes;
+			var x = joint.x;
+			var y = joint.y;
+			var radius = _gthis.circleSize;
+			var this1 = _this.triangles;
+			var id = _this.refCount++;
+			var t = [];
+			var this2;
+			if(t == null) {
+				var t1 = [];
+				var this3 = t1 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t1;
+				this2 = this3;
+			} else {
+				this2 = t;
+			}
+			var this4 = this2;
+			var out = this4;
+			var pi = Math.PI;
+			var theta = pi / 2;
+			var step = pi * 2 / 36;
+			var bx;
+			var by;
+			var cx;
+			var cy;
+			var _g = 0;
+			var _g1 = 36;
+			while(_g < _g1) {
+				var i1 = _g++;
+				bx = x + radius * Math.sin(theta);
+				by = y + radius * Math.cos(theta);
+				theta += step;
+				cx = x + radius * Math.sin(theta);
+				cy = y + radius * Math.cos(theta);
+				var tri = new trilateral_tri_Trilateral(x,y,bx,by,cx,cy);
+				out[out.length] = tri;
+			}
+			var triArr = out;
+			var tri1;
+			var _g2 = 0;
+			while(_g2 < triArr.length) {
+				var t2 = triArr[_g2];
+				++_g2;
 				if(t2 != null) {
 					var t3 = Object.create(trilateral_tri_Triangle.prototype);
 					t3.id = id;
@@ -1378,1624 +917,268 @@ Main.prototype = {
 					this1[this1.length] = tri1;
 				}
 			}
-		}
-	}
-	,chainLink: function() {
-		var spots = this.joints;
-		var path = new trilateral_path_Fine(null,null,3);
-		path.width = 0.3;
-		path.moveTo(spots[0].x,spots[0].y);
-		var _g = 1;
-		var _g1 = this.points;
-		while(_g < _g1) {
-			var i = _g++;
-			var x_ = spots[i].x;
-			var y_ = spots[i].y;
-			var repeat = path.x == x_ && path.y == y_;
-			if(!repeat) {
-				if(path.widthFunction != null) {
-					path.width = path.widthFunction(path.width,path.x,path.x,x_,y_);
-				}
-				var _this = path.contour;
-				var ax_ = path.x;
-				var ay_ = path.y;
-				var width_ = path.width;
-				var oldAngle = _this.dx != null ? _this.angle1 : null;
-				_this.halfA = Math.PI / 2;
-				_this.ax = x_;
-				_this.ay = y_;
-				_this.bx = ax_;
-				_this.by = ay_;
-				_this.beta = Math.PI / 2 - _this.halfA;
-				_this.r = width_ / 2 * Math.cos(_this.beta);
-				_this.theta = Math.atan2(_this.ay - _this.by,_this.ax - _this.bx);
-				if(_this.theta > 0) {
-					if(_this.halfA < 0) {
-						_this.angle2 = _this.theta + _this.halfA + Math.PI / 2;
-						_this.angle1 = _this.theta - _this.halfA;
-					} else {
-						_this.angle1 = _this.theta + _this.halfA - Math.PI;
-						_this.angle2 = _this.theta + _this.halfA;
-					}
-				} else if(_this.halfA > 0) {
-					_this.angle1 = _this.theta + _this.halfA - Math.PI;
-					_this.angle2 = _this.theta + _this.halfA;
-				} else {
-					_this.angle2 = _this.theta + _this.halfA + Math.PI / 2;
-					_this.angle1 = _this.theta - _this.halfA;
-				}
-				if(_this.dxPrev != null) {
-					_this.dxOld = _this.dxPrev;
-				}
-				if(_this.dyPrev != null) {
-					_this.dyOld = _this.dyPrev;
-				}
-				if(_this.exPrev != null) {
-					_this.exOld = _this.exPrev;
-				}
-				if(_this.eyPrev != null) {
-					_this.eyOld = _this.eyPrev;
-				}
-				if(_this.dx != null) {
-					_this.dxPrev = _this.dx;
-				}
-				if(_this.dy != null) {
-					_this.dyPrev = _this.dy;
-				}
-				if(_this.ex != null) {
-					_this.exPrev = _this.ex;
-				}
-				if(_this.ey != null) {
-					_this.eyPrev = _this.ey;
-				}
-				_this.dx = _this.bx + _this.r * Math.cos(_this.angle1);
-				_this.dy = _this.by + _this.r * Math.sin(_this.angle1);
-				_this.ex = _this.bx + _this.r * Math.cos(_this.angle2);
-				_this.ey = _this.by + _this.r * Math.sin(_this.angle2);
-				_this.ax = ax_;
-				_this.ay = ay_;
-				_this.bx = x_;
-				_this.by = y_;
-				_this.theta = Math.atan2(_this.ay - _this.by,_this.ax - _this.bx);
-				if(_this.theta > 0) {
-					if(_this.halfA < 0) {
-						_this.angle2 = _this.theta + _this.halfA + Math.PI / 2;
-						_this.angle1 = _this.theta - _this.halfA;
-					} else {
-						_this.angle1 = _this.theta + _this.halfA - Math.PI;
-						_this.angle2 = _this.theta + _this.halfA;
-					}
-				} else if(_this.halfA > 0) {
-					_this.angle1 = _this.theta + _this.halfA - Math.PI;
-					_this.angle2 = _this.theta + _this.halfA;
-				} else {
-					_this.angle2 = _this.theta + _this.halfA + Math.PI / 2;
-					_this.angle1 = _this.theta - _this.halfA;
-				}
-				if(_this.dxPrev != null) {
-					_this.dxOld = _this.dxPrev;
-				}
-				if(_this.dyPrev != null) {
-					_this.dyOld = _this.dyPrev;
-				}
-				if(_this.exPrev != null) {
-					_this.exOld = _this.exPrev;
-				}
-				if(_this.eyPrev != null) {
-					_this.eyOld = _this.eyPrev;
-				}
-				if(_this.dx != null) {
-					_this.dxPrev = _this.dx;
-				}
-				if(_this.dy != null) {
-					_this.dyPrev = _this.dy;
-				}
-				if(_this.ex != null) {
-					_this.exPrev = _this.ex;
-				}
-				if(_this.ey != null) {
-					_this.eyPrev = _this.ey;
-				}
-				_this.dx = _this.bx + _this.r * Math.cos(_this.angle1);
-				_this.dy = _this.by + _this.r * Math.sin(_this.angle1);
-				_this.ex = _this.bx + _this.r * Math.cos(_this.angle2);
-				_this.ey = _this.by + _this.r * Math.sin(_this.angle2);
-				var x = _this.dxOld - x_;
-				var y = _this.dyOld - y_;
-				var x1 = _this.exOld - x_;
-				var y1 = _this.eyOld - y_;
-				var clockWise = x * x + y * y > x1 * x1 + y1 * y1;
-				var theta0;
-				var theta1;
-				if(clockWise) {
-					theta0 = -Math.atan2(_this.ay - _this.dyOld,_this.ax - _this.dxOld) - Math.PI / 2;
-					theta1 = -Math.atan2(_this.ay - _this.eyPrev,_this.ax - _this.exPrev) - Math.PI / 2;
-				} else {
-					theta0 = -Math.atan2(_this.ay - _this.eyOld,_this.ax - _this.exOld) - Math.PI / 2;
-					theta1 = -Math.atan2(_this.ay - _this.dyPrev,_this.ax - _this.dxPrev) - Math.PI / 2;
-				}
-				var dif;
-				switch(trilateral_angle_DifferencePreference.SMALL._hx_index) {
-				case 0:
-					var f;
-					if(theta0 >= 0 && theta0 > Math.PI) {
-						f = theta0;
-					} else {
-						var a = theta0 % (2 * Math.PI);
-						f = a >= 0 ? a : a + 2 * Math.PI;
-					}
-					var this1 = f;
-					var za = this1;
-					var f1;
-					if(theta1 >= 0 && theta1 > Math.PI) {
-						f1 = theta1;
-					} else {
-						var a1 = theta1 % (2 * Math.PI);
-						f1 = a1 >= 0 ? a1 : a1 + 2 * Math.PI;
-					}
-					var this2 = f1;
-					var zb = this2;
-					var fa = za;
-					var fb = zb;
-					var theta = Math.abs(theta0 - theta1);
-					var clockwise = theta0 < theta1;
-					var dif1 = clockwise ? theta : -theta;
-					dif = dif1 > 0 ? dif1 : 2 * Math.PI + dif1;
-					break;
-				case 1:
-					var f2;
-					if(theta0 >= 0 && theta0 > Math.PI) {
-						f2 = theta0;
-					} else {
-						var a2 = theta0 % (2 * Math.PI);
-						f2 = a2 >= 0 ? a2 : a2 + 2 * Math.PI;
-					}
-					var this3 = f2;
-					var za1 = this3;
-					var f3;
-					if(theta1 >= 0 && theta1 > Math.PI) {
-						f3 = theta1;
-					} else {
-						var a3 = theta1 % (2 * Math.PI);
-						f3 = a3 >= 0 ? a3 : a3 + 2 * Math.PI;
-					}
-					var this4 = f3;
-					var zb1 = this4;
-					var fa1 = za1;
-					var fb1 = zb1;
-					var theta2 = Math.abs(theta0 - theta1);
-					var clockwise1 = theta0 < theta1;
-					var dif2 = clockwise1 ? theta2 : -theta2;
-					dif = dif2 < 0 ? dif2 : -2 * Math.PI + dif2;
-					break;
-				case 2:
-					var f4;
-					if(theta0 >= 0 && theta0 > Math.PI) {
-						f4 = theta0;
-					} else {
-						var a4 = theta0 % (2 * Math.PI);
-						f4 = a4 >= 0 ? a4 : a4 + 2 * Math.PI;
-					}
-					var this5 = f4;
-					var za2 = this5;
-					var f5;
-					if(theta1 >= 0 && theta1 > Math.PI) {
-						f5 = theta1;
-					} else {
-						var a5 = theta1 % (2 * Math.PI);
-						f5 = a5 >= 0 ? a5 : a5 + 2 * Math.PI;
-					}
-					var this6 = f5;
-					var zb2 = this6;
-					var fa2 = theta0;
-					var fb2 = theta1;
-					var theta3 = Math.abs(theta0 - theta1);
-					var smallest = theta3 <= Math.PI;
-					var clockwise2 = theta0 < theta1;
-					var dif3 = clockwise2 ? theta3 : -theta3;
-					dif = smallest ? dif3 : clockwise2 ? -(2 * Math.PI - theta3) : 2 * Math.PI - theta3;
-					break;
-				case 3:
-					var f6;
-					if(theta0 >= 0 && theta0 > Math.PI) {
-						f6 = theta0;
-					} else {
-						var a6 = theta0 % (2 * Math.PI);
-						f6 = a6 >= 0 ? a6 : a6 + 2 * Math.PI;
-					}
-					var this7 = f6;
-					var za3 = this7;
-					var f7;
-					if(theta1 >= 0 && theta1 > Math.PI) {
-						f7 = theta1;
-					} else {
-						var a7 = theta1 % (2 * Math.PI);
-						f7 = a7 >= 0 ? a7 : a7 + 2 * Math.PI;
-					}
-					var this8 = f7;
-					var zb3 = this8;
-					var fa3 = theta0;
-					var fb3 = theta1;
-					var theta4 = Math.abs(theta0 - theta1);
-					var largest = theta4 > Math.PI;
-					var clockwise3 = theta0 < theta1;
-					var dif4 = clockwise3 ? theta4 : -theta4;
-					dif = largest ? dif4 : clockwise3 ? -(2 * Math.PI - theta4) : 2 * Math.PI - theta4;
-					break;
-				}
-				if(_this.count != 0) {
-					var gamma = Math.abs(dif) / 2;
-					var h = width_ / 2 / Math.cos(gamma);
-					var f8;
-					if(theta0 <= Math.PI && theta0 > -Math.PI) {
-						f8 = theta0;
-					} else {
-						var a8 = (theta0 + Math.PI) % (2 * Math.PI);
-						f8 = a8 >= 0 ? a8 - Math.PI : a8 + Math.PI;
-					}
-					var this9 = f8;
-					var start = this9;
-					var start2 = start;
-					var delta = start2 + dif / 2 + Math.PI;
-					_this.jx = _this.ax + h * Math.sin(delta);
-					_this.jy = _this.ay + h * Math.cos(delta);
-				}
-				if(_this.count == 0 && (_this.endLine == 1 || _this.endLine == 3)) {
-					var ax = _this.ax;
-					var ay = _this.ay;
-					var radius = width_ / 2;
-					var beta = -_this.angle1 - Math.PI / 2;
-					var gamma1 = -_this.angle1 - Math.PI / 2 + Math.PI;
-					var temp = [];
-					var this10 = _this.triArr;
-					var t = [];
-					var this11;
-					if(t == null) {
-						var t1 = [];
-						var this12 = t1 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t1;
-						this11 = this12;
-					} else {
-						this11 = t;
-					}
-					var this13 = this11;
-					var out = this13;
-					var pi = Math.PI;
-					var step = pi * 2 / 36;
-					var dif5;
-					switch(trilateral_angle_DifferencePreference.SMALL._hx_index) {
-					case 0:
-						var f9;
-						if(beta >= 0 && beta > Math.PI) {
-							f9 = beta;
-						} else {
-							var a9 = beta % (2 * Math.PI);
-							f9 = a9 >= 0 ? a9 : a9 + 2 * Math.PI;
-						}
-						var this14 = f9;
-						var za4 = this14;
-						var f10;
-						if(gamma1 >= 0 && gamma1 > Math.PI) {
-							f10 = gamma1;
-						} else {
-							var a10 = gamma1 % (2 * Math.PI);
-							f10 = a10 >= 0 ? a10 : a10 + 2 * Math.PI;
-						}
-						var this15 = f10;
-						var zb4 = this15;
-						var fa4 = za4;
-						var fb4 = zb4;
-						var theta5 = Math.abs(beta - gamma1);
-						var clockwise4 = beta < gamma1;
-						var dif6 = clockwise4 ? theta5 : -theta5;
-						dif5 = dif6 > 0 ? dif6 : 2 * Math.PI + dif6;
-						break;
-					case 1:
-						var f11;
-						if(beta >= 0 && beta > Math.PI) {
-							f11 = beta;
-						} else {
-							var a11 = beta % (2 * Math.PI);
-							f11 = a11 >= 0 ? a11 : a11 + 2 * Math.PI;
-						}
-						var this16 = f11;
-						var za5 = this16;
-						var f12;
-						if(gamma1 >= 0 && gamma1 > Math.PI) {
-							f12 = gamma1;
-						} else {
-							var a12 = gamma1 % (2 * Math.PI);
-							f12 = a12 >= 0 ? a12 : a12 + 2 * Math.PI;
-						}
-						var this17 = f12;
-						var zb5 = this17;
-						var fa5 = za5;
-						var fb5 = zb5;
-						var theta6 = Math.abs(beta - gamma1);
-						var clockwise5 = beta < gamma1;
-						var dif7 = clockwise5 ? theta6 : -theta6;
-						dif5 = dif7 < 0 ? dif7 : -2 * Math.PI + dif7;
-						break;
-					case 2:
-						var f13;
-						if(beta >= 0 && beta > Math.PI) {
-							f13 = beta;
-						} else {
-							var a13 = beta % (2 * Math.PI);
-							f13 = a13 >= 0 ? a13 : a13 + 2 * Math.PI;
-						}
-						var this18 = f13;
-						var za6 = this18;
-						var f14;
-						if(gamma1 >= 0 && gamma1 > Math.PI) {
-							f14 = gamma1;
-						} else {
-							var a14 = gamma1 % (2 * Math.PI);
-							f14 = a14 >= 0 ? a14 : a14 + 2 * Math.PI;
-						}
-						var this19 = f14;
-						var zb6 = this19;
-						var fa6 = beta;
-						var fb6 = gamma1;
-						var theta7 = Math.abs(beta - gamma1);
-						var smallest1 = theta7 <= Math.PI;
-						var clockwise6 = beta < gamma1;
-						var dif8 = clockwise6 ? theta7 : -theta7;
-						dif5 = smallest1 ? dif8 : clockwise6 ? -(2 * Math.PI - theta7) : 2 * Math.PI - theta7;
-						break;
-					case 3:
-						var f15;
-						if(beta >= 0 && beta > Math.PI) {
-							f15 = beta;
-						} else {
-							var a15 = beta % (2 * Math.PI);
-							f15 = a15 >= 0 ? a15 : a15 + 2 * Math.PI;
-						}
-						var this20 = f15;
-						var za7 = this20;
-						var f16;
-						if(gamma1 >= 0 && gamma1 > Math.PI) {
-							f16 = gamma1;
-						} else {
-							var a16 = gamma1 % (2 * Math.PI);
-							f16 = a16 >= 0 ? a16 : a16 + 2 * Math.PI;
-						}
-						var this21 = f16;
-						var zb7 = this21;
-						var fa7 = beta;
-						var fb7 = gamma1;
-						var theta8 = Math.abs(beta - gamma1);
-						var largest1 = theta8 > Math.PI;
-						var clockwise7 = beta < gamma1;
-						var dif9 = clockwise7 ? theta8 : -theta8;
-						dif5 = largest1 ? dif9 : clockwise7 ? -(2 * Math.PI - theta8) : 2 * Math.PI - theta8;
-						break;
-					}
-					var positive = dif5 >= 0;
-					var totalSteps = Math.ceil(Math.abs(dif5) / step);
-					var step1 = dif5 / totalSteps;
-					var angle = beta;
-					var cx;
-					var cy;
-					var bx = 0;
-					var by = 0;
-					var p2 = temp.length;
-					var _g2 = 0;
-					var _g11 = totalSteps + 1;
-					while(_g2 < _g11) {
-						var i1 = _g2++;
-						cx = ax + radius * Math.sin(angle);
-						cy = ay + radius * Math.cos(angle);
-						temp[p2++] = cx;
-						temp[p2++] = cy;
-						if(i1 != 0) {
-							var t2 = new trilateral_tri_Trilateral(ax,ay,bx,by,cx,cy);
-							out[out.length] = t2;
-						}
-						angle += step1;
-						bx = cx;
-						by = cy;
-					}
-					var triArr = out;
-					var _g3 = 0;
-					while(_g3 < triArr.length) {
-						var t3 = triArr[_g3];
-						++_g3;
-						this10[this10.length] = t3;
-					}
-					var pA = _this.pointsAnti.length;
-					var len = temp.length / 2 | 0;
-					var p4 = temp.length / 4 | 0;
-					var _g4 = 0;
-					var _g12 = p4;
-					while(_g4 < _g12) {
-						var i2 = _g4++;
-						_this.pointsAnti[pA++] = temp[len - 2 * i2 + 1];
-						_this.pointsAnti[pA++] = temp[len - 2 * i2];
-					}
-					var pC = _this.pointsClock.length;
-					var _g21 = 0;
-					var _g31 = p4;
-					while(_g21 < _g31) {
-						var i3 = _g21++;
-						_this.pointsClock[pC++] = temp[i3 * 2 + len + 1];
-						_this.pointsClock[pC++] = temp[i3 * 2 + len];
-					}
-				}
-				if(_this.count != 0) {
-					_this.addQuads(clockWise,width_);
-				}
-				_this.quadIndex = _this.triArr.length;
-				if(_this.count == 0) {
-					_this.penultimateAX = _this.dxPrev;
-					_this.penultimateAY = _this.dyPrev;
-					_this.lastAntiX = _this.ex;
-					_this.lastAntiY = _this.ey;
-					_this.penultimateCX = _this.dx;
-					_this.penultimateCY = _this.dy;
-					_this.lastClockX = _this.exPrev;
-					_this.lastClockY = _this.eyPrev;
-					var this22 = _this.triArr;
-					var tri = new trilateral_tri_Trilateral(_this.dxPrev,_this.dyPrev,_this.dx,_this.dy,_this.ex,_this.ey,0);
-					this22[this22.length] = tri;
-					var this23 = _this.triArr;
-					var tri1 = new trilateral_tri_Trilateral(_this.dxPrev,_this.dyPrev,_this.dx,_this.dy,_this.exPrev,_this.eyPrev,0);
-					this23[this23.length] = tri1;
-				} else {
-					if(clockWise && !_this.lastClock) {
-						_this.penultimateAX = _this.jx;
-						_this.penultimateAY = _this.jy;
-						_this.lastAntiX = _this.ex;
-						_this.lastAntiY = _this.ey;
-						_this.penultimateCX = _this.dx;
-						_this.penultimateCY = _this.dy;
-						_this.lastClockX = _this.exPrev;
-						_this.lastClockY = _this.eyPrev;
-						var this24 = _this.triArr;
-						var tri2 = new trilateral_tri_Trilateral(_this.jx,_this.jy,_this.dx,_this.dy,_this.ex,_this.ey,0);
-						this24[this24.length] = tri2;
-						var this25 = _this.triArr;
-						var tri3 = new trilateral_tri_Trilateral(_this.jx,_this.jy,_this.dx,_this.dy,_this.exPrev,_this.eyPrev,0);
-						this25[this25.length] = tri3;
-					}
-					if(clockWise && _this.lastClock) {
-						_this.penultimateAX = _this.jx;
-						_this.penultimateAY = _this.jy;
-						_this.lastAntiX = _this.ex;
-						_this.lastAntiY = _this.ey;
-						_this.penultimateCX = _this.dx;
-						_this.penultimateCY = _this.dy;
-						_this.lastClockX = _this.exPrev;
-						_this.lastClockY = _this.eyPrev;
-						var this26 = _this.triArr;
-						var tri4 = new trilateral_tri_Trilateral(_this.jx,_this.jy,_this.dx,_this.dy,_this.ex,_this.ey,0);
-						this26[this26.length] = tri4;
-						var this27 = _this.triArr;
-						var tri5 = new trilateral_tri_Trilateral(_this.jx,_this.jy,_this.dx,_this.dy,_this.exPrev,_this.eyPrev,0);
-						this27[this27.length] = tri5;
-					}
-					if(!clockWise && !_this.lastClock) {
-						_this.penultimateCX = _this.dx;
-						_this.penultimateCY = _this.dy;
-						_this.lastClockX = _this.jx;
-						_this.lastClockY = _this.jy;
-						_this.penultimateAX = _this.dxPrev;
-						_this.penultimateAY = _this.dyPrev;
-						_this.lastAntiX = _this.ex;
-						_this.lastAntiY = _this.ey;
-						var this28 = _this.triArr;
-						var tri6 = new trilateral_tri_Trilateral(_this.dxPrev,_this.dyPrev,_this.dx,_this.dy,_this.jx,_this.jy,0);
-						this28[this28.length] = tri6;
-						var this29 = _this.triArr;
-						var tri7 = new trilateral_tri_Trilateral(_this.dxPrev,_this.dyPrev,_this.dx,_this.dy,_this.ex,_this.ey,0);
-						this29[this29.length] = tri7;
-					}
-					if(!clockWise && _this.lastClock) {
-						_this.penultimateAX = _this.dxPrev;
-						_this.penultimateAY = _this.dyPrev;
-						_this.lastAntiX = _this.ex;
-						_this.lastAntiY = _this.ey;
-						_this.penultimateCX = _this.jx;
-						_this.penultimateCY = _this.jy;
-						_this.lastClockX = _this.dx;
-						_this.lastClockY = _this.dy;
-						var this30 = _this.triArr;
-						var tri8 = new trilateral_tri_Trilateral(_this.jx,_this.jy,_this.dx,_this.dy,_this.ex,_this.ey,0);
-						this30[this30.length] = tri8;
-						var this31 = _this.triArr;
-						var tri9 = new trilateral_tri_Trilateral(_this.dxPrev,_this.dyPrev,_this.jx,_this.jy,_this.ex,_this.ey,0);
-						this31[this31.length] = tri9;
-					}
-				}
-				if(clockWise) {
-					var radius1 = width_ / 2;
-					var edgePoly = _this.pointsClock;
-					var t4 = [];
-					var this32;
-					if(t4 == null) {
-						var t5 = [];
-						var this33 = t5 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t5;
-						this32 = this33;
-					} else {
-						this32 = t4;
-					}
-					var this34 = this32;
-					var out1 = this34;
-					var pi1 = Math.PI;
-					var step2 = pi1 * 2 / 36;
-					var positive1 = dif >= 0;
-					var totalSteps1 = Math.ceil(Math.abs(dif) / step2);
-					var step3 = dif / totalSteps1;
-					var angle1 = theta0;
-					var cx1;
-					var cy1;
-					var bx1 = 0;
-					var by1 = 0;
-					var p21 = edgePoly.length;
-					var count = 0;
-					var _g5 = 0;
-					var _g13 = totalSteps1 + 1;
-					while(_g5 < _g13) {
-						var i4 = _g5++;
-						cx1 = ax_ + radius1 * Math.sin(angle1);
-						cy1 = ay_ + radius1 * Math.cos(angle1);
-						if(i4 != 0) {
-							var t6 = new trilateral_tri_Trilateral(ax_,ay_,bx1,by1,cx1,cy1);
-							out1[out1.length] = t6;
-							edgePoly[p21++] = cx1;
-							edgePoly[p21++] = cy1;
-						}
-						angle1 += step3;
-						bx1 = cx1;
-						by1 = cy1;
-					}
-					var trilateralArray = out1;
-					var this35 = _this.triArr;
-					var _g6 = 0;
-					while(_g6 < trilateralArray.length) {
-						var t7 = trilateralArray[_g6];
-						++_g6;
-						this35[this35.length] = t7;
-					}
-				} else {
-					var radius2 = width_ / 2;
-					var edgePoly1 = _this.pointsAnti;
-					var t8 = [];
-					var this36;
-					if(t8 == null) {
-						var t9 = [];
-						var this37 = t9 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t9;
-						this36 = this37;
-					} else {
-						this36 = t8;
-					}
-					var this38 = this36;
-					var out2 = this38;
-					var pi2 = Math.PI;
-					var step4 = pi2 * 2 / 36;
-					var positive2 = dif >= 0;
-					var totalSteps2 = Math.ceil(Math.abs(dif) / step4);
-					var step5 = dif / totalSteps2;
-					var angle2 = theta0;
-					var cx2;
-					var cy2;
-					var bx2 = 0;
-					var by2 = 0;
-					var p22 = edgePoly1.length;
-					var count1 = 0;
-					var _g7 = 0;
-					var _g14 = totalSteps2 + 1;
-					while(_g7 < _g14) {
-						var i5 = _g7++;
-						cx2 = ax_ + radius2 * Math.sin(angle2);
-						cy2 = ay_ + radius2 * Math.cos(angle2);
-						if(i5 != 0) {
-							var t10 = new trilateral_tri_Trilateral(ax_,ay_,bx2,by2,cx2,cy2);
-							out2[out2.length] = t10;
-							edgePoly1[p22++] = cx2;
-							edgePoly1[p22++] = cy2;
-						}
-						angle2 += step5;
-						bx2 = cx2;
-						by2 = cy2;
-					}
-					var trilateralArray1 = out2;
-					var this39 = _this.triArr;
-					var _g8 = 0;
-					while(_g8 < trilateralArray1.length) {
-						var t11 = trilateralArray1[_g8];
-						++_g8;
-						this39[this39.length] = t11;
-					}
-				}
-				_this.kax = _this.dxPrev;
-				_this.kay = _this.dyPrev;
-				_this.kbx = _this.dx;
-				_this.kby = _this.dy;
-				_this.ncx = _this.exPrev;
-				_this.ncy = _this.eyPrev;
-				_this.kcx = _this.ex;
-				_this.kcy = _this.ey;
-				if(_this.count != 0) {
-					if(clockWise) {
-						var this40 = _this.triArr;
-						var tri10 = new trilateral_tri_Trilateral(_this.ax,_this.ay,_this.dxOld,_this.dyOld,_this.jx,_this.jy,0);
-						this40[this40.length] = tri10;
-						var this41 = _this.triArr;
-						var tri11 = new trilateral_tri_Trilateral(_this.ax,_this.ay,_this.exPrev,_this.eyPrev,_this.jx,_this.jy,0);
-						this41[this41.length] = tri11;
-					} else {
-						var this42 = _this.triArr;
-						var tri12 = new trilateral_tri_Trilateral(_this.ax,_this.ay,_this.exOld,_this.eyOld,_this.jx,_this.jy,0);
-						this42[this42.length] = tri12;
-						var this43 = _this.triArr;
-						var tri13 = new trilateral_tri_Trilateral(_this.ax,_this.ay,_this.dxPrev,_this.dyPrev,_this.jx,_this.jy,0);
-						this43[this43.length] = tri13;
-					}
-				}
-				_this.jxOld = _this.jx;
-				_this.jyOld = _this.jy;
-				_this.lastClock = clockWise;
-				_this.count++;
-				var l = path.points.length;
-				var p = path.points[l - 1];
-				var l2 = p.length;
-				p[l2] = x_;
-				p[l2 + 1] = y_;
-				var d = path.dim[path.dim.length - 1];
-				if(x_ < d.minX) {
-					d.minX = x_;
-				}
-				if(x_ > d.maxX) {
-					d.maxX = x_;
-				}
-				if(y_ < d.minY) {
-					d.minY = y_;
-				}
-				if(y_ > d.maxY) {
-					d.maxY = y_;
-				}
-				path.x = x_;
-				path.y = y_;
+			return _this.refCount - 1;
+		};
+		var _this1 = this.collisionDemo;
+		var anchor = this.mousePos;
+		var joint1;
+		var mouseEdge = 2;
+		var radius1 = _this1.distance + mouseEdge + _this1.circleSize / 2;
+		var _g3 = 0;
+		var _g11 = _this1.points;
+		while(_g3 < _g11) {
+			var i2 = _g3++;
+			joint1 = _this1.joints[i2];
+			var toNext = new khaMath_Vector4(anchor.x - joint1.x,anchor.y - joint1.y,anchor.z - joint1.z,anchor.w - joint1.w);
+			if(toNext.get_length() < radius1) {
+				toNext.set_length(radius1);
+				var _this_x = anchor.x - joint1.x;
+				var _this_y = anchor.y - joint1.y;
+				var _this_z = anchor.z - joint1.z;
+				var _this_w = anchor.w - joint1.w;
+				var offset_x = _this_x - toNext.x;
+				var offset_y = _this_y - toNext.y;
+				var offset_z = _this_z - toNext.z;
+				var offset_w = _this_w - toNext.w;
+				_this1.joints[i2] = new khaMath_Vector4(joint1.x + offset_x,joint1.y + offset_y,joint1.z + offset_z,joint1.w + offset_w);
 			}
 		}
-		var this44 = this.triangles;
-		var triArr1 = path.trilateralArray;
-		var colorID = this.appColors.indexOf(3355443);
-		var tri14;
-		var _g9 = 0;
-		while(_g9 < triArr1.length) {
-			var t12 = triArr1[_g9];
-			++_g9;
-			if(t12 != null) {
-				var t13 = Object.create(trilateral_tri_Triangle.prototype);
-				t13.id = 11;
-				t13.ax = t12.ax;
-				t13.ay = t12.ay;
-				t13.bx = t12.bx;
-				t13.by = t12.by;
-				t13.cx = t12.cx;
-				t13.cy = t12.cy;
-				t13.mark = t12.mark;
-				t13.depth = 0;
-				t13.alpha = 1.;
-				t13.colorID = colorID;
-				t13.colorA = colorID;
-				t13.colorB = colorID;
-				t13.colorC = colorID;
-				t13.windingAdjusted = t12.windingAdjusted;
-				tri14 = t13;
-				this44[this44.length] = tri14;
+		var other;
+		var _g21 = 0;
+		var _g31 = _this1.points;
+		while(_g21 < _g31) {
+			var i3 = _g21++;
+			var _g22 = i3;
+			var _g32 = _this1.points;
+			while(_g22 < _g32) {
+				var j = _g22++;
+				joint1 = _this1.joints[i3];
+				other = _this1.joints[j];
+				var toNext1 = new khaMath_Vector4(other.x - joint1.x,other.y - joint1.y,other.z - joint1.z,other.w - joint1.w);
+				if(toNext1.get_length() < _this1.circleSize * 2) {
+					toNext1.set_length(_this1.circleSize * 2);
+					var _this_x1 = other.x - joint1.x;
+					var _this_y1 = other.y - joint1.y;
+					var _this_z1 = other.z - joint1.z;
+					var _this_w1 = other.w - joint1.w;
+					var _this_x2 = _this_x1 - toNext1.x;
+					var _this_y2 = _this_y1 - toNext1.y;
+					var _this_z2 = _this_z1 - toNext1.z;
+					var _this_w2 = _this_w1 - toNext1.w;
+					var offset_x1 = _this_x2 * 0.5;
+					var offset_y1 = _this_y2 * 0.5;
+					var offset_z1 = _this_z2 * 0.5;
+					var offset_w1 = _this_w2 * 0.5;
+					_this1.joints[i3] = new khaMath_Vector4(joint1.x + offset_x1,joint1.y + offset_y1,joint1.z + offset_z1,joint1.w + offset_w1);
+					_this1.joints[j] = new khaMath_Vector4(other.x - offset_x1,other.y - offset_y1,other.z - offset_z1,other.w - offset_w1);
+				}
 			}
 		}
-	}
-	,fabrikLink: function() {
-		var spots = this.jointsF;
-		var path = new trilateral_path_Fine(null,null,3);
-		path.width = 0.3;
-		path.moveTo(spots[0].x,spots[0].y);
-		var _g = 1;
-		var _g1 = this.points;
-		while(_g < _g1) {
-			var i = _g++;
-			var x_ = spots[i].x;
-			var y_ = spots[i].y;
-			var repeat = path.x == x_ && path.y == y_;
-			if(!repeat) {
-				if(path.widthFunction != null) {
-					path.width = path.widthFunction(path.width,path.x,path.x,x_,y_);
-				}
-				var _this = path.contour;
-				var ax_ = path.x;
-				var ay_ = path.y;
-				var width_ = path.width;
-				var oldAngle = _this.dx != null ? _this.angle1 : null;
-				_this.halfA = Math.PI / 2;
-				_this.ax = x_;
-				_this.ay = y_;
-				_this.bx = ax_;
-				_this.by = ay_;
-				_this.beta = Math.PI / 2 - _this.halfA;
-				_this.r = width_ / 2 * Math.cos(_this.beta);
-				_this.theta = Math.atan2(_this.ay - _this.by,_this.ax - _this.bx);
-				if(_this.theta > 0) {
-					if(_this.halfA < 0) {
-						_this.angle2 = _this.theta + _this.halfA + Math.PI / 2;
-						_this.angle1 = _this.theta - _this.halfA;
-					} else {
-						_this.angle1 = _this.theta + _this.halfA - Math.PI;
-						_this.angle2 = _this.theta + _this.halfA;
-					}
-				} else if(_this.halfA > 0) {
-					_this.angle1 = _this.theta + _this.halfA - Math.PI;
-					_this.angle2 = _this.theta + _this.halfA;
-				} else {
-					_this.angle2 = _this.theta + _this.halfA + Math.PI / 2;
-					_this.angle1 = _this.theta - _this.halfA;
-				}
-				if(_this.dxPrev != null) {
-					_this.dxOld = _this.dxPrev;
-				}
-				if(_this.dyPrev != null) {
-					_this.dyOld = _this.dyPrev;
-				}
-				if(_this.exPrev != null) {
-					_this.exOld = _this.exPrev;
-				}
-				if(_this.eyPrev != null) {
-					_this.eyOld = _this.eyPrev;
-				}
-				if(_this.dx != null) {
-					_this.dxPrev = _this.dx;
-				}
-				if(_this.dy != null) {
-					_this.dyPrev = _this.dy;
-				}
-				if(_this.ex != null) {
-					_this.exPrev = _this.ex;
-				}
-				if(_this.ey != null) {
-					_this.eyPrev = _this.ey;
-				}
-				_this.dx = _this.bx + _this.r * Math.cos(_this.angle1);
-				_this.dy = _this.by + _this.r * Math.sin(_this.angle1);
-				_this.ex = _this.bx + _this.r * Math.cos(_this.angle2);
-				_this.ey = _this.by + _this.r * Math.sin(_this.angle2);
-				_this.ax = ax_;
-				_this.ay = ay_;
-				_this.bx = x_;
-				_this.by = y_;
-				_this.theta = Math.atan2(_this.ay - _this.by,_this.ax - _this.bx);
-				if(_this.theta > 0) {
-					if(_this.halfA < 0) {
-						_this.angle2 = _this.theta + _this.halfA + Math.PI / 2;
-						_this.angle1 = _this.theta - _this.halfA;
-					} else {
-						_this.angle1 = _this.theta + _this.halfA - Math.PI;
-						_this.angle2 = _this.theta + _this.halfA;
-					}
-				} else if(_this.halfA > 0) {
-					_this.angle1 = _this.theta + _this.halfA - Math.PI;
-					_this.angle2 = _this.theta + _this.halfA;
-				} else {
-					_this.angle2 = _this.theta + _this.halfA + Math.PI / 2;
-					_this.angle1 = _this.theta - _this.halfA;
-				}
-				if(_this.dxPrev != null) {
-					_this.dxOld = _this.dxPrev;
-				}
-				if(_this.dyPrev != null) {
-					_this.dyOld = _this.dyPrev;
-				}
-				if(_this.exPrev != null) {
-					_this.exOld = _this.exPrev;
-				}
-				if(_this.eyPrev != null) {
-					_this.eyOld = _this.eyPrev;
-				}
-				if(_this.dx != null) {
-					_this.dxPrev = _this.dx;
-				}
-				if(_this.dy != null) {
-					_this.dyPrev = _this.dy;
-				}
-				if(_this.ex != null) {
-					_this.exPrev = _this.ex;
-				}
-				if(_this.ey != null) {
-					_this.eyPrev = _this.ey;
-				}
-				_this.dx = _this.bx + _this.r * Math.cos(_this.angle1);
-				_this.dy = _this.by + _this.r * Math.sin(_this.angle1);
-				_this.ex = _this.bx + _this.r * Math.cos(_this.angle2);
-				_this.ey = _this.by + _this.r * Math.sin(_this.angle2);
-				var x = _this.dxOld - x_;
-				var y = _this.dyOld - y_;
-				var x1 = _this.exOld - x_;
-				var y1 = _this.eyOld - y_;
-				var clockWise = x * x + y * y > x1 * x1 + y1 * y1;
-				var theta0;
-				var theta1;
-				if(clockWise) {
-					theta0 = -Math.atan2(_this.ay - _this.dyOld,_this.ax - _this.dxOld) - Math.PI / 2;
-					theta1 = -Math.atan2(_this.ay - _this.eyPrev,_this.ax - _this.exPrev) - Math.PI / 2;
-				} else {
-					theta0 = -Math.atan2(_this.ay - _this.eyOld,_this.ax - _this.exOld) - Math.PI / 2;
-					theta1 = -Math.atan2(_this.ay - _this.dyPrev,_this.ax - _this.dxPrev) - Math.PI / 2;
-				}
-				var dif;
-				switch(trilateral_angle_DifferencePreference.SMALL._hx_index) {
-				case 0:
-					var f;
-					if(theta0 >= 0 && theta0 > Math.PI) {
-						f = theta0;
-					} else {
-						var a = theta0 % (2 * Math.PI);
-						f = a >= 0 ? a : a + 2 * Math.PI;
-					}
-					var this1 = f;
-					var za = this1;
-					var f1;
-					if(theta1 >= 0 && theta1 > Math.PI) {
-						f1 = theta1;
-					} else {
-						var a1 = theta1 % (2 * Math.PI);
-						f1 = a1 >= 0 ? a1 : a1 + 2 * Math.PI;
-					}
-					var this2 = f1;
-					var zb = this2;
-					var fa = za;
-					var fb = zb;
-					var theta = Math.abs(theta0 - theta1);
-					var clockwise = theta0 < theta1;
-					var dif1 = clockwise ? theta : -theta;
-					dif = dif1 > 0 ? dif1 : 2 * Math.PI + dif1;
-					break;
-				case 1:
-					var f2;
-					if(theta0 >= 0 && theta0 > Math.PI) {
-						f2 = theta0;
-					} else {
-						var a2 = theta0 % (2 * Math.PI);
-						f2 = a2 >= 0 ? a2 : a2 + 2 * Math.PI;
-					}
-					var this3 = f2;
-					var za1 = this3;
-					var f3;
-					if(theta1 >= 0 && theta1 > Math.PI) {
-						f3 = theta1;
-					} else {
-						var a3 = theta1 % (2 * Math.PI);
-						f3 = a3 >= 0 ? a3 : a3 + 2 * Math.PI;
-					}
-					var this4 = f3;
-					var zb1 = this4;
-					var fa1 = za1;
-					var fb1 = zb1;
-					var theta2 = Math.abs(theta0 - theta1);
-					var clockwise1 = theta0 < theta1;
-					var dif2 = clockwise1 ? theta2 : -theta2;
-					dif = dif2 < 0 ? dif2 : -2 * Math.PI + dif2;
-					break;
-				case 2:
-					var f4;
-					if(theta0 >= 0 && theta0 > Math.PI) {
-						f4 = theta0;
-					} else {
-						var a4 = theta0 % (2 * Math.PI);
-						f4 = a4 >= 0 ? a4 : a4 + 2 * Math.PI;
-					}
-					var this5 = f4;
-					var za2 = this5;
-					var f5;
-					if(theta1 >= 0 && theta1 > Math.PI) {
-						f5 = theta1;
-					} else {
-						var a5 = theta1 % (2 * Math.PI);
-						f5 = a5 >= 0 ? a5 : a5 + 2 * Math.PI;
-					}
-					var this6 = f5;
-					var zb2 = this6;
-					var fa2 = theta0;
-					var fb2 = theta1;
-					var theta3 = Math.abs(theta0 - theta1);
-					var smallest = theta3 <= Math.PI;
-					var clockwise2 = theta0 < theta1;
-					var dif3 = clockwise2 ? theta3 : -theta3;
-					dif = smallest ? dif3 : clockwise2 ? -(2 * Math.PI - theta3) : 2 * Math.PI - theta3;
-					break;
-				case 3:
-					var f6;
-					if(theta0 >= 0 && theta0 > Math.PI) {
-						f6 = theta0;
-					} else {
-						var a6 = theta0 % (2 * Math.PI);
-						f6 = a6 >= 0 ? a6 : a6 + 2 * Math.PI;
-					}
-					var this7 = f6;
-					var za3 = this7;
-					var f7;
-					if(theta1 >= 0 && theta1 > Math.PI) {
-						f7 = theta1;
-					} else {
-						var a7 = theta1 % (2 * Math.PI);
-						f7 = a7 >= 0 ? a7 : a7 + 2 * Math.PI;
-					}
-					var this8 = f7;
-					var zb3 = this8;
-					var fa3 = theta0;
-					var fb3 = theta1;
-					var theta4 = Math.abs(theta0 - theta1);
-					var largest = theta4 > Math.PI;
-					var clockwise3 = theta0 < theta1;
-					var dif4 = clockwise3 ? theta4 : -theta4;
-					dif = largest ? dif4 : clockwise3 ? -(2 * Math.PI - theta4) : 2 * Math.PI - theta4;
-					break;
-				}
-				if(_this.count != 0) {
-					var gamma = Math.abs(dif) / 2;
-					var h = width_ / 2 / Math.cos(gamma);
-					var f8;
-					if(theta0 <= Math.PI && theta0 > -Math.PI) {
-						f8 = theta0;
-					} else {
-						var a8 = (theta0 + Math.PI) % (2 * Math.PI);
-						f8 = a8 >= 0 ? a8 - Math.PI : a8 + Math.PI;
-					}
-					var this9 = f8;
-					var start = this9;
-					var start2 = start;
-					var delta = start2 + dif / 2 + Math.PI;
-					_this.jx = _this.ax + h * Math.sin(delta);
-					_this.jy = _this.ay + h * Math.cos(delta);
-				}
-				if(_this.count == 0 && (_this.endLine == 1 || _this.endLine == 3)) {
-					var ax = _this.ax;
-					var ay = _this.ay;
-					var radius = width_ / 2;
-					var beta = -_this.angle1 - Math.PI / 2;
-					var gamma1 = -_this.angle1 - Math.PI / 2 + Math.PI;
-					var temp = [];
-					var this10 = _this.triArr;
-					var t = [];
-					var this11;
-					if(t == null) {
-						var t1 = [];
-						var this12 = t1 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t1;
-						this11 = this12;
-					} else {
-						this11 = t;
-					}
-					var this13 = this11;
-					var out = this13;
-					var pi = Math.PI;
-					var step = pi * 2 / 36;
-					var dif5;
-					switch(trilateral_angle_DifferencePreference.SMALL._hx_index) {
-					case 0:
-						var f9;
-						if(beta >= 0 && beta > Math.PI) {
-							f9 = beta;
-						} else {
-							var a9 = beta % (2 * Math.PI);
-							f9 = a9 >= 0 ? a9 : a9 + 2 * Math.PI;
-						}
-						var this14 = f9;
-						var za4 = this14;
-						var f10;
-						if(gamma1 >= 0 && gamma1 > Math.PI) {
-							f10 = gamma1;
-						} else {
-							var a10 = gamma1 % (2 * Math.PI);
-							f10 = a10 >= 0 ? a10 : a10 + 2 * Math.PI;
-						}
-						var this15 = f10;
-						var zb4 = this15;
-						var fa4 = za4;
-						var fb4 = zb4;
-						var theta5 = Math.abs(beta - gamma1);
-						var clockwise4 = beta < gamma1;
-						var dif6 = clockwise4 ? theta5 : -theta5;
-						dif5 = dif6 > 0 ? dif6 : 2 * Math.PI + dif6;
-						break;
-					case 1:
-						var f11;
-						if(beta >= 0 && beta > Math.PI) {
-							f11 = beta;
-						} else {
-							var a11 = beta % (2 * Math.PI);
-							f11 = a11 >= 0 ? a11 : a11 + 2 * Math.PI;
-						}
-						var this16 = f11;
-						var za5 = this16;
-						var f12;
-						if(gamma1 >= 0 && gamma1 > Math.PI) {
-							f12 = gamma1;
-						} else {
-							var a12 = gamma1 % (2 * Math.PI);
-							f12 = a12 >= 0 ? a12 : a12 + 2 * Math.PI;
-						}
-						var this17 = f12;
-						var zb5 = this17;
-						var fa5 = za5;
-						var fb5 = zb5;
-						var theta6 = Math.abs(beta - gamma1);
-						var clockwise5 = beta < gamma1;
-						var dif7 = clockwise5 ? theta6 : -theta6;
-						dif5 = dif7 < 0 ? dif7 : -2 * Math.PI + dif7;
-						break;
-					case 2:
-						var f13;
-						if(beta >= 0 && beta > Math.PI) {
-							f13 = beta;
-						} else {
-							var a13 = beta % (2 * Math.PI);
-							f13 = a13 >= 0 ? a13 : a13 + 2 * Math.PI;
-						}
-						var this18 = f13;
-						var za6 = this18;
-						var f14;
-						if(gamma1 >= 0 && gamma1 > Math.PI) {
-							f14 = gamma1;
-						} else {
-							var a14 = gamma1 % (2 * Math.PI);
-							f14 = a14 >= 0 ? a14 : a14 + 2 * Math.PI;
-						}
-						var this19 = f14;
-						var zb6 = this19;
-						var fa6 = beta;
-						var fb6 = gamma1;
-						var theta7 = Math.abs(beta - gamma1);
-						var smallest1 = theta7 <= Math.PI;
-						var clockwise6 = beta < gamma1;
-						var dif8 = clockwise6 ? theta7 : -theta7;
-						dif5 = smallest1 ? dif8 : clockwise6 ? -(2 * Math.PI - theta7) : 2 * Math.PI - theta7;
-						break;
-					case 3:
-						var f15;
-						if(beta >= 0 && beta > Math.PI) {
-							f15 = beta;
-						} else {
-							var a15 = beta % (2 * Math.PI);
-							f15 = a15 >= 0 ? a15 : a15 + 2 * Math.PI;
-						}
-						var this20 = f15;
-						var za7 = this20;
-						var f16;
-						if(gamma1 >= 0 && gamma1 > Math.PI) {
-							f16 = gamma1;
-						} else {
-							var a16 = gamma1 % (2 * Math.PI);
-							f16 = a16 >= 0 ? a16 : a16 + 2 * Math.PI;
-						}
-						var this21 = f16;
-						var zb7 = this21;
-						var fa7 = beta;
-						var fb7 = gamma1;
-						var theta8 = Math.abs(beta - gamma1);
-						var largest1 = theta8 > Math.PI;
-						var clockwise7 = beta < gamma1;
-						var dif9 = clockwise7 ? theta8 : -theta8;
-						dif5 = largest1 ? dif9 : clockwise7 ? -(2 * Math.PI - theta8) : 2 * Math.PI - theta8;
-						break;
-					}
-					var positive = dif5 >= 0;
-					var totalSteps = Math.ceil(Math.abs(dif5) / step);
-					var step1 = dif5 / totalSteps;
-					var angle = beta;
-					var cx;
-					var cy;
-					var bx = 0;
-					var by = 0;
-					var p2 = temp.length;
-					var _g2 = 0;
-					var _g11 = totalSteps + 1;
-					while(_g2 < _g11) {
-						var i1 = _g2++;
-						cx = ax + radius * Math.sin(angle);
-						cy = ay + radius * Math.cos(angle);
-						temp[p2++] = cx;
-						temp[p2++] = cy;
-						if(i1 != 0) {
-							var t2 = new trilateral_tri_Trilateral(ax,ay,bx,by,cx,cy);
-							out[out.length] = t2;
-						}
-						angle += step1;
-						bx = cx;
-						by = cy;
-					}
-					var triArr = out;
-					var _g3 = 0;
-					while(_g3 < triArr.length) {
-						var t3 = triArr[_g3];
-						++_g3;
-						this10[this10.length] = t3;
-					}
-					var pA = _this.pointsAnti.length;
-					var len = temp.length / 2 | 0;
-					var p4 = temp.length / 4 | 0;
-					var _g4 = 0;
-					var _g12 = p4;
-					while(_g4 < _g12) {
-						var i2 = _g4++;
-						_this.pointsAnti[pA++] = temp[len - 2 * i2 + 1];
-						_this.pointsAnti[pA++] = temp[len - 2 * i2];
-					}
-					var pC = _this.pointsClock.length;
-					var _g21 = 0;
-					var _g31 = p4;
-					while(_g21 < _g31) {
-						var i3 = _g21++;
-						_this.pointsClock[pC++] = temp[i3 * 2 + len + 1];
-						_this.pointsClock[pC++] = temp[i3 * 2 + len];
-					}
-				}
-				if(_this.count != 0) {
-					_this.addQuads(clockWise,width_);
-				}
-				_this.quadIndex = _this.triArr.length;
-				if(_this.count == 0) {
-					_this.penultimateAX = _this.dxPrev;
-					_this.penultimateAY = _this.dyPrev;
-					_this.lastAntiX = _this.ex;
-					_this.lastAntiY = _this.ey;
-					_this.penultimateCX = _this.dx;
-					_this.penultimateCY = _this.dy;
-					_this.lastClockX = _this.exPrev;
-					_this.lastClockY = _this.eyPrev;
-					var this22 = _this.triArr;
-					var tri = new trilateral_tri_Trilateral(_this.dxPrev,_this.dyPrev,_this.dx,_this.dy,_this.ex,_this.ey,0);
-					this22[this22.length] = tri;
-					var this23 = _this.triArr;
-					var tri1 = new trilateral_tri_Trilateral(_this.dxPrev,_this.dyPrev,_this.dx,_this.dy,_this.exPrev,_this.eyPrev,0);
-					this23[this23.length] = tri1;
-				} else {
-					if(clockWise && !_this.lastClock) {
-						_this.penultimateAX = _this.jx;
-						_this.penultimateAY = _this.jy;
-						_this.lastAntiX = _this.ex;
-						_this.lastAntiY = _this.ey;
-						_this.penultimateCX = _this.dx;
-						_this.penultimateCY = _this.dy;
-						_this.lastClockX = _this.exPrev;
-						_this.lastClockY = _this.eyPrev;
-						var this24 = _this.triArr;
-						var tri2 = new trilateral_tri_Trilateral(_this.jx,_this.jy,_this.dx,_this.dy,_this.ex,_this.ey,0);
-						this24[this24.length] = tri2;
-						var this25 = _this.triArr;
-						var tri3 = new trilateral_tri_Trilateral(_this.jx,_this.jy,_this.dx,_this.dy,_this.exPrev,_this.eyPrev,0);
-						this25[this25.length] = tri3;
-					}
-					if(clockWise && _this.lastClock) {
-						_this.penultimateAX = _this.jx;
-						_this.penultimateAY = _this.jy;
-						_this.lastAntiX = _this.ex;
-						_this.lastAntiY = _this.ey;
-						_this.penultimateCX = _this.dx;
-						_this.penultimateCY = _this.dy;
-						_this.lastClockX = _this.exPrev;
-						_this.lastClockY = _this.eyPrev;
-						var this26 = _this.triArr;
-						var tri4 = new trilateral_tri_Trilateral(_this.jx,_this.jy,_this.dx,_this.dy,_this.ex,_this.ey,0);
-						this26[this26.length] = tri4;
-						var this27 = _this.triArr;
-						var tri5 = new trilateral_tri_Trilateral(_this.jx,_this.jy,_this.dx,_this.dy,_this.exPrev,_this.eyPrev,0);
-						this27[this27.length] = tri5;
-					}
-					if(!clockWise && !_this.lastClock) {
-						_this.penultimateCX = _this.dx;
-						_this.penultimateCY = _this.dy;
-						_this.lastClockX = _this.jx;
-						_this.lastClockY = _this.jy;
-						_this.penultimateAX = _this.dxPrev;
-						_this.penultimateAY = _this.dyPrev;
-						_this.lastAntiX = _this.ex;
-						_this.lastAntiY = _this.ey;
-						var this28 = _this.triArr;
-						var tri6 = new trilateral_tri_Trilateral(_this.dxPrev,_this.dyPrev,_this.dx,_this.dy,_this.jx,_this.jy,0);
-						this28[this28.length] = tri6;
-						var this29 = _this.triArr;
-						var tri7 = new trilateral_tri_Trilateral(_this.dxPrev,_this.dyPrev,_this.dx,_this.dy,_this.ex,_this.ey,0);
-						this29[this29.length] = tri7;
-					}
-					if(!clockWise && _this.lastClock) {
-						_this.penultimateAX = _this.dxPrev;
-						_this.penultimateAY = _this.dyPrev;
-						_this.lastAntiX = _this.ex;
-						_this.lastAntiY = _this.ey;
-						_this.penultimateCX = _this.jx;
-						_this.penultimateCY = _this.jy;
-						_this.lastClockX = _this.dx;
-						_this.lastClockY = _this.dy;
-						var this30 = _this.triArr;
-						var tri8 = new trilateral_tri_Trilateral(_this.jx,_this.jy,_this.dx,_this.dy,_this.ex,_this.ey,0);
-						this30[this30.length] = tri8;
-						var this31 = _this.triArr;
-						var tri9 = new trilateral_tri_Trilateral(_this.dxPrev,_this.dyPrev,_this.jx,_this.jy,_this.ex,_this.ey,0);
-						this31[this31.length] = tri9;
-					}
-				}
-				if(clockWise) {
-					var radius1 = width_ / 2;
-					var edgePoly = _this.pointsClock;
-					var t4 = [];
-					var this32;
-					if(t4 == null) {
-						var t5 = [];
-						var this33 = t5 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t5;
-						this32 = this33;
-					} else {
-						this32 = t4;
-					}
-					var this34 = this32;
-					var out1 = this34;
-					var pi1 = Math.PI;
-					var step2 = pi1 * 2 / 36;
-					var positive1 = dif >= 0;
-					var totalSteps1 = Math.ceil(Math.abs(dif) / step2);
-					var step3 = dif / totalSteps1;
-					var angle1 = theta0;
-					var cx1;
-					var cy1;
-					var bx1 = 0;
-					var by1 = 0;
-					var p21 = edgePoly.length;
-					var count = 0;
-					var _g5 = 0;
-					var _g13 = totalSteps1 + 1;
-					while(_g5 < _g13) {
-						var i4 = _g5++;
-						cx1 = ax_ + radius1 * Math.sin(angle1);
-						cy1 = ay_ + radius1 * Math.cos(angle1);
-						if(i4 != 0) {
-							var t6 = new trilateral_tri_Trilateral(ax_,ay_,bx1,by1,cx1,cy1);
-							out1[out1.length] = t6;
-							edgePoly[p21++] = cx1;
-							edgePoly[p21++] = cy1;
-						}
-						angle1 += step3;
-						bx1 = cx1;
-						by1 = cy1;
-					}
-					var trilateralArray = out1;
-					var this35 = _this.triArr;
-					var _g6 = 0;
-					while(_g6 < trilateralArray.length) {
-						var t7 = trilateralArray[_g6];
-						++_g6;
-						this35[this35.length] = t7;
-					}
-				} else {
-					var radius2 = width_ / 2;
-					var edgePoly1 = _this.pointsAnti;
-					var t8 = [];
-					var this36;
-					if(t8 == null) {
-						var t9 = [];
-						var this37 = t9 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t9;
-						this36 = this37;
-					} else {
-						this36 = t8;
-					}
-					var this38 = this36;
-					var out2 = this38;
-					var pi2 = Math.PI;
-					var step4 = pi2 * 2 / 36;
-					var positive2 = dif >= 0;
-					var totalSteps2 = Math.ceil(Math.abs(dif) / step4);
-					var step5 = dif / totalSteps2;
-					var angle2 = theta0;
-					var cx2;
-					var cy2;
-					var bx2 = 0;
-					var by2 = 0;
-					var p22 = edgePoly1.length;
-					var count1 = 0;
-					var _g7 = 0;
-					var _g14 = totalSteps2 + 1;
-					while(_g7 < _g14) {
-						var i5 = _g7++;
-						cx2 = ax_ + radius2 * Math.sin(angle2);
-						cy2 = ay_ + radius2 * Math.cos(angle2);
-						if(i5 != 0) {
-							var t10 = new trilateral_tri_Trilateral(ax_,ay_,bx2,by2,cx2,cy2);
-							out2[out2.length] = t10;
-							edgePoly1[p22++] = cx2;
-							edgePoly1[p22++] = cy2;
-						}
-						angle2 += step5;
-						bx2 = cx2;
-						by2 = cy2;
-					}
-					var trilateralArray1 = out2;
-					var this39 = _this.triArr;
-					var _g8 = 0;
-					while(_g8 < trilateralArray1.length) {
-						var t11 = trilateralArray1[_g8];
-						++_g8;
-						this39[this39.length] = t11;
-					}
-				}
-				_this.kax = _this.dxPrev;
-				_this.kay = _this.dyPrev;
-				_this.kbx = _this.dx;
-				_this.kby = _this.dy;
-				_this.ncx = _this.exPrev;
-				_this.ncy = _this.eyPrev;
-				_this.kcx = _this.ex;
-				_this.kcy = _this.ey;
-				if(_this.count != 0) {
-					if(clockWise) {
-						var this40 = _this.triArr;
-						var tri10 = new trilateral_tri_Trilateral(_this.ax,_this.ay,_this.dxOld,_this.dyOld,_this.jx,_this.jy,0);
-						this40[this40.length] = tri10;
-						var this41 = _this.triArr;
-						var tri11 = new trilateral_tri_Trilateral(_this.ax,_this.ay,_this.exPrev,_this.eyPrev,_this.jx,_this.jy,0);
-						this41[this41.length] = tri11;
-					} else {
-						var this42 = _this.triArr;
-						var tri12 = new trilateral_tri_Trilateral(_this.ax,_this.ay,_this.exOld,_this.eyOld,_this.jx,_this.jy,0);
-						this42[this42.length] = tri12;
-						var this43 = _this.triArr;
-						var tri13 = new trilateral_tri_Trilateral(_this.ax,_this.ay,_this.dxPrev,_this.dyPrev,_this.jx,_this.jy,0);
-						this43[this43.length] = tri13;
-					}
-				}
-				_this.jxOld = _this.jx;
-				_this.jyOld = _this.jy;
-				_this.lastClock = clockWise;
-				_this.count++;
-				var l = path.points.length;
-				var p = path.points[l - 1];
-				var l2 = p.length;
-				p[l2] = x_;
-				p[l2 + 1] = y_;
-				var d = path.dim[path.dim.length - 1];
-				if(x_ < d.minX) {
-					d.minX = x_;
-				}
-				if(x_ > d.maxX) {
-					d.maxX = x_;
-				}
-				if(y_ < d.minY) {
-					d.minY = y_;
-				}
-				if(y_ > d.maxY) {
-					d.maxY = y_;
-				}
-				path.x = x_;
-				path.y = y_;
-			}
-		}
-		var this44 = this.triangles;
-		var triArr1 = path.trilateralArray;
-		var colorID = this.appColors.indexOf(4473924);
-		var tri14;
-		var _g9 = 0;
-		while(_g9 < triArr1.length) {
-			var t12 = triArr1[_g9];
-			++_g9;
-			if(t12 != null) {
-				var t13 = Object.create(trilateral_tri_Triangle.prototype);
-				t13.id = 10;
-				t13.ax = t12.ax;
-				t13.ay = t12.ay;
-				t13.bx = t12.bx;
-				t13.by = t12.by;
-				t13.cx = t12.cx;
-				t13.cy = t12.cy;
-				t13.mark = t12.mark;
-				t13.depth = 0;
-				t13.alpha = 1.;
-				t13.colorID = colorID;
-				t13.colorA = colorID;
-				t13.colorB = colorID;
-				t13.colorC = colorID;
-				t13.windingAdjusted = t12.windingAdjusted;
-				tri14 = t13;
-				this44[this44.length] = tri14;
-			}
+		var _g4 = 0;
+		var _g5 = _this1.points;
+		while(_g4 < _g5) {
+			var i4 = _g4++;
+			jointRender(i4,_this1.joints[i4]);
 		}
 	}
 	,render: function(i) {
 		this.triangles = [];
 		this.shapes.triangles = this.triangles;
-		if(this.showMouse) {
-			var x = this.mousePos.x;
-			var y = this.mousePos.y;
-			var radius = this.distance;
-			var this1 = this.triangles;
-			var gamma = 2 * Math.PI;
-			var t = [];
-			var this2;
-			if(t == null) {
-				var t1 = [];
-				var this3 = t1 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t1;
-				this2 = this3;
+		var x = this.mousePos.x;
+		var y = this.mousePos.y;
+		var radius = this.distance;
+		var this1 = this.triangles;
+		var gamma = 2 * Math.PI;
+		var t = [];
+		var this2;
+		if(t == null) {
+			var t1 = [];
+			var this3 = t1 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t1;
+			this2 = this3;
+		} else {
+			this2 = t;
+		}
+		var this4 = this2;
+		var out = this4;
+		var pi = Math.PI;
+		var step = pi * 2 / 36;
+		var dif;
+		switch(trilateral_angle_DifferencePreference.CLOCKWISE._hx_index) {
+		case 0:
+			var f;
+			if(0 > Math.PI) {
+				f = 0;
 			} else {
-				this2 = t;
+				var a = 0 % (2 * Math.PI);
+				f = a >= 0 ? a : a + 2 * Math.PI;
 			}
-			var this4 = this2;
-			var out = this4;
-			var pi = Math.PI;
-			var step = pi * 2 / 36;
-			var dif;
-			switch(trilateral_angle_DifferencePreference.CLOCKWISE._hx_index) {
-			case 0:
-				var f;
-				if(0 > Math.PI) {
-					f = 0;
-				} else {
-					var a = 0 % (2 * Math.PI);
-					f = a >= 0 ? a : a + 2 * Math.PI;
-				}
-				var this5 = f;
-				var za = this5;
-				var f1;
-				if(gamma >= 0 && gamma > Math.PI) {
-					f1 = gamma;
-				} else {
-					var a1 = gamma % (2 * Math.PI);
-					f1 = a1 >= 0 ? a1 : a1 + 2 * Math.PI;
-				}
-				var this6 = f1;
-				var zb = this6;
-				var fa = za;
-				var fb = zb;
-				var theta = Math.abs(0 - gamma);
-				var clockwise = 0 < gamma;
-				var dif1 = clockwise ? theta : -theta;
-				dif = dif1 > 0 ? dif1 : 2 * Math.PI + dif1;
-				break;
-			case 1:
-				var f2;
-				if(0 > Math.PI) {
-					f2 = 0;
-				} else {
-					var a2 = 0 % (2 * Math.PI);
-					f2 = a2 >= 0 ? a2 : a2 + 2 * Math.PI;
-				}
-				var this7 = f2;
-				var za1 = this7;
-				var f3;
-				if(gamma >= 0 && gamma > Math.PI) {
-					f3 = gamma;
-				} else {
-					var a3 = gamma % (2 * Math.PI);
-					f3 = a3 >= 0 ? a3 : a3 + 2 * Math.PI;
-				}
-				var this8 = f3;
-				var zb1 = this8;
-				var fa1 = za1;
-				var fb1 = zb1;
-				var theta1 = Math.abs(0 - gamma);
-				var clockwise1 = 0 < gamma;
-				var dif2 = clockwise1 ? theta1 : -theta1;
-				dif = dif2 < 0 ? dif2 : -2 * Math.PI + dif2;
-				break;
-			case 2:
-				var f4;
-				if(0 > Math.PI) {
-					f4 = 0;
-				} else {
-					var a4 = 0 % (2 * Math.PI);
-					f4 = a4 >= 0 ? a4 : a4 + 2 * Math.PI;
-				}
-				var this9 = f4;
-				var za2 = this9;
-				var f5;
-				if(gamma >= 0 && gamma > Math.PI) {
-					f5 = gamma;
-				} else {
-					var a5 = gamma % (2 * Math.PI);
-					f5 = a5 >= 0 ? a5 : a5 + 2 * Math.PI;
-				}
-				var this10 = f5;
-				var zb2 = this10;
-				var fa2 = 0;
-				var fb2 = gamma;
-				var theta2 = Math.abs(0 - gamma);
-				var smallest = theta2 <= Math.PI;
-				var clockwise2 = 0 < gamma;
-				var dif3 = clockwise2 ? theta2 : -theta2;
-				dif = smallest ? dif3 : clockwise2 ? -(2 * Math.PI - theta2) : 2 * Math.PI - theta2;
-				break;
-			case 3:
-				var f6;
-				if(0 > Math.PI) {
-					f6 = 0;
-				} else {
-					var a6 = 0 % (2 * Math.PI);
-					f6 = a6 >= 0 ? a6 : a6 + 2 * Math.PI;
-				}
-				var this11 = f6;
-				var za3 = this11;
-				var f7;
-				if(gamma >= 0 && gamma > Math.PI) {
-					f7 = gamma;
-				} else {
-					var a7 = gamma % (2 * Math.PI);
-					f7 = a7 >= 0 ? a7 : a7 + 2 * Math.PI;
-				}
-				var this12 = f7;
-				var zb3 = this12;
-				var fa3 = 0;
-				var fb3 = gamma;
-				var theta3 = Math.abs(0 - gamma);
-				var largest = theta3 > Math.PI;
-				var clockwise3 = 0 < gamma;
-				var dif4 = clockwise3 ? theta3 : -theta3;
-				dif = largest ? dif4 : clockwise3 ? -(2 * Math.PI - theta3) : 2 * Math.PI - theta3;
-				break;
+			var this5 = f;
+			var za = this5;
+			var f1;
+			if(gamma >= 0 && gamma > Math.PI) {
+				f1 = gamma;
+			} else {
+				var a1 = gamma % (2 * Math.PI);
+				f1 = a1 >= 0 ? a1 : a1 + 2 * Math.PI;
 			}
-			var positive = dif >= 0;
-			var totalSteps = Math.ceil(Math.abs(dif) / step);
-			var step1 = dif / totalSteps;
-			var angle = 0;
-			var cx;
-			var cy;
-			var bx = 0;
-			var by = 0;
-			var dx = 0;
-			var dy = 0;
-			var ex = 0;
-			var ey = 0;
-			var r2 = radius - 1;
-			var _g = 0;
-			var _g1 = totalSteps + 1;
-			while(_g < _g1) {
-				var i1 = _g++;
-				cx = x + radius * Math.sin(angle);
-				cy = y + radius * Math.cos(angle);
-				ex = x + r2 * Math.sin(angle);
-				ey = y + r2 * Math.cos(angle);
-				if(i1 != 0) {
-					var t0 = new trilateral_tri_Trilateral(dx,dy,bx,by,cx,cy);
-					var t11 = new trilateral_tri_Trilateral(dx,dy,cx,cy,ex,ey);
-					out[out.length] = t0;
-					out[out.length] = t11;
-				}
-				angle += step1;
-				bx = cx;
-				by = cy;
-				dx = ex;
-				dy = ey;
+			var this6 = f1;
+			var zb = this6;
+			var fa = za;
+			var fb = zb;
+			var theta = Math.abs(0 - gamma);
+			var clockwise = 0 < gamma;
+			var dif1 = clockwise ? theta : -theta;
+			dif = dif1 > 0 ? dif1 : 2 * Math.PI + dif1;
+			break;
+		case 1:
+			var f2;
+			if(0 > Math.PI) {
+				f2 = 0;
+			} else {
+				var a2 = 0 % (2 * Math.PI);
+				f2 = a2 >= 0 ? a2 : a2 + 2 * Math.PI;
 			}
-			var triArr = out;
-			var colorID = this.appColors.indexOf(3355443);
-			var tri;
-			var _g2 = 0;
-			while(_g2 < triArr.length) {
-				var t2 = triArr[_g2];
-				++_g2;
-				if(t2 != null) {
-					var t3 = Object.create(trilateral_tri_Triangle.prototype);
-					t3.id = 0;
-					t3.ax = t2.ax;
-					t3.ay = t2.ay;
-					t3.bx = t2.bx;
-					t3.by = t2.by;
-					t3.cx = t2.cx;
-					t3.cy = t2.cy;
-					t3.mark = t2.mark;
-					t3.depth = 0;
-					t3.alpha = 1.;
-					t3.colorID = colorID;
-					t3.colorA = colorID;
-					t3.colorB = colorID;
-					t3.colorC = colorID;
-					t3.windingAdjusted = t2.windingAdjusted;
-					tri = t3;
-					this1[this1.length] = tri;
-				}
+			var this7 = f2;
+			var za1 = this7;
+			var f3;
+			if(gamma >= 0 && gamma > Math.PI) {
+				f3 = gamma;
+			} else {
+				var a3 = gamma % (2 * Math.PI);
+				f3 = a3 >= 0 ? a3 : a3 + 2 * Math.PI;
+			}
+			var this8 = f3;
+			var zb1 = this8;
+			var fa1 = za1;
+			var fb1 = zb1;
+			var theta1 = Math.abs(0 - gamma);
+			var clockwise1 = 0 < gamma;
+			var dif2 = clockwise1 ? theta1 : -theta1;
+			dif = dif2 < 0 ? dif2 : -2 * Math.PI + dif2;
+			break;
+		case 2:
+			var f4;
+			if(0 > Math.PI) {
+				f4 = 0;
+			} else {
+				var a4 = 0 % (2 * Math.PI);
+				f4 = a4 >= 0 ? a4 : a4 + 2 * Math.PI;
+			}
+			var this9 = f4;
+			var za2 = this9;
+			var f5;
+			if(gamma >= 0 && gamma > Math.PI) {
+				f5 = gamma;
+			} else {
+				var a5 = gamma % (2 * Math.PI);
+				f5 = a5 >= 0 ? a5 : a5 + 2 * Math.PI;
+			}
+			var this10 = f5;
+			var zb2 = this10;
+			var fa2 = 0;
+			var fb2 = gamma;
+			var theta2 = Math.abs(0 - gamma);
+			var smallest = theta2 <= Math.PI;
+			var clockwise2 = 0 < gamma;
+			var dif3 = clockwise2 ? theta2 : -theta2;
+			dif = smallest ? dif3 : clockwise2 ? -(2 * Math.PI - theta2) : 2 * Math.PI - theta2;
+			break;
+		case 3:
+			var f6;
+			if(0 > Math.PI) {
+				f6 = 0;
+			} else {
+				var a6 = 0 % (2 * Math.PI);
+				f6 = a6 >= 0 ? a6 : a6 + 2 * Math.PI;
+			}
+			var this11 = f6;
+			var za3 = this11;
+			var f7;
+			if(gamma >= 0 && gamma > Math.PI) {
+				f7 = gamma;
+			} else {
+				var a7 = gamma % (2 * Math.PI);
+				f7 = a7 >= 0 ? a7 : a7 + 2 * Math.PI;
+			}
+			var this12 = f7;
+			var zb3 = this12;
+			var fa3 = 0;
+			var fb3 = gamma;
+			var theta3 = Math.abs(0 - gamma);
+			var largest = theta3 > Math.PI;
+			var clockwise3 = 0 < gamma;
+			var dif4 = clockwise3 ? theta3 : -theta3;
+			dif = largest ? dif4 : clockwise3 ? -(2 * Math.PI - theta3) : 2 * Math.PI - theta3;
+			break;
+		}
+		var positive = dif >= 0;
+		var totalSteps = Math.ceil(Math.abs(dif) / step);
+		var step1 = dif / totalSteps;
+		var angle = 0;
+		var cx;
+		var cy;
+		var bx = 0;
+		var by = 0;
+		var dx = 0;
+		var dy = 0;
+		var ex = 0;
+		var ey = 0;
+		var r2 = radius - 1;
+		var _g = 0;
+		var _g1 = totalSteps + 1;
+		while(_g < _g1) {
+			var i1 = _g++;
+			cx = x + radius * Math.sin(angle);
+			cy = y + radius * Math.cos(angle);
+			ex = x + r2 * Math.sin(angle);
+			ey = y + r2 * Math.cos(angle);
+			if(i1 != 0) {
+				var t0 = new trilateral_tri_Trilateral(dx,dy,bx,by,cx,cy);
+				var t11 = new trilateral_tri_Trilateral(dx,dy,cx,cy,ex,ey);
+				out[out.length] = t0;
+				out[out.length] = t11;
+			}
+			angle += step1;
+			bx = cx;
+			by = cy;
+			dx = ex;
+			dy = ey;
+		}
+		var triArr = out;
+		var colorID = this.appColors.indexOf(3355443);
+		var tri;
+		var _g2 = 0;
+		while(_g2 < triArr.length) {
+			var t2 = triArr[_g2];
+			++_g2;
+			if(t2 != null) {
+				var t3 = Object.create(trilateral_tri_Triangle.prototype);
+				t3.id = 0;
+				t3.ax = t2.ax;
+				t3.ay = t2.ay;
+				t3.bx = t2.bx;
+				t3.by = t2.by;
+				t3.cx = t2.cx;
+				t3.cy = t2.cy;
+				t3.mark = t2.mark;
+				t3.depth = 0;
+				t3.alpha = 1.;
+				t3.colorID = colorID;
+				t3.colorA = colorID;
+				t3.colorB = colorID;
+				t3.colorC = colorID;
+				t3.windingAdjusted = t2.windingAdjusted;
+				tri = t3;
+				this1[this1.length] = tri;
 			}
 		}
+		var _this = this.innerDemo;
 		var anchor = this.mousePos;
-		var _this = this.mousePos;
-		var vec = this.point;
-		var toNext = new khaMath_Vector4(_this.x - vec.x,_this.y - vec.y,_this.z - vec.z,_this.w - vec.w);
-		if(toNext.get_length() > this.distance) {
-			var _this1 = this.point;
-			var distance = this.distance;
+		var vec = _this.point;
+		var toNext = new khaMath_Vector4(anchor.x - vec.x,anchor.y - vec.y,anchor.z - vec.z,anchor.w - vec.w);
+		if(toNext.get_length() > _this.distance) {
+			var _this1 = _this.point;
+			var distance = _this.distance;
 			var _this2 = new khaMath_Vector4(_this1.x - anchor.x,_this1.y - anchor.y,_this1.z - anchor.z,_this1.w - anchor.w);
 			_this2.set_length(1);
 			var _this3 = _this2;
@@ -3003,10 +1186,10 @@ Main.prototype = {
 			var _this_y = _this3.y * distance;
 			var _this_z = _this3.z * distance;
 			var _this_w = _this3.w * distance;
-			this.point = new khaMath_Vector4(_this_x + anchor.x,_this_y + anchor.y,_this_z + anchor.z,_this_w + anchor.w);
+			_this.point = new khaMath_Vector4(_this_x + anchor.x,_this_y + anchor.y,_this_z + anchor.z,_this_w + anchor.w);
 		}
-		var x1 = this.point.x;
-		var y1 = this.point.y;
+		var x1 = this.innerDemo.point.x;
+		var y1 = this.innerDemo.point.y;
 		var _this4 = this.shapes;
 		var radius1 = this.circleSize;
 		var color = this.appColors.indexOf(16777215);
@@ -3069,97 +1252,108 @@ Main.prototype = {
 				this13[this13.length] = tri2;
 			}
 		}
-		var joint = this.joints[0];
-		joint.x = this.mousePos.x;
-		joint.y = this.mousePos.y;
-		var x2 = joint.x;
-		var y2 = joint.y;
-		var _this5 = this.shapes;
-		var radius2 = this.circleSize;
-		var color1 = this.appColors.indexOf(16711680);
-		var this17 = _this5.triangles;
-		var id1 = _this5.refCount++;
-		var t8 = [];
-		var this18;
-		if(t8 == null) {
-			var t9 = [];
-			var this19 = t9 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t9;
-			this18 = this19;
-		} else {
-			this18 = t8;
-		}
-		var this20 = this18;
-		var out2 = this20;
-		var pi2 = Math.PI;
-		var theta5 = pi2 / 2;
-		var step3 = pi2 * 2 / 36;
-		var bx2;
-		var by2;
-		var cx2;
-		var cy2;
-		var _g5 = 0;
-		var _g12 = 36;
-		while(_g5 < _g12) {
-			var i3 = _g5++;
-			bx2 = x2 + radius2 * Math.sin(theta5);
-			by2 = y2 + radius2 * Math.cos(theta5);
-			theta5 += step3;
-			cx2 = x2 + radius2 * Math.sin(theta5);
-			cy2 = y2 + radius2 * Math.cos(theta5);
-			var tri3 = new trilateral_tri_Trilateral(x2,y2,bx2,by2,cx2,cy2);
-			out2[out2.length] = tri3;
-		}
-		var triArr2 = out2;
-		var tri4;
-		var _g6 = 0;
-		while(_g6 < triArr2.length) {
-			var t10 = triArr2[_g6];
-			++_g6;
-			if(t10 != null) {
-				var t12 = Object.create(trilateral_tri_Triangle.prototype);
-				t12.id = id1;
-				t12.ax = t10.ax;
-				t12.ay = t10.ay;
-				t12.bx = t10.bx;
-				t12.by = t10.by;
-				t12.cx = t10.cx;
-				t12.cy = t10.cy;
-				t12.mark = t10.mark;
-				t12.depth = 0;
-				t12.alpha = 1.;
-				t12.colorID = color1;
-				t12.colorA = color1;
-				t12.colorB = color1;
-				t12.colorC = color1;
-				t12.windingAdjusted = t10.windingAdjusted;
-				tri4 = t12;
-				this17[this17.length] = tri4;
+		var _gthis = this;
+		var jointRender = function(i3,joint) {
+			var _this5 = _gthis.shapes;
+			var x2 = joint.x;
+			var y2 = joint.y;
+			var radius2 = _gthis.circleSize;
+			var color1 = _gthis.appColors.indexOf(16711680) + i3;
+			var this17 = _this5.triangles;
+			var id1 = _this5.refCount++;
+			var t8 = [];
+			var this18;
+			if(t8 == null) {
+				var t9 = [];
+				var this19 = t9 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t9;
+				this18 = this19;
+			} else {
+				this18 = t8;
 			}
-		}
-		var _g7 = 0;
-		var _g13 = this.points - 1;
+			var this20 = this18;
+			var out2 = this20;
+			var pi2 = Math.PI;
+			var theta5 = pi2 / 2;
+			var step3 = pi2 * 2 / 36;
+			var bx2;
+			var by2;
+			var cx2;
+			var cy2;
+			var _g5 = 0;
+			var _g12 = 36;
+			while(_g5 < _g12) {
+				var i4 = _g5++;
+				bx2 = x2 + radius2 * Math.sin(theta5);
+				by2 = y2 + radius2 * Math.cos(theta5);
+				theta5 += step3;
+				cx2 = x2 + radius2 * Math.sin(theta5);
+				cy2 = y2 + radius2 * Math.cos(theta5);
+				var tri3 = new trilateral_tri_Trilateral(x2,y2,bx2,by2,cx2,cy2);
+				out2[out2.length] = tri3;
+			}
+			var triArr2 = out2;
+			var tri4;
+			var _g6 = 0;
+			while(_g6 < triArr2.length) {
+				var t10 = triArr2[_g6];
+				++_g6;
+				if(t10 != null) {
+					var t12 = Object.create(trilateral_tri_Triangle.prototype);
+					t12.id = id1;
+					t12.ax = t10.ax;
+					t12.ay = t10.ay;
+					t12.bx = t10.bx;
+					t12.by = t10.by;
+					t12.cx = t10.cx;
+					t12.cy = t10.cy;
+					t12.mark = t10.mark;
+					t12.depth = 0;
+					t12.alpha = 1.;
+					t12.colorID = color1;
+					t12.colorA = color1;
+					t12.colorB = color1;
+					t12.colorC = color1;
+					t12.windingAdjusted = t10.windingAdjusted;
+					tri4 = t12;
+					this17[this17.length] = tri4;
+				}
+			}
+			return _this5.refCount - 1;
+		};
+		var _this6 = this.chainDemo;
+		var anchor1 = this.mousePos;
+		var joint1 = _this6.joints[0];
+		joint1.x = anchor1.x;
+		joint1.y = anchor1.y;
+		jointRender(0,joint1);
+		var _g7 = 1;
+		var _g13 = _this6.points;
 		while(_g7 < _g13) {
-			var i4 = _g7++;
-			var tmp = this.joints;
-			var _this6 = this.joints[i4 + 1];
-			var anchor1 = this.joints[i4];
-			var distance1 = this.distance;
-			var _this7 = new khaMath_Vector4(_this6.x - anchor1.x,_this6.y - anchor1.y,_this6.z - anchor1.z,_this6.w - anchor1.w);
-			_this7.set_length(1);
-			var _this8 = _this7;
-			var _this_x1 = _this8.x * distance1;
-			var _this_y1 = _this8.y * distance1;
-			var _this_z1 = _this8.z * distance1;
-			var _this_w1 = _this8.w * distance1;
-			tmp[i4 + 1] = new khaMath_Vector4(_this_x1 + anchor1.x,_this_y1 + anchor1.y,_this_z1 + anchor1.z,_this_w1 + anchor1.w);
-			joint = this.joints[i4 + 1];
-			var _this9 = this.shapes;
-			var x3 = joint.x;
-			var y3 = joint.y;
-			var radius3 = this.circleSize;
-			var color2 = this.appColors.indexOf(16711680) + i4 + 1;
-			var this21 = _this9.triangles;
-			var id2 = _this9.refCount++;
+			var i5 = _g7++;
+			var _this7 = _this6.joints;
+			var _this8 = _this6.joints[i5];
+			var anchor2 = _this6.joints[i5 - 1];
+			var distance1 = _this6.distance;
+			var _this9 = new khaMath_Vector4(_this8.x - anchor2.x,_this8.y - anchor2.y,_this8.z - anchor2.z,_this8.w - anchor2.w);
+			_this9.set_length(1);
+			var _this10 = _this9;
+			var _this_x1 = _this10.x * distance1;
+			var _this_y1 = _this10.y * distance1;
+			var _this_z1 = _this10.z * distance1;
+			var _this_w1 = _this10.w * distance1;
+			_this7[i5] = new khaMath_Vector4(_this_x1 + anchor2.x,_this_y1 + anchor2.y,_this_z1 + anchor2.z,_this_w1 + anchor2.w);
+			joint1 = _this6.joints[i5];
+			jointRender(i5,joint1);
+		}
+		var _gthis1 = this;
+		var jointRender1 = function(i6,joint2) {
+			var _this11 = _gthis1.shapes;
+			var x3 = joint2.x;
+			var y3 = joint2.y;
+			var radius3 = _gthis1.circleSize;
+			var color2 = _gthis1.appColors.indexOf(16711680) + i6;
+			var this21 = _this11.triangles;
+			var id2 = _this11.refCount++;
 			var t13 = [];
 			var this22;
 			if(t13 == null) {
@@ -3181,7 +1375,7 @@ Main.prototype = {
 			var _g8 = 0;
 			var _g14 = 36;
 			while(_g8 < _g14) {
-				var i5 = _g8++;
+				var i7 = _g8++;
 				bx3 = x3 + radius3 * Math.sin(theta6);
 				by3 = y3 + radius3 * Math.cos(theta6);
 				theta6 += step4;
@@ -3217,374 +1411,189 @@ Main.prototype = {
 					this21[this21.length] = tri6;
 				}
 			}
-		}
-		var joint1 = this.jointsF[0];
-		joint1.x = this.mousePos.x;
-		joint1.y = this.mousePos.y;
-		var x4 = joint1.x;
-		var y4 = joint1.y;
-		var _this10 = this.shapes;
-		var radius4 = this.circleSize;
-		var color3 = this.appColors.indexOf(16711680);
-		var this25 = _this10.triangles;
-		var id3 = _this10.refCount++;
-		var t17 = [];
-		var this26;
-		if(t17 == null) {
-			var t18 = [];
-			var this27 = t18 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t18;
-			this26 = this27;
-		} else {
-			this26 = t17;
-		}
-		var this28 = this26;
-		var out4 = this28;
-		var pi4 = Math.PI;
-		var theta7 = pi4 / 2;
-		var step5 = pi4 * 2 / 36;
-		var bx4;
-		var by4;
-		var cx4;
-		var cy4;
-		var _g10 = 0;
-		var _g15 = 36;
+			return _this11.refCount - 1;
+		};
+		var _this12 = this.fabrikDemo;
+		var anchor3 = this.mousePos;
+		var joint3 = _this12.joints[0];
+		joint3.x = anchor3.x;
+		joint3.y = anchor3.y;
+		jointRender1(0,joint3);
+		var _g10 = 1;
+		var _g15 = _this12.points;
 		while(_g10 < _g15) {
-			var i6 = _g10++;
-			bx4 = x4 + radius4 * Math.sin(theta7);
-			by4 = y4 + radius4 * Math.cos(theta7);
-			theta7 += step5;
-			cx4 = x4 + radius4 * Math.sin(theta7);
-			cy4 = y4 + radius4 * Math.cos(theta7);
-			var tri7 = new trilateral_tri_Trilateral(x4,y4,bx4,by4,cx4,cy4);
-			out4[out4.length] = tri7;
-		}
-		var triArr4 = out4;
-		var tri8;
-		var _g16 = 0;
-		while(_g16 < triArr4.length) {
-			var t19 = triArr4[_g16];
-			++_g16;
-			if(t19 != null) {
-				var t20 = Object.create(trilateral_tri_Triangle.prototype);
-				t20.id = id3;
-				t20.ax = t19.ax;
-				t20.ay = t19.ay;
-				t20.bx = t19.bx;
-				t20.by = t19.by;
-				t20.cx = t19.cx;
-				t20.cy = t19.cy;
-				t20.mark = t19.mark;
-				t20.depth = 0;
-				t20.alpha = 1.;
-				t20.colorID = color3;
-				t20.colorA = color3;
-				t20.colorB = color3;
-				t20.colorC = color3;
-				t20.windingAdjusted = t19.windingAdjusted;
-				tri8 = t20;
-				this25[this25.length] = tri8;
-			}
-		}
-		var _g17 = 1;
-		var _g18 = this.points;
-		while(_g17 < _g18) {
-			var i7 = _g17++;
-			var tmp1 = this.jointsF;
-			var _this11 = this.jointsF[i7];
-			var anchor2 = this.jointsF[i7 - 1];
-			var distance2 = this.distance;
-			var _this12 = new khaMath_Vector4(_this11.x - anchor2.x,_this11.y - anchor2.y,_this11.z - anchor2.z,_this11.w - anchor2.w);
-			_this12.set_length(1);
-			var _this13 = _this12;
-			var _this_x2 = _this13.x * distance2;
-			var _this_y2 = _this13.y * distance2;
-			var _this_z2 = _this13.z * distance2;
-			var _this_w2 = _this13.w * distance2;
-			tmp1[i7] = new khaMath_Vector4(_this_x2 + anchor2.x,_this_y2 + anchor2.y,_this_z2 + anchor2.z,_this_w2 + anchor2.w);
+			var i8 = _g10++;
+			var _this13 = _this12.joints;
+			var _this14 = _this12.joints[i8];
+			var anchor4 = _this12.joints[i8 - 1];
+			var distance2 = _this12.distance;
+			var _this15 = new khaMath_Vector4(_this14.x - anchor4.x,_this14.y - anchor4.y,_this14.z - anchor4.z,_this14.w - anchor4.w);
+			_this15.set_length(1);
+			var _this16 = _this15;
+			var _this_x2 = _this16.x * distance2;
+			var _this_y2 = _this16.y * distance2;
+			var _this_z2 = _this16.z * distance2;
+			var _this_w2 = _this16.w * distance2;
+			_this13[i8] = new khaMath_Vector4(_this_x2 + anchor4.x,_this_y2 + anchor4.y,_this_z2 + anchor4.z,_this_w2 + anchor4.w);
 		}
 		var j;
-		var dx1 = this.canvas.width / 4;
-		var dy1 = this.canvas.height / 4;
-		var joint2 = this.jointsF[this.points - 1];
-		joint2.x = dx1;
-		joint2.y = dy1;
-		var _this14 = this.shapes;
-		var radius5 = this.circleSize;
-		var color4 = this.appColors.indexOf(16777215);
-		var this29 = _this14.triangles;
-		var id4 = _this14.refCount++;
-		var t21 = [];
-		var this30;
-		if(t21 == null) {
-			var t22 = [];
-			var this31 = t22 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t22;
-			this30 = this31;
-		} else {
-			this30 = t21;
-		}
-		var this32 = this30;
-		var out5 = this32;
-		var pi5 = Math.PI;
-		var theta8 = pi5 / 2;
-		var step6 = pi5 * 2 / 36;
-		var bx5;
-		var by5;
-		var cx5;
-		var cy5;
-		var _g19 = 0;
-		var _g110 = 36;
-		while(_g19 < _g110) {
-			var i8 = _g19++;
-			bx5 = dx1 + radius5 * Math.sin(theta8);
-			by5 = dy1 + radius5 * Math.cos(theta8);
-			theta8 += step6;
-			cx5 = dx1 + radius5 * Math.sin(theta8);
-			cy5 = dy1 + radius5 * Math.cos(theta8);
-			var tri9 = new trilateral_tri_Trilateral(dx1,dy1,bx5,by5,cx5,cy5);
-			out5[out5.length] = tri9;
-		}
-		var triArr5 = out5;
-		var tri10;
-		var _g20 = 0;
-		while(_g20 < triArr5.length) {
-			var t23 = triArr5[_g20];
-			++_g20;
-			if(t23 != null) {
-				var t24 = Object.create(trilateral_tri_Triangle.prototype);
-				t24.id = id4;
-				t24.ax = t23.ax;
-				t24.ay = t23.ay;
-				t24.bx = t23.bx;
-				t24.by = t23.by;
-				t24.cx = t23.cx;
-				t24.cy = t23.cy;
-				t24.mark = t23.mark;
-				t24.depth = 0;
-				t24.alpha = 1.;
-				t24.colorID = color4;
-				t24.colorA = color4;
-				t24.colorB = color4;
-				t24.colorC = color4;
-				t24.windingAdjusted = t23.windingAdjusted;
-				tri10 = t24;
-				this29[this29.length] = tri10;
-			}
-		}
+		var joint4 = _this12.joints[_this12.points - 1];
+		joint4.x = _this12.x;
+		joint4.y = _this12.y;
+		jointRender1(_this12.points - 1,joint4);
 		var _g21 = 1;
-		var _g31 = this.points;
+		var _g31 = _this12.points;
 		while(_g21 < _g31) {
 			var i9 = _g21++;
-			j = this.points - i9;
-			var tmp2 = this.jointsF;
-			var _this15 = this.jointsF[j - 1];
-			var anchor3 = this.jointsF[j];
-			var distance3 = this.distance;
-			var _this16 = new khaMath_Vector4(_this15.x - anchor3.x,_this15.y - anchor3.y,_this15.z - anchor3.z,_this15.w - anchor3.w);
-			_this16.set_length(1);
-			var _this17 = _this16;
-			var _this_x3 = _this17.x * distance3;
-			var _this_y3 = _this17.y * distance3;
-			var _this_z3 = _this17.z * distance3;
-			var _this_w3 = _this17.w * distance3;
-			tmp2[j - 1] = new khaMath_Vector4(_this_x3 + anchor3.x,_this_y3 + anchor3.y,_this_z3 + anchor3.z,_this_w3 + anchor3.w);
-			joint2 = this.jointsF[j - 1];
-			var _this18 = this.shapes;
-			var x5 = joint2.x;
-			var y5 = joint2.y;
-			var radius6 = this.circleSize;
-			var color5 = this.appColors.indexOf(16711680) + i9 - 1;
-			var this33 = _this18.triangles;
-			var id5 = _this18.refCount++;
-			var t25 = [];
-			var this34;
-			if(t25 == null) {
-				var t26 = [];
-				var this35 = t26 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t26;
-				this34 = this35;
-			} else {
-				this34 = t25;
-			}
-			var this36 = this34;
-			var out6 = this36;
-			var pi6 = Math.PI;
-			var theta9 = pi6 / 2;
-			var step7 = pi6 * 2 / 36;
-			var bx6;
-			var by6;
-			var cx6;
-			var cy6;
-			var _g22 = 0;
-			var _g111 = 36;
-			while(_g22 < _g111) {
-				var i10 = _g22++;
-				bx6 = x5 + radius6 * Math.sin(theta9);
-				by6 = y5 + radius6 * Math.cos(theta9);
-				theta9 += step7;
-				cx6 = x5 + radius6 * Math.sin(theta9);
-				cy6 = y5 + radius6 * Math.cos(theta9);
-				var tri11 = new trilateral_tri_Trilateral(x5,y5,bx6,by6,cx6,cy6);
-				out6[out6.length] = tri11;
-			}
-			var triArr6 = out6;
-			var tri12;
-			var _g23 = 0;
-			while(_g23 < triArr6.length) {
-				var t27 = triArr6[_g23];
-				++_g23;
-				if(t27 != null) {
-					var t28 = Object.create(trilateral_tri_Triangle.prototype);
-					t28.id = id5;
-					t28.ax = t27.ax;
-					t28.ay = t27.ay;
-					t28.bx = t27.bx;
-					t28.by = t27.by;
-					t28.cx = t27.cx;
-					t28.cy = t27.cy;
-					t28.mark = t27.mark;
-					t28.depth = 0;
-					t28.alpha = 1.;
-					t28.colorID = color5;
-					t28.colorA = color5;
-					t28.colorB = color5;
-					t28.colorC = color5;
-					t28.windingAdjusted = t27.windingAdjusted;
-					tri12 = t28;
-					this33[this33.length] = tri12;
-				}
-			}
+			j = _this12.points - i9;
+			var _this17 = _this12.joints;
+			var _this18 = _this12.joints[j - 1];
+			var anchor5 = _this12.joints[j];
+			var distance3 = _this12.distance;
+			var _this19 = new khaMath_Vector4(_this18.x - anchor5.x,_this18.y - anchor5.y,_this18.z - anchor5.z,_this18.w - anchor5.w);
+			_this19.set_length(1);
+			var _this20 = _this19;
+			var _this_x3 = _this20.x * distance3;
+			var _this_y3 = _this20.y * distance3;
+			var _this_z3 = _this20.z * distance3;
+			var _this_w3 = _this20.w * distance3;
+			_this17[j - 1] = new khaMath_Vector4(_this_x3 + anchor5.x,_this_y3 + anchor5.y,_this_z3 + anchor5.z,_this_w3 + anchor5.w);
+			joint4 = _this12.joints[j - 1];
+			jointRender1(j,joint4);
 		}
-		var spots = this.joints;
+		var spots = this.chainDemo.joints;
+		var width = this.lineWidth;
 		var path = new trilateral_path_Fine(null,null,3);
-		path.width = 0.3;
+		path.width = width;
 		path.moveTo(spots[0].x,spots[0].y);
-		var _g24 = 1;
-		var _g112 = this.points;
-		while(_g24 < _g112) {
-			var i11 = _g24++;
-			var x_ = spots[i11].x;
-			var y_ = spots[i11].y;
+		var _g16 = 1;
+		var _g17 = this.points;
+		while(_g16 < _g17) {
+			var i10 = _g16++;
+			var x_ = spots[i10].x;
+			var y_ = spots[i10].y;
 			var repeat = path.x == x_ && path.y == y_;
 			if(!repeat) {
 				if(path.widthFunction != null) {
 					path.width = path.widthFunction(path.width,path.x,path.x,x_,y_);
 				}
-				var _this19 = path.contour;
+				var _this21 = path.contour;
 				var ax_ = path.x;
 				var ay_ = path.y;
 				var width_ = path.width;
-				var oldAngle = _this19.dx != null ? _this19.angle1 : null;
-				_this19.halfA = Math.PI / 2;
-				_this19.ax = x_;
-				_this19.ay = y_;
-				_this19.bx = ax_;
-				_this19.by = ay_;
-				_this19.beta = Math.PI / 2 - _this19.halfA;
-				_this19.r = width_ / 2 * Math.cos(_this19.beta);
-				_this19.theta = Math.atan2(_this19.ay - _this19.by,_this19.ax - _this19.bx);
-				if(_this19.theta > 0) {
-					if(_this19.halfA < 0) {
-						_this19.angle2 = _this19.theta + _this19.halfA + Math.PI / 2;
-						_this19.angle1 = _this19.theta - _this19.halfA;
+				var oldAngle = _this21.dx != null ? _this21.angle1 : null;
+				_this21.halfA = Math.PI / 2;
+				_this21.ax = x_;
+				_this21.ay = y_;
+				_this21.bx = ax_;
+				_this21.by = ay_;
+				_this21.beta = Math.PI / 2 - _this21.halfA;
+				_this21.r = width_ / 2 * Math.cos(_this21.beta);
+				_this21.theta = Math.atan2(_this21.ay - _this21.by,_this21.ax - _this21.bx);
+				if(_this21.theta > 0) {
+					if(_this21.halfA < 0) {
+						_this21.angle2 = _this21.theta + _this21.halfA + Math.PI / 2;
+						_this21.angle1 = _this21.theta - _this21.halfA;
 					} else {
-						_this19.angle1 = _this19.theta + _this19.halfA - Math.PI;
-						_this19.angle2 = _this19.theta + _this19.halfA;
+						_this21.angle1 = _this21.theta + _this21.halfA - Math.PI;
+						_this21.angle2 = _this21.theta + _this21.halfA;
 					}
-				} else if(_this19.halfA > 0) {
-					_this19.angle1 = _this19.theta + _this19.halfA - Math.PI;
-					_this19.angle2 = _this19.theta + _this19.halfA;
+				} else if(_this21.halfA > 0) {
+					_this21.angle1 = _this21.theta + _this21.halfA - Math.PI;
+					_this21.angle2 = _this21.theta + _this21.halfA;
 				} else {
-					_this19.angle2 = _this19.theta + _this19.halfA + Math.PI / 2;
-					_this19.angle1 = _this19.theta - _this19.halfA;
+					_this21.angle2 = _this21.theta + _this21.halfA + Math.PI / 2;
+					_this21.angle1 = _this21.theta - _this21.halfA;
 				}
-				if(_this19.dxPrev != null) {
-					_this19.dxOld = _this19.dxPrev;
+				if(_this21.dxPrev != null) {
+					_this21.dxOld = _this21.dxPrev;
 				}
-				if(_this19.dyPrev != null) {
-					_this19.dyOld = _this19.dyPrev;
+				if(_this21.dyPrev != null) {
+					_this21.dyOld = _this21.dyPrev;
 				}
-				if(_this19.exPrev != null) {
-					_this19.exOld = _this19.exPrev;
+				if(_this21.exPrev != null) {
+					_this21.exOld = _this21.exPrev;
 				}
-				if(_this19.eyPrev != null) {
-					_this19.eyOld = _this19.eyPrev;
+				if(_this21.eyPrev != null) {
+					_this21.eyOld = _this21.eyPrev;
 				}
-				if(_this19.dx != null) {
-					_this19.dxPrev = _this19.dx;
+				if(_this21.dx != null) {
+					_this21.dxPrev = _this21.dx;
 				}
-				if(_this19.dy != null) {
-					_this19.dyPrev = _this19.dy;
+				if(_this21.dy != null) {
+					_this21.dyPrev = _this21.dy;
 				}
-				if(_this19.ex != null) {
-					_this19.exPrev = _this19.ex;
+				if(_this21.ex != null) {
+					_this21.exPrev = _this21.ex;
 				}
-				if(_this19.ey != null) {
-					_this19.eyPrev = _this19.ey;
+				if(_this21.ey != null) {
+					_this21.eyPrev = _this21.ey;
 				}
-				_this19.dx = _this19.bx + _this19.r * Math.cos(_this19.angle1);
-				_this19.dy = _this19.by + _this19.r * Math.sin(_this19.angle1);
-				_this19.ex = _this19.bx + _this19.r * Math.cos(_this19.angle2);
-				_this19.ey = _this19.by + _this19.r * Math.sin(_this19.angle2);
-				_this19.ax = ax_;
-				_this19.ay = ay_;
-				_this19.bx = x_;
-				_this19.by = y_;
-				_this19.theta = Math.atan2(_this19.ay - _this19.by,_this19.ax - _this19.bx);
-				if(_this19.theta > 0) {
-					if(_this19.halfA < 0) {
-						_this19.angle2 = _this19.theta + _this19.halfA + Math.PI / 2;
-						_this19.angle1 = _this19.theta - _this19.halfA;
+				_this21.dx = _this21.bx + _this21.r * Math.cos(_this21.angle1);
+				_this21.dy = _this21.by + _this21.r * Math.sin(_this21.angle1);
+				_this21.ex = _this21.bx + _this21.r * Math.cos(_this21.angle2);
+				_this21.ey = _this21.by + _this21.r * Math.sin(_this21.angle2);
+				_this21.ax = ax_;
+				_this21.ay = ay_;
+				_this21.bx = x_;
+				_this21.by = y_;
+				_this21.theta = Math.atan2(_this21.ay - _this21.by,_this21.ax - _this21.bx);
+				if(_this21.theta > 0) {
+					if(_this21.halfA < 0) {
+						_this21.angle2 = _this21.theta + _this21.halfA + Math.PI / 2;
+						_this21.angle1 = _this21.theta - _this21.halfA;
 					} else {
-						_this19.angle1 = _this19.theta + _this19.halfA - Math.PI;
-						_this19.angle2 = _this19.theta + _this19.halfA;
+						_this21.angle1 = _this21.theta + _this21.halfA - Math.PI;
+						_this21.angle2 = _this21.theta + _this21.halfA;
 					}
-				} else if(_this19.halfA > 0) {
-					_this19.angle1 = _this19.theta + _this19.halfA - Math.PI;
-					_this19.angle2 = _this19.theta + _this19.halfA;
+				} else if(_this21.halfA > 0) {
+					_this21.angle1 = _this21.theta + _this21.halfA - Math.PI;
+					_this21.angle2 = _this21.theta + _this21.halfA;
 				} else {
-					_this19.angle2 = _this19.theta + _this19.halfA + Math.PI / 2;
-					_this19.angle1 = _this19.theta - _this19.halfA;
+					_this21.angle2 = _this21.theta + _this21.halfA + Math.PI / 2;
+					_this21.angle1 = _this21.theta - _this21.halfA;
 				}
-				if(_this19.dxPrev != null) {
-					_this19.dxOld = _this19.dxPrev;
+				if(_this21.dxPrev != null) {
+					_this21.dxOld = _this21.dxPrev;
 				}
-				if(_this19.dyPrev != null) {
-					_this19.dyOld = _this19.dyPrev;
+				if(_this21.dyPrev != null) {
+					_this21.dyOld = _this21.dyPrev;
 				}
-				if(_this19.exPrev != null) {
-					_this19.exOld = _this19.exPrev;
+				if(_this21.exPrev != null) {
+					_this21.exOld = _this21.exPrev;
 				}
-				if(_this19.eyPrev != null) {
-					_this19.eyOld = _this19.eyPrev;
+				if(_this21.eyPrev != null) {
+					_this21.eyOld = _this21.eyPrev;
 				}
-				if(_this19.dx != null) {
-					_this19.dxPrev = _this19.dx;
+				if(_this21.dx != null) {
+					_this21.dxPrev = _this21.dx;
 				}
-				if(_this19.dy != null) {
-					_this19.dyPrev = _this19.dy;
+				if(_this21.dy != null) {
+					_this21.dyPrev = _this21.dy;
 				}
-				if(_this19.ex != null) {
-					_this19.exPrev = _this19.ex;
+				if(_this21.ex != null) {
+					_this21.exPrev = _this21.ex;
 				}
-				if(_this19.ey != null) {
-					_this19.eyPrev = _this19.ey;
+				if(_this21.ey != null) {
+					_this21.eyPrev = _this21.ey;
 				}
-				_this19.dx = _this19.bx + _this19.r * Math.cos(_this19.angle1);
-				_this19.dy = _this19.by + _this19.r * Math.sin(_this19.angle1);
-				_this19.ex = _this19.bx + _this19.r * Math.cos(_this19.angle2);
-				_this19.ey = _this19.by + _this19.r * Math.sin(_this19.angle2);
-				var x6 = _this19.dxOld - x_;
-				var y6 = _this19.dyOld - y_;
-				var x7 = _this19.exOld - x_;
-				var y7 = _this19.eyOld - y_;
-				var clockWise = x6 * x6 + y6 * y6 > x7 * x7 + y7 * y7;
+				_this21.dx = _this21.bx + _this21.r * Math.cos(_this21.angle1);
+				_this21.dy = _this21.by + _this21.r * Math.sin(_this21.angle1);
+				_this21.ex = _this21.bx + _this21.r * Math.cos(_this21.angle2);
+				_this21.ey = _this21.by + _this21.r * Math.sin(_this21.angle2);
+				var x4 = _this21.dxOld - x_;
+				var y4 = _this21.dyOld - y_;
+				var x5 = _this21.exOld - x_;
+				var y5 = _this21.eyOld - y_;
+				var clockWise = x4 * x4 + y4 * y4 > x5 * x5 + y5 * y5;
 				var theta0;
 				var theta11;
 				if(clockWise) {
-					theta0 = -Math.atan2(_this19.ay - _this19.dyOld,_this19.ax - _this19.dxOld) - Math.PI / 2;
-					theta11 = -Math.atan2(_this19.ay - _this19.eyPrev,_this19.ax - _this19.exPrev) - Math.PI / 2;
+					theta0 = -Math.atan2(_this21.ay - _this21.dyOld,_this21.ax - _this21.dxOld) - Math.PI / 2;
+					theta11 = -Math.atan2(_this21.ay - _this21.eyPrev,_this21.ax - _this21.exPrev) - Math.PI / 2;
 				} else {
-					theta0 = -Math.atan2(_this19.ay - _this19.eyOld,_this19.ax - _this19.exOld) - Math.PI / 2;
-					theta11 = -Math.atan2(_this19.ay - _this19.dyPrev,_this19.ax - _this19.dxPrev) - Math.PI / 2;
+					theta0 = -Math.atan2(_this21.ay - _this21.eyOld,_this21.ax - _this21.exOld) - Math.PI / 2;
+					theta11 = -Math.atan2(_this21.ay - _this21.dyPrev,_this21.ax - _this21.dxPrev) - Math.PI / 2;
 				}
 				var dif5;
 				switch(trilateral_angle_DifferencePreference.SMALL._hx_index) {
@@ -3596,8 +1605,8 @@ Main.prototype = {
 						var a8 = theta0 % (2 * Math.PI);
 						f8 = a8 >= 0 ? a8 : a8 + 2 * Math.PI;
 					}
-					var this37 = f8;
-					var za4 = this37;
+					var this25 = f8;
+					var za4 = this25;
 					var f9;
 					if(theta11 >= 0 && theta11 > Math.PI) {
 						f9 = theta11;
@@ -3605,13 +1614,13 @@ Main.prototype = {
 						var a9 = theta11 % (2 * Math.PI);
 						f9 = a9 >= 0 ? a9 : a9 + 2 * Math.PI;
 					}
-					var this38 = f9;
-					var zb4 = this38;
+					var this26 = f9;
+					var zb4 = this26;
 					var fa4 = za4;
 					var fb4 = zb4;
-					var theta10 = Math.abs(theta0 - theta11);
+					var theta7 = Math.abs(theta0 - theta11);
 					var clockwise4 = theta0 < theta11;
-					var dif6 = clockwise4 ? theta10 : -theta10;
+					var dif6 = clockwise4 ? theta7 : -theta7;
 					dif5 = dif6 > 0 ? dif6 : 2 * Math.PI + dif6;
 					break;
 				case 1:
@@ -3622,8 +1631,8 @@ Main.prototype = {
 						var a10 = theta0 % (2 * Math.PI);
 						f10 = a10 >= 0 ? a10 : a10 + 2 * Math.PI;
 					}
-					var this39 = f10;
-					var za5 = this39;
+					var this27 = f10;
+					var za5 = this27;
 					var f11;
 					if(theta11 >= 0 && theta11 > Math.PI) {
 						f11 = theta11;
@@ -3631,13 +1640,13 @@ Main.prototype = {
 						var a11 = theta11 % (2 * Math.PI);
 						f11 = a11 >= 0 ? a11 : a11 + 2 * Math.PI;
 					}
-					var this40 = f11;
-					var zb5 = this40;
+					var this28 = f11;
+					var zb5 = this28;
 					var fa5 = za5;
 					var fb5 = zb5;
-					var theta12 = Math.abs(theta0 - theta11);
+					var theta8 = Math.abs(theta0 - theta11);
 					var clockwise5 = theta0 < theta11;
-					var dif7 = clockwise5 ? theta12 : -theta12;
+					var dif7 = clockwise5 ? theta8 : -theta8;
 					dif5 = dif7 < 0 ? dif7 : -2 * Math.PI + dif7;
 					break;
 				case 2:
@@ -3648,8 +1657,8 @@ Main.prototype = {
 						var a12 = theta0 % (2 * Math.PI);
 						f12 = a12 >= 0 ? a12 : a12 + 2 * Math.PI;
 					}
-					var this41 = f12;
-					var za6 = this41;
+					var this29 = f12;
+					var za6 = this29;
 					var f13;
 					if(theta11 >= 0 && theta11 > Math.PI) {
 						f13 = theta11;
@@ -3657,15 +1666,15 @@ Main.prototype = {
 						var a13 = theta11 % (2 * Math.PI);
 						f13 = a13 >= 0 ? a13 : a13 + 2 * Math.PI;
 					}
-					var this42 = f13;
-					var zb6 = this42;
+					var this30 = f13;
+					var zb6 = this30;
 					var fa6 = theta0;
 					var fb6 = theta11;
-					var theta13 = Math.abs(theta0 - theta11);
-					var smallest1 = theta13 <= Math.PI;
+					var theta9 = Math.abs(theta0 - theta11);
+					var smallest1 = theta9 <= Math.PI;
 					var clockwise6 = theta0 < theta11;
-					var dif8 = clockwise6 ? theta13 : -theta13;
-					dif5 = smallest1 ? dif8 : clockwise6 ? -(2 * Math.PI - theta13) : 2 * Math.PI - theta13;
+					var dif8 = clockwise6 ? theta9 : -theta9;
+					dif5 = smallest1 ? dif8 : clockwise6 ? -(2 * Math.PI - theta9) : 2 * Math.PI - theta9;
 					break;
 				case 3:
 					var f14;
@@ -3675,8 +1684,8 @@ Main.prototype = {
 						var a14 = theta0 % (2 * Math.PI);
 						f14 = a14 >= 0 ? a14 : a14 + 2 * Math.PI;
 					}
-					var this43 = f14;
-					var za7 = this43;
+					var this31 = f14;
+					var za7 = this31;
 					var f15;
 					if(theta11 >= 0 && theta11 > Math.PI) {
 						f15 = theta11;
@@ -3684,18 +1693,18 @@ Main.prototype = {
 						var a15 = theta11 % (2 * Math.PI);
 						f15 = a15 >= 0 ? a15 : a15 + 2 * Math.PI;
 					}
-					var this44 = f15;
-					var zb7 = this44;
+					var this32 = f15;
+					var zb7 = this32;
 					var fa7 = theta0;
 					var fb7 = theta11;
-					var theta14 = Math.abs(theta0 - theta11);
-					var largest1 = theta14 > Math.PI;
+					var theta10 = Math.abs(theta0 - theta11);
+					var largest1 = theta10 > Math.PI;
 					var clockwise7 = theta0 < theta11;
-					var dif9 = clockwise7 ? theta14 : -theta14;
-					dif5 = largest1 ? dif9 : clockwise7 ? -(2 * Math.PI - theta14) : 2 * Math.PI - theta14;
+					var dif9 = clockwise7 ? theta10 : -theta10;
+					dif5 = largest1 ? dif9 : clockwise7 ? -(2 * Math.PI - theta10) : 2 * Math.PI - theta10;
 					break;
 				}
-				if(_this19.count != 0) {
+				if(_this21.count != 0) {
 					var gamma1 = Math.abs(dif5) / 2;
 					var h = width_ / 2 / Math.cos(gamma1);
 					var f16;
@@ -3705,34 +1714,34 @@ Main.prototype = {
 						var a16 = (theta0 + Math.PI) % (2 * Math.PI);
 						f16 = a16 >= 0 ? a16 - Math.PI : a16 + Math.PI;
 					}
-					var this45 = f16;
-					var start = this45;
+					var this33 = f16;
+					var start = this33;
 					var start2 = start;
 					var delta = start2 + dif5 / 2 + Math.PI;
-					_this19.jx = _this19.ax + h * Math.sin(delta);
-					_this19.jy = _this19.ay + h * Math.cos(delta);
+					_this21.jx = _this21.ax + h * Math.sin(delta);
+					_this21.jy = _this21.ay + h * Math.cos(delta);
 				}
-				if(_this19.count == 0 && (_this19.endLine == 1 || _this19.endLine == 3)) {
-					var ax = _this19.ax;
-					var ay = _this19.ay;
-					var radius7 = width_ / 2;
-					var beta = -_this19.angle1 - Math.PI / 2;
-					var gamma2 = -_this19.angle1 - Math.PI / 2 + Math.PI;
+				if(_this21.count == 0 && (_this21.endLine == 1 || _this21.endLine == 3)) {
+					var ax = _this21.ax;
+					var ay = _this21.ay;
+					var radius4 = width_ / 2;
+					var beta = -_this21.angle1 - Math.PI / 2;
+					var gamma2 = -_this21.angle1 - Math.PI / 2 + Math.PI;
 					var temp = [];
-					var this46 = _this19.triArr;
-					var t29 = [];
-					var this47;
-					if(t29 == null) {
-						var t30 = [];
-						var this48 = t30 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t30;
-						this47 = this48;
+					var this34 = _this21.triArr;
+					var t17 = [];
+					var this35;
+					if(t17 == null) {
+						var t18 = [];
+						var this36 = t18 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t18;
+						this35 = this36;
 					} else {
-						this47 = t29;
+						this35 = t17;
 					}
-					var this49 = this47;
-					var out7 = this49;
-					var pi7 = Math.PI;
-					var step8 = pi7 * 2 / 36;
+					var this37 = this35;
+					var out4 = this37;
+					var pi4 = Math.PI;
+					var step5 = pi4 * 2 / 36;
 					var dif10;
 					switch(trilateral_angle_DifferencePreference.SMALL._hx_index) {
 					case 0:
@@ -3743,8 +1752,8 @@ Main.prototype = {
 							var a17 = beta % (2 * Math.PI);
 							f17 = a17 >= 0 ? a17 : a17 + 2 * Math.PI;
 						}
-						var this50 = f17;
-						var za8 = this50;
+						var this38 = f17;
+						var za8 = this38;
 						var f18;
 						if(gamma2 >= 0 && gamma2 > Math.PI) {
 							f18 = gamma2;
@@ -3752,13 +1761,13 @@ Main.prototype = {
 							var a18 = gamma2 % (2 * Math.PI);
 							f18 = a18 >= 0 ? a18 : a18 + 2 * Math.PI;
 						}
-						var this51 = f18;
-						var zb8 = this51;
+						var this39 = f18;
+						var zb8 = this39;
 						var fa8 = za8;
 						var fb8 = zb8;
-						var theta15 = Math.abs(beta - gamma2);
+						var theta12 = Math.abs(beta - gamma2);
 						var clockwise8 = beta < gamma2;
-						var dif11 = clockwise8 ? theta15 : -theta15;
+						var dif11 = clockwise8 ? theta12 : -theta12;
 						dif10 = dif11 > 0 ? dif11 : 2 * Math.PI + dif11;
 						break;
 					case 1:
@@ -3769,8 +1778,8 @@ Main.prototype = {
 							var a19 = beta % (2 * Math.PI);
 							f19 = a19 >= 0 ? a19 : a19 + 2 * Math.PI;
 						}
-						var this52 = f19;
-						var za9 = this52;
+						var this40 = f19;
+						var za9 = this40;
 						var f20;
 						if(gamma2 >= 0 && gamma2 > Math.PI) {
 							f20 = gamma2;
@@ -3778,13 +1787,13 @@ Main.prototype = {
 							var a20 = gamma2 % (2 * Math.PI);
 							f20 = a20 >= 0 ? a20 : a20 + 2 * Math.PI;
 						}
-						var this53 = f20;
-						var zb9 = this53;
+						var this41 = f20;
+						var zb9 = this41;
 						var fa9 = za9;
 						var fb9 = zb9;
-						var theta16 = Math.abs(beta - gamma2);
+						var theta13 = Math.abs(beta - gamma2);
 						var clockwise9 = beta < gamma2;
-						var dif12 = clockwise9 ? theta16 : -theta16;
+						var dif12 = clockwise9 ? theta13 : -theta13;
 						dif10 = dif12 < 0 ? dif12 : -2 * Math.PI + dif12;
 						break;
 					case 2:
@@ -3795,8 +1804,8 @@ Main.prototype = {
 							var a21 = beta % (2 * Math.PI);
 							f21 = a21 >= 0 ? a21 : a21 + 2 * Math.PI;
 						}
-						var this54 = f21;
-						var za10 = this54;
+						var this42 = f21;
+						var za10 = this42;
 						var f22;
 						if(gamma2 >= 0 && gamma2 > Math.PI) {
 							f22 = gamma2;
@@ -3804,15 +1813,15 @@ Main.prototype = {
 							var a22 = gamma2 % (2 * Math.PI);
 							f22 = a22 >= 0 ? a22 : a22 + 2 * Math.PI;
 						}
-						var this55 = f22;
-						var zb10 = this55;
+						var this43 = f22;
+						var zb10 = this43;
 						var fa10 = beta;
 						var fb10 = gamma2;
-						var theta17 = Math.abs(beta - gamma2);
-						var smallest2 = theta17 <= Math.PI;
+						var theta14 = Math.abs(beta - gamma2);
+						var smallest2 = theta14 <= Math.PI;
 						var clockwise10 = beta < gamma2;
-						var dif13 = clockwise10 ? theta17 : -theta17;
-						dif10 = smallest2 ? dif13 : clockwise10 ? -(2 * Math.PI - theta17) : 2 * Math.PI - theta17;
+						var dif13 = clockwise10 ? theta14 : -theta14;
+						dif10 = smallest2 ? dif13 : clockwise10 ? -(2 * Math.PI - theta14) : 2 * Math.PI - theta14;
 						break;
 					case 3:
 						var f23;
@@ -3822,8 +1831,8 @@ Main.prototype = {
 							var a23 = beta % (2 * Math.PI);
 							f23 = a23 >= 0 ? a23 : a23 + 2 * Math.PI;
 						}
-						var this56 = f23;
-						var za11 = this56;
+						var this44 = f23;
+						var za11 = this44;
 						var f24;
 						if(gamma2 >= 0 && gamma2 > Math.PI) {
 							f24 = gamma2;
@@ -3831,283 +1840,283 @@ Main.prototype = {
 							var a24 = gamma2 % (2 * Math.PI);
 							f24 = a24 >= 0 ? a24 : a24 + 2 * Math.PI;
 						}
-						var this57 = f24;
-						var zb11 = this57;
+						var this45 = f24;
+						var zb11 = this45;
 						var fa11 = beta;
 						var fb11 = gamma2;
-						var theta18 = Math.abs(beta - gamma2);
-						var largest2 = theta18 > Math.PI;
+						var theta15 = Math.abs(beta - gamma2);
+						var largest2 = theta15 > Math.PI;
 						var clockwise11 = beta < gamma2;
-						var dif14 = clockwise11 ? theta18 : -theta18;
-						dif10 = largest2 ? dif14 : clockwise11 ? -(2 * Math.PI - theta18) : 2 * Math.PI - theta18;
+						var dif14 = clockwise11 ? theta15 : -theta15;
+						dif10 = largest2 ? dif14 : clockwise11 ? -(2 * Math.PI - theta15) : 2 * Math.PI - theta15;
 						break;
 					}
 					var positive1 = dif10 >= 0;
-					var totalSteps1 = Math.ceil(Math.abs(dif10) / step8);
-					var step9 = dif10 / totalSteps1;
+					var totalSteps1 = Math.ceil(Math.abs(dif10) / step5);
+					var step6 = dif10 / totalSteps1;
 					var angle1 = beta;
-					var cx7;
-					var cy7;
-					var bx7 = 0;
-					var by7 = 0;
+					var cx4;
+					var cy4;
+					var bx4 = 0;
+					var by4 = 0;
 					var p2 = temp.length;
-					var _g25 = 0;
-					var _g113 = totalSteps1 + 1;
-					while(_g25 < _g113) {
-						var i12 = _g25++;
-						cx7 = ax + radius7 * Math.sin(angle1);
-						cy7 = ay + radius7 * Math.cos(angle1);
-						temp[p2++] = cx7;
-						temp[p2++] = cy7;
-						if(i12 != 0) {
-							var t31 = new trilateral_tri_Trilateral(ax,ay,bx7,by7,cx7,cy7);
-							out7[out7.length] = t31;
+					var _g18 = 0;
+					var _g19 = totalSteps1 + 1;
+					while(_g18 < _g19) {
+						var i11 = _g18++;
+						cx4 = ax + radius4 * Math.sin(angle1);
+						cy4 = ay + radius4 * Math.cos(angle1);
+						temp[p2++] = cx4;
+						temp[p2++] = cy4;
+						if(i11 != 0) {
+							var t19 = new trilateral_tri_Trilateral(ax,ay,bx4,by4,cx4,cy4);
+							out4[out4.length] = t19;
 						}
-						angle1 += step9;
-						bx7 = cx7;
-						by7 = cy7;
+						angle1 += step6;
+						bx4 = cx4;
+						by4 = cy4;
 					}
-					var triArr7 = out7;
-					var _g26 = 0;
-					while(_g26 < triArr7.length) {
-						var t32 = triArr7[_g26];
-						++_g26;
-						this46[this46.length] = t32;
+					var triArr4 = out4;
+					var _g20 = 0;
+					while(_g20 < triArr4.length) {
+						var t20 = triArr4[_g20];
+						++_g20;
+						this34[this34.length] = t20;
 					}
-					var pA = _this19.pointsAnti.length;
+					var pA = _this21.pointsAnti.length;
 					var len = temp.length / 2 | 0;
 					var p4 = temp.length / 4 | 0;
-					var _g27 = 0;
-					var _g114 = p4;
-					while(_g27 < _g114) {
-						var i13 = _g27++;
-						_this19.pointsAnti[pA++] = temp[len - 2 * i13 + 1];
-						_this19.pointsAnti[pA++] = temp[len - 2 * i13];
+					var _g22 = 0;
+					var _g110 = p4;
+					while(_g22 < _g110) {
+						var i12 = _g22++;
+						_this21.pointsAnti[pA++] = temp[len - 2 * i12 + 1];
+						_this21.pointsAnti[pA++] = temp[len - 2 * i12];
 					}
-					var pC = _this19.pointsClock.length;
-					var _g28 = 0;
+					var pC = _this21.pointsClock.length;
+					var _g23 = 0;
 					var _g32 = p4;
-					while(_g28 < _g32) {
-						var i14 = _g28++;
-						_this19.pointsClock[pC++] = temp[i14 * 2 + len + 1];
-						_this19.pointsClock[pC++] = temp[i14 * 2 + len];
+					while(_g23 < _g32) {
+						var i13 = _g23++;
+						_this21.pointsClock[pC++] = temp[i13 * 2 + len + 1];
+						_this21.pointsClock[pC++] = temp[i13 * 2 + len];
 					}
 				}
-				if(_this19.count != 0) {
-					_this19.addQuads(clockWise,width_);
+				if(_this21.count != 0) {
+					_this21.addQuads(clockWise,width_);
 				}
-				_this19.quadIndex = _this19.triArr.length;
-				if(_this19.count == 0) {
-					_this19.penultimateAX = _this19.dxPrev;
-					_this19.penultimateAY = _this19.dyPrev;
-					_this19.lastAntiX = _this19.ex;
-					_this19.lastAntiY = _this19.ey;
-					_this19.penultimateCX = _this19.dx;
-					_this19.penultimateCY = _this19.dy;
-					_this19.lastClockX = _this19.exPrev;
-					_this19.lastClockY = _this19.eyPrev;
-					var this58 = _this19.triArr;
-					var tri13 = new trilateral_tri_Trilateral(_this19.dxPrev,_this19.dyPrev,_this19.dx,_this19.dy,_this19.ex,_this19.ey,0);
-					this58[this58.length] = tri13;
-					var this59 = _this19.triArr;
-					var tri14 = new trilateral_tri_Trilateral(_this19.dxPrev,_this19.dyPrev,_this19.dx,_this19.dy,_this19.exPrev,_this19.eyPrev,0);
-					this59[this59.length] = tri14;
+				_this21.quadIndex = _this21.triArr.length;
+				if(_this21.count == 0) {
+					_this21.penultimateAX = _this21.dxPrev;
+					_this21.penultimateAY = _this21.dyPrev;
+					_this21.lastAntiX = _this21.ex;
+					_this21.lastAntiY = _this21.ey;
+					_this21.penultimateCX = _this21.dx;
+					_this21.penultimateCY = _this21.dy;
+					_this21.lastClockX = _this21.exPrev;
+					_this21.lastClockY = _this21.eyPrev;
+					var this46 = _this21.triArr;
+					var tri7 = new trilateral_tri_Trilateral(_this21.dxPrev,_this21.dyPrev,_this21.dx,_this21.dy,_this21.ex,_this21.ey,0);
+					this46[this46.length] = tri7;
+					var this47 = _this21.triArr;
+					var tri8 = new trilateral_tri_Trilateral(_this21.dxPrev,_this21.dyPrev,_this21.dx,_this21.dy,_this21.exPrev,_this21.eyPrev,0);
+					this47[this47.length] = tri8;
 				} else {
-					if(clockWise && !_this19.lastClock) {
-						_this19.penultimateAX = _this19.jx;
-						_this19.penultimateAY = _this19.jy;
-						_this19.lastAntiX = _this19.ex;
-						_this19.lastAntiY = _this19.ey;
-						_this19.penultimateCX = _this19.dx;
-						_this19.penultimateCY = _this19.dy;
-						_this19.lastClockX = _this19.exPrev;
-						_this19.lastClockY = _this19.eyPrev;
-						var this60 = _this19.triArr;
-						var tri15 = new trilateral_tri_Trilateral(_this19.jx,_this19.jy,_this19.dx,_this19.dy,_this19.ex,_this19.ey,0);
-						this60[this60.length] = tri15;
-						var this61 = _this19.triArr;
-						var tri16 = new trilateral_tri_Trilateral(_this19.jx,_this19.jy,_this19.dx,_this19.dy,_this19.exPrev,_this19.eyPrev,0);
-						this61[this61.length] = tri16;
+					if(clockWise && !_this21.lastClock) {
+						_this21.penultimateAX = _this21.jx;
+						_this21.penultimateAY = _this21.jy;
+						_this21.lastAntiX = _this21.ex;
+						_this21.lastAntiY = _this21.ey;
+						_this21.penultimateCX = _this21.dx;
+						_this21.penultimateCY = _this21.dy;
+						_this21.lastClockX = _this21.exPrev;
+						_this21.lastClockY = _this21.eyPrev;
+						var this48 = _this21.triArr;
+						var tri9 = new trilateral_tri_Trilateral(_this21.jx,_this21.jy,_this21.dx,_this21.dy,_this21.ex,_this21.ey,0);
+						this48[this48.length] = tri9;
+						var this49 = _this21.triArr;
+						var tri10 = new trilateral_tri_Trilateral(_this21.jx,_this21.jy,_this21.dx,_this21.dy,_this21.exPrev,_this21.eyPrev,0);
+						this49[this49.length] = tri10;
 					}
-					if(clockWise && _this19.lastClock) {
-						_this19.penultimateAX = _this19.jx;
-						_this19.penultimateAY = _this19.jy;
-						_this19.lastAntiX = _this19.ex;
-						_this19.lastAntiY = _this19.ey;
-						_this19.penultimateCX = _this19.dx;
-						_this19.penultimateCY = _this19.dy;
-						_this19.lastClockX = _this19.exPrev;
-						_this19.lastClockY = _this19.eyPrev;
-						var this62 = _this19.triArr;
-						var tri17 = new trilateral_tri_Trilateral(_this19.jx,_this19.jy,_this19.dx,_this19.dy,_this19.ex,_this19.ey,0);
-						this62[this62.length] = tri17;
-						var this63 = _this19.triArr;
-						var tri18 = new trilateral_tri_Trilateral(_this19.jx,_this19.jy,_this19.dx,_this19.dy,_this19.exPrev,_this19.eyPrev,0);
-						this63[this63.length] = tri18;
+					if(clockWise && _this21.lastClock) {
+						_this21.penultimateAX = _this21.jx;
+						_this21.penultimateAY = _this21.jy;
+						_this21.lastAntiX = _this21.ex;
+						_this21.lastAntiY = _this21.ey;
+						_this21.penultimateCX = _this21.dx;
+						_this21.penultimateCY = _this21.dy;
+						_this21.lastClockX = _this21.exPrev;
+						_this21.lastClockY = _this21.eyPrev;
+						var this50 = _this21.triArr;
+						var tri11 = new trilateral_tri_Trilateral(_this21.jx,_this21.jy,_this21.dx,_this21.dy,_this21.ex,_this21.ey,0);
+						this50[this50.length] = tri11;
+						var this51 = _this21.triArr;
+						var tri12 = new trilateral_tri_Trilateral(_this21.jx,_this21.jy,_this21.dx,_this21.dy,_this21.exPrev,_this21.eyPrev,0);
+						this51[this51.length] = tri12;
 					}
-					if(!clockWise && !_this19.lastClock) {
-						_this19.penultimateCX = _this19.dx;
-						_this19.penultimateCY = _this19.dy;
-						_this19.lastClockX = _this19.jx;
-						_this19.lastClockY = _this19.jy;
-						_this19.penultimateAX = _this19.dxPrev;
-						_this19.penultimateAY = _this19.dyPrev;
-						_this19.lastAntiX = _this19.ex;
-						_this19.lastAntiY = _this19.ey;
-						var this64 = _this19.triArr;
-						var tri19 = new trilateral_tri_Trilateral(_this19.dxPrev,_this19.dyPrev,_this19.dx,_this19.dy,_this19.jx,_this19.jy,0);
-						this64[this64.length] = tri19;
-						var this65 = _this19.triArr;
-						var tri20 = new trilateral_tri_Trilateral(_this19.dxPrev,_this19.dyPrev,_this19.dx,_this19.dy,_this19.ex,_this19.ey,0);
-						this65[this65.length] = tri20;
+					if(!clockWise && !_this21.lastClock) {
+						_this21.penultimateCX = _this21.dx;
+						_this21.penultimateCY = _this21.dy;
+						_this21.lastClockX = _this21.jx;
+						_this21.lastClockY = _this21.jy;
+						_this21.penultimateAX = _this21.dxPrev;
+						_this21.penultimateAY = _this21.dyPrev;
+						_this21.lastAntiX = _this21.ex;
+						_this21.lastAntiY = _this21.ey;
+						var this52 = _this21.triArr;
+						var tri13 = new trilateral_tri_Trilateral(_this21.dxPrev,_this21.dyPrev,_this21.dx,_this21.dy,_this21.jx,_this21.jy,0);
+						this52[this52.length] = tri13;
+						var this53 = _this21.triArr;
+						var tri14 = new trilateral_tri_Trilateral(_this21.dxPrev,_this21.dyPrev,_this21.dx,_this21.dy,_this21.ex,_this21.ey,0);
+						this53[this53.length] = tri14;
 					}
-					if(!clockWise && _this19.lastClock) {
-						_this19.penultimateAX = _this19.dxPrev;
-						_this19.penultimateAY = _this19.dyPrev;
-						_this19.lastAntiX = _this19.ex;
-						_this19.lastAntiY = _this19.ey;
-						_this19.penultimateCX = _this19.jx;
-						_this19.penultimateCY = _this19.jy;
-						_this19.lastClockX = _this19.dx;
-						_this19.lastClockY = _this19.dy;
-						var this66 = _this19.triArr;
-						var tri21 = new trilateral_tri_Trilateral(_this19.jx,_this19.jy,_this19.dx,_this19.dy,_this19.ex,_this19.ey,0);
-						this66[this66.length] = tri21;
-						var this67 = _this19.triArr;
-						var tri22 = new trilateral_tri_Trilateral(_this19.dxPrev,_this19.dyPrev,_this19.jx,_this19.jy,_this19.ex,_this19.ey,0);
-						this67[this67.length] = tri22;
+					if(!clockWise && _this21.lastClock) {
+						_this21.penultimateAX = _this21.dxPrev;
+						_this21.penultimateAY = _this21.dyPrev;
+						_this21.lastAntiX = _this21.ex;
+						_this21.lastAntiY = _this21.ey;
+						_this21.penultimateCX = _this21.jx;
+						_this21.penultimateCY = _this21.jy;
+						_this21.lastClockX = _this21.dx;
+						_this21.lastClockY = _this21.dy;
+						var this54 = _this21.triArr;
+						var tri15 = new trilateral_tri_Trilateral(_this21.jx,_this21.jy,_this21.dx,_this21.dy,_this21.ex,_this21.ey,0);
+						this54[this54.length] = tri15;
+						var this55 = _this21.triArr;
+						var tri16 = new trilateral_tri_Trilateral(_this21.dxPrev,_this21.dyPrev,_this21.jx,_this21.jy,_this21.ex,_this21.ey,0);
+						this55[this55.length] = tri16;
 					}
 				}
 				if(clockWise) {
-					var radius8 = width_ / 2;
-					var edgePoly = _this19.pointsClock;
-					var t33 = [];
-					var this68;
-					if(t33 == null) {
-						var t34 = [];
-						var this69 = t34 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t34;
-						this68 = this69;
+					var radius5 = width_ / 2;
+					var edgePoly = _this21.pointsClock;
+					var t21 = [];
+					var this56;
+					if(t21 == null) {
+						var t22 = [];
+						var this57 = t22 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t22;
+						this56 = this57;
 					} else {
-						this68 = t33;
+						this56 = t21;
 					}
-					var this70 = this68;
-					var out8 = this70;
-					var pi8 = Math.PI;
-					var step10 = pi8 * 2 / 36;
+					var this58 = this56;
+					var out5 = this58;
+					var pi5 = Math.PI;
+					var step7 = pi5 * 2 / 36;
 					var positive2 = dif5 >= 0;
-					var totalSteps2 = Math.ceil(Math.abs(dif5) / step10);
-					var step11 = dif5 / totalSteps2;
+					var totalSteps2 = Math.ceil(Math.abs(dif5) / step7);
+					var step8 = dif5 / totalSteps2;
 					var angle2 = theta0;
-					var cx8;
-					var cy8;
-					var bx8 = 0;
-					var by8 = 0;
+					var cx5;
+					var cy5;
+					var bx5 = 0;
+					var by5 = 0;
 					var p21 = edgePoly.length;
 					var count = 0;
-					var _g29 = 0;
-					var _g115 = totalSteps2 + 1;
-					while(_g29 < _g115) {
-						var i15 = _g29++;
-						cx8 = ax_ + radius8 * Math.sin(angle2);
-						cy8 = ay_ + radius8 * Math.cos(angle2);
-						if(i15 != 0) {
-							var t35 = new trilateral_tri_Trilateral(ax_,ay_,bx8,by8,cx8,cy8);
-							out8[out8.length] = t35;
-							edgePoly[p21++] = cx8;
-							edgePoly[p21++] = cy8;
+					var _g24 = 0;
+					var _g111 = totalSteps2 + 1;
+					while(_g24 < _g111) {
+						var i14 = _g24++;
+						cx5 = ax_ + radius5 * Math.sin(angle2);
+						cy5 = ay_ + radius5 * Math.cos(angle2);
+						if(i14 != 0) {
+							var t23 = new trilateral_tri_Trilateral(ax_,ay_,bx5,by5,cx5,cy5);
+							out5[out5.length] = t23;
+							edgePoly[p21++] = cx5;
+							edgePoly[p21++] = cy5;
 						}
-						angle2 += step11;
-						bx8 = cx8;
-						by8 = cy8;
+						angle2 += step8;
+						bx5 = cx5;
+						by5 = cy5;
 					}
-					var trilateralArray = out8;
-					var this71 = _this19.triArr;
-					var _g30 = 0;
-					while(_g30 < trilateralArray.length) {
-						var t36 = trilateralArray[_g30];
-						++_g30;
-						this71[this71.length] = t36;
+					var trilateralArray = out5;
+					var this59 = _this21.triArr;
+					var _g25 = 0;
+					while(_g25 < trilateralArray.length) {
+						var t24 = trilateralArray[_g25];
+						++_g25;
+						this59[this59.length] = t24;
 					}
 				} else {
-					var radius9 = width_ / 2;
-					var edgePoly1 = _this19.pointsAnti;
-					var t37 = [];
-					var this72;
-					if(t37 == null) {
-						var t38 = [];
-						var this73 = t38 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t38;
-						this72 = this73;
+					var radius6 = width_ / 2;
+					var edgePoly1 = _this21.pointsAnti;
+					var t25 = [];
+					var this60;
+					if(t25 == null) {
+						var t26 = [];
+						var this61 = t26 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t26;
+						this60 = this61;
 					} else {
-						this72 = t37;
+						this60 = t25;
 					}
-					var this74 = this72;
-					var out9 = this74;
-					var pi9 = Math.PI;
-					var step12 = pi9 * 2 / 36;
+					var this62 = this60;
+					var out6 = this62;
+					var pi6 = Math.PI;
+					var step9 = pi6 * 2 / 36;
 					var positive3 = dif5 >= 0;
-					var totalSteps3 = Math.ceil(Math.abs(dif5) / step12);
-					var step13 = dif5 / totalSteps3;
+					var totalSteps3 = Math.ceil(Math.abs(dif5) / step9);
+					var step10 = dif5 / totalSteps3;
 					var angle3 = theta0;
-					var cx9;
-					var cy9;
-					var bx9 = 0;
-					var by9 = 0;
+					var cx6;
+					var cy6;
+					var bx6 = 0;
+					var by6 = 0;
 					var p22 = edgePoly1.length;
 					var count1 = 0;
-					var _g33 = 0;
-					var _g116 = totalSteps3 + 1;
-					while(_g33 < _g116) {
-						var i16 = _g33++;
-						cx9 = ax_ + radius9 * Math.sin(angle3);
-						cy9 = ay_ + radius9 * Math.cos(angle3);
-						if(i16 != 0) {
-							var t39 = new trilateral_tri_Trilateral(ax_,ay_,bx9,by9,cx9,cy9);
-							out9[out9.length] = t39;
-							edgePoly1[p22++] = cx9;
-							edgePoly1[p22++] = cy9;
+					var _g26 = 0;
+					var _g112 = totalSteps3 + 1;
+					while(_g26 < _g112) {
+						var i15 = _g26++;
+						cx6 = ax_ + radius6 * Math.sin(angle3);
+						cy6 = ay_ + radius6 * Math.cos(angle3);
+						if(i15 != 0) {
+							var t27 = new trilateral_tri_Trilateral(ax_,ay_,bx6,by6,cx6,cy6);
+							out6[out6.length] = t27;
+							edgePoly1[p22++] = cx6;
+							edgePoly1[p22++] = cy6;
 						}
-						angle3 += step13;
-						bx9 = cx9;
-						by9 = cy9;
+						angle3 += step10;
+						bx6 = cx6;
+						by6 = cy6;
 					}
-					var trilateralArray1 = out9;
-					var this75 = _this19.triArr;
-					var _g34 = 0;
-					while(_g34 < trilateralArray1.length) {
-						var t40 = trilateralArray1[_g34];
-						++_g34;
-						this75[this75.length] = t40;
+					var trilateralArray1 = out6;
+					var this63 = _this21.triArr;
+					var _g27 = 0;
+					while(_g27 < trilateralArray1.length) {
+						var t28 = trilateralArray1[_g27];
+						++_g27;
+						this63[this63.length] = t28;
 					}
 				}
-				_this19.kax = _this19.dxPrev;
-				_this19.kay = _this19.dyPrev;
-				_this19.kbx = _this19.dx;
-				_this19.kby = _this19.dy;
-				_this19.ncx = _this19.exPrev;
-				_this19.ncy = _this19.eyPrev;
-				_this19.kcx = _this19.ex;
-				_this19.kcy = _this19.ey;
-				if(_this19.count != 0) {
+				_this21.kax = _this21.dxPrev;
+				_this21.kay = _this21.dyPrev;
+				_this21.kbx = _this21.dx;
+				_this21.kby = _this21.dy;
+				_this21.ncx = _this21.exPrev;
+				_this21.ncy = _this21.eyPrev;
+				_this21.kcx = _this21.ex;
+				_this21.kcy = _this21.ey;
+				if(_this21.count != 0) {
 					if(clockWise) {
-						var this76 = _this19.triArr;
-						var tri23 = new trilateral_tri_Trilateral(_this19.ax,_this19.ay,_this19.dxOld,_this19.dyOld,_this19.jx,_this19.jy,0);
-						this76[this76.length] = tri23;
-						var this77 = _this19.triArr;
-						var tri24 = new trilateral_tri_Trilateral(_this19.ax,_this19.ay,_this19.exPrev,_this19.eyPrev,_this19.jx,_this19.jy,0);
-						this77[this77.length] = tri24;
+						var this64 = _this21.triArr;
+						var tri17 = new trilateral_tri_Trilateral(_this21.ax,_this21.ay,_this21.dxOld,_this21.dyOld,_this21.jx,_this21.jy,0);
+						this64[this64.length] = tri17;
+						var this65 = _this21.triArr;
+						var tri18 = new trilateral_tri_Trilateral(_this21.ax,_this21.ay,_this21.exPrev,_this21.eyPrev,_this21.jx,_this21.jy,0);
+						this65[this65.length] = tri18;
 					} else {
-						var this78 = _this19.triArr;
-						var tri25 = new trilateral_tri_Trilateral(_this19.ax,_this19.ay,_this19.exOld,_this19.eyOld,_this19.jx,_this19.jy,0);
-						this78[this78.length] = tri25;
-						var this79 = _this19.triArr;
-						var tri26 = new trilateral_tri_Trilateral(_this19.ax,_this19.ay,_this19.dxPrev,_this19.dyPrev,_this19.jx,_this19.jy,0);
-						this79[this79.length] = tri26;
+						var this66 = _this21.triArr;
+						var tri19 = new trilateral_tri_Trilateral(_this21.ax,_this21.ay,_this21.exOld,_this21.eyOld,_this21.jx,_this21.jy,0);
+						this66[this66.length] = tri19;
+						var this67 = _this21.triArr;
+						var tri20 = new trilateral_tri_Trilateral(_this21.ax,_this21.ay,_this21.dxPrev,_this21.dyPrev,_this21.jx,_this21.jy,0);
+						this67[this67.length] = tri20;
 					}
 				}
-				_this19.jxOld = _this19.jx;
-				_this19.jyOld = _this19.jy;
-				_this19.lastClock = clockWise;
-				_this19.count++;
+				_this21.jxOld = _this21.jx;
+				_this21.jyOld = _this21.jy;
+				_this21.lastClock = clockWise;
+				_this21.count++;
 				var l = path.points.length;
 				var p = path.points[l - 1];
 				var l2 = p.length;
@@ -4130,167 +2139,168 @@ Main.prototype = {
 				path.y = y_;
 			}
 		}
-		var this80 = this.triangles;
-		var triArr8 = path.trilateralArray;
-		var colorID1 = this.appColors.indexOf(3355443);
-		var tri27;
-		var _g35 = 0;
-		while(_g35 < triArr8.length) {
-			var t41 = triArr8[_g35];
-			++_g35;
-			if(t41 != null) {
-				var t42 = Object.create(trilateral_tri_Triangle.prototype);
-				t42.id = 11;
-				t42.ax = t41.ax;
-				t42.ay = t41.ay;
-				t42.bx = t41.bx;
-				t42.by = t41.by;
-				t42.cx = t41.cx;
-				t42.cy = t41.cy;
-				t42.mark = t41.mark;
-				t42.depth = 0;
-				t42.alpha = 1.;
-				t42.colorID = colorID1;
-				t42.colorA = colorID1;
-				t42.colorB = colorID1;
-				t42.colorC = colorID1;
-				t42.windingAdjusted = t41.windingAdjusted;
-				tri27 = t42;
-				this80[this80.length] = tri27;
+		var this68 = this.triangles;
+		var triArr5 = path.trilateralArray;
+		var colorID1 = this.appColors.indexOf(789516);
+		var tri21;
+		var _g28 = 0;
+		while(_g28 < triArr5.length) {
+			var t29 = triArr5[_g28];
+			++_g28;
+			if(t29 != null) {
+				var t30 = Object.create(trilateral_tri_Triangle.prototype);
+				t30.id = 10;
+				t30.ax = t29.ax;
+				t30.ay = t29.ay;
+				t30.bx = t29.bx;
+				t30.by = t29.by;
+				t30.cx = t29.cx;
+				t30.cy = t29.cy;
+				t30.mark = t29.mark;
+				t30.depth = 0;
+				t30.alpha = 1.;
+				t30.colorID = colorID1;
+				t30.colorA = colorID1;
+				t30.colorB = colorID1;
+				t30.colorC = colorID1;
+				t30.windingAdjusted = t29.windingAdjusted;
+				tri21 = t30;
+				this68[this68.length] = tri21;
 			}
 		}
-		var spots1 = this.jointsF;
+		var spots1 = this.fabrikDemo.joints;
+		var width1 = this.lineWidth;
 		var path1 = new trilateral_path_Fine(null,null,3);
-		path1.width = 0.3;
+		path1.width = width1;
 		path1.moveTo(spots1[0].x,spots1[0].y);
-		var _g36 = 1;
-		var _g117 = this.points;
-		while(_g36 < _g117) {
-			var i17 = _g36++;
-			var x_1 = spots1[i17].x;
-			var y_1 = spots1[i17].y;
+		var _g29 = 1;
+		var _g113 = this.points;
+		while(_g29 < _g113) {
+			var i16 = _g29++;
+			var x_1 = spots1[i16].x;
+			var y_1 = spots1[i16].y;
 			var repeat1 = path1.x == x_1 && path1.y == y_1;
 			if(!repeat1) {
 				if(path1.widthFunction != null) {
 					path1.width = path1.widthFunction(path1.width,path1.x,path1.x,x_1,y_1);
 				}
-				var _this20 = path1.contour;
+				var _this22 = path1.contour;
 				var ax_1 = path1.x;
 				var ay_1 = path1.y;
 				var width_1 = path1.width;
-				var oldAngle1 = _this20.dx != null ? _this20.angle1 : null;
-				_this20.halfA = Math.PI / 2;
-				_this20.ax = x_1;
-				_this20.ay = y_1;
-				_this20.bx = ax_1;
-				_this20.by = ay_1;
-				_this20.beta = Math.PI / 2 - _this20.halfA;
-				_this20.r = width_1 / 2 * Math.cos(_this20.beta);
-				_this20.theta = Math.atan2(_this20.ay - _this20.by,_this20.ax - _this20.bx);
-				if(_this20.theta > 0) {
-					if(_this20.halfA < 0) {
-						_this20.angle2 = _this20.theta + _this20.halfA + Math.PI / 2;
-						_this20.angle1 = _this20.theta - _this20.halfA;
+				var oldAngle1 = _this22.dx != null ? _this22.angle1 : null;
+				_this22.halfA = Math.PI / 2;
+				_this22.ax = x_1;
+				_this22.ay = y_1;
+				_this22.bx = ax_1;
+				_this22.by = ay_1;
+				_this22.beta = Math.PI / 2 - _this22.halfA;
+				_this22.r = width_1 / 2 * Math.cos(_this22.beta);
+				_this22.theta = Math.atan2(_this22.ay - _this22.by,_this22.ax - _this22.bx);
+				if(_this22.theta > 0) {
+					if(_this22.halfA < 0) {
+						_this22.angle2 = _this22.theta + _this22.halfA + Math.PI / 2;
+						_this22.angle1 = _this22.theta - _this22.halfA;
 					} else {
-						_this20.angle1 = _this20.theta + _this20.halfA - Math.PI;
-						_this20.angle2 = _this20.theta + _this20.halfA;
+						_this22.angle1 = _this22.theta + _this22.halfA - Math.PI;
+						_this22.angle2 = _this22.theta + _this22.halfA;
 					}
-				} else if(_this20.halfA > 0) {
-					_this20.angle1 = _this20.theta + _this20.halfA - Math.PI;
-					_this20.angle2 = _this20.theta + _this20.halfA;
+				} else if(_this22.halfA > 0) {
+					_this22.angle1 = _this22.theta + _this22.halfA - Math.PI;
+					_this22.angle2 = _this22.theta + _this22.halfA;
 				} else {
-					_this20.angle2 = _this20.theta + _this20.halfA + Math.PI / 2;
-					_this20.angle1 = _this20.theta - _this20.halfA;
+					_this22.angle2 = _this22.theta + _this22.halfA + Math.PI / 2;
+					_this22.angle1 = _this22.theta - _this22.halfA;
 				}
-				if(_this20.dxPrev != null) {
-					_this20.dxOld = _this20.dxPrev;
+				if(_this22.dxPrev != null) {
+					_this22.dxOld = _this22.dxPrev;
 				}
-				if(_this20.dyPrev != null) {
-					_this20.dyOld = _this20.dyPrev;
+				if(_this22.dyPrev != null) {
+					_this22.dyOld = _this22.dyPrev;
 				}
-				if(_this20.exPrev != null) {
-					_this20.exOld = _this20.exPrev;
+				if(_this22.exPrev != null) {
+					_this22.exOld = _this22.exPrev;
 				}
-				if(_this20.eyPrev != null) {
-					_this20.eyOld = _this20.eyPrev;
+				if(_this22.eyPrev != null) {
+					_this22.eyOld = _this22.eyPrev;
 				}
-				if(_this20.dx != null) {
-					_this20.dxPrev = _this20.dx;
+				if(_this22.dx != null) {
+					_this22.dxPrev = _this22.dx;
 				}
-				if(_this20.dy != null) {
-					_this20.dyPrev = _this20.dy;
+				if(_this22.dy != null) {
+					_this22.dyPrev = _this22.dy;
 				}
-				if(_this20.ex != null) {
-					_this20.exPrev = _this20.ex;
+				if(_this22.ex != null) {
+					_this22.exPrev = _this22.ex;
 				}
-				if(_this20.ey != null) {
-					_this20.eyPrev = _this20.ey;
+				if(_this22.ey != null) {
+					_this22.eyPrev = _this22.ey;
 				}
-				_this20.dx = _this20.bx + _this20.r * Math.cos(_this20.angle1);
-				_this20.dy = _this20.by + _this20.r * Math.sin(_this20.angle1);
-				_this20.ex = _this20.bx + _this20.r * Math.cos(_this20.angle2);
-				_this20.ey = _this20.by + _this20.r * Math.sin(_this20.angle2);
-				_this20.ax = ax_1;
-				_this20.ay = ay_1;
-				_this20.bx = x_1;
-				_this20.by = y_1;
-				_this20.theta = Math.atan2(_this20.ay - _this20.by,_this20.ax - _this20.bx);
-				if(_this20.theta > 0) {
-					if(_this20.halfA < 0) {
-						_this20.angle2 = _this20.theta + _this20.halfA + Math.PI / 2;
-						_this20.angle1 = _this20.theta - _this20.halfA;
+				_this22.dx = _this22.bx + _this22.r * Math.cos(_this22.angle1);
+				_this22.dy = _this22.by + _this22.r * Math.sin(_this22.angle1);
+				_this22.ex = _this22.bx + _this22.r * Math.cos(_this22.angle2);
+				_this22.ey = _this22.by + _this22.r * Math.sin(_this22.angle2);
+				_this22.ax = ax_1;
+				_this22.ay = ay_1;
+				_this22.bx = x_1;
+				_this22.by = y_1;
+				_this22.theta = Math.atan2(_this22.ay - _this22.by,_this22.ax - _this22.bx);
+				if(_this22.theta > 0) {
+					if(_this22.halfA < 0) {
+						_this22.angle2 = _this22.theta + _this22.halfA + Math.PI / 2;
+						_this22.angle1 = _this22.theta - _this22.halfA;
 					} else {
-						_this20.angle1 = _this20.theta + _this20.halfA - Math.PI;
-						_this20.angle2 = _this20.theta + _this20.halfA;
+						_this22.angle1 = _this22.theta + _this22.halfA - Math.PI;
+						_this22.angle2 = _this22.theta + _this22.halfA;
 					}
-				} else if(_this20.halfA > 0) {
-					_this20.angle1 = _this20.theta + _this20.halfA - Math.PI;
-					_this20.angle2 = _this20.theta + _this20.halfA;
+				} else if(_this22.halfA > 0) {
+					_this22.angle1 = _this22.theta + _this22.halfA - Math.PI;
+					_this22.angle2 = _this22.theta + _this22.halfA;
 				} else {
-					_this20.angle2 = _this20.theta + _this20.halfA + Math.PI / 2;
-					_this20.angle1 = _this20.theta - _this20.halfA;
+					_this22.angle2 = _this22.theta + _this22.halfA + Math.PI / 2;
+					_this22.angle1 = _this22.theta - _this22.halfA;
 				}
-				if(_this20.dxPrev != null) {
-					_this20.dxOld = _this20.dxPrev;
+				if(_this22.dxPrev != null) {
+					_this22.dxOld = _this22.dxPrev;
 				}
-				if(_this20.dyPrev != null) {
-					_this20.dyOld = _this20.dyPrev;
+				if(_this22.dyPrev != null) {
+					_this22.dyOld = _this22.dyPrev;
 				}
-				if(_this20.exPrev != null) {
-					_this20.exOld = _this20.exPrev;
+				if(_this22.exPrev != null) {
+					_this22.exOld = _this22.exPrev;
 				}
-				if(_this20.eyPrev != null) {
-					_this20.eyOld = _this20.eyPrev;
+				if(_this22.eyPrev != null) {
+					_this22.eyOld = _this22.eyPrev;
 				}
-				if(_this20.dx != null) {
-					_this20.dxPrev = _this20.dx;
+				if(_this22.dx != null) {
+					_this22.dxPrev = _this22.dx;
 				}
-				if(_this20.dy != null) {
-					_this20.dyPrev = _this20.dy;
+				if(_this22.dy != null) {
+					_this22.dyPrev = _this22.dy;
 				}
-				if(_this20.ex != null) {
-					_this20.exPrev = _this20.ex;
+				if(_this22.ex != null) {
+					_this22.exPrev = _this22.ex;
 				}
-				if(_this20.ey != null) {
-					_this20.eyPrev = _this20.ey;
+				if(_this22.ey != null) {
+					_this22.eyPrev = _this22.ey;
 				}
-				_this20.dx = _this20.bx + _this20.r * Math.cos(_this20.angle1);
-				_this20.dy = _this20.by + _this20.r * Math.sin(_this20.angle1);
-				_this20.ex = _this20.bx + _this20.r * Math.cos(_this20.angle2);
-				_this20.ey = _this20.by + _this20.r * Math.sin(_this20.angle2);
-				var x8 = _this20.dxOld - x_1;
-				var y8 = _this20.dyOld - y_1;
-				var x9 = _this20.exOld - x_1;
-				var y9 = _this20.eyOld - y_1;
-				var clockWise1 = x8 * x8 + y8 * y8 > x9 * x9 + y9 * y9;
+				_this22.dx = _this22.bx + _this22.r * Math.cos(_this22.angle1);
+				_this22.dy = _this22.by + _this22.r * Math.sin(_this22.angle1);
+				_this22.ex = _this22.bx + _this22.r * Math.cos(_this22.angle2);
+				_this22.ey = _this22.by + _this22.r * Math.sin(_this22.angle2);
+				var x6 = _this22.dxOld - x_1;
+				var y6 = _this22.dyOld - y_1;
+				var x7 = _this22.exOld - x_1;
+				var y7 = _this22.eyOld - y_1;
+				var clockWise1 = x6 * x6 + y6 * y6 > x7 * x7 + y7 * y7;
 				var theta01;
-				var theta19;
+				var theta16;
 				if(clockWise1) {
-					theta01 = -Math.atan2(_this20.ay - _this20.dyOld,_this20.ax - _this20.dxOld) - Math.PI / 2;
-					theta19 = -Math.atan2(_this20.ay - _this20.eyPrev,_this20.ax - _this20.exPrev) - Math.PI / 2;
+					theta01 = -Math.atan2(_this22.ay - _this22.dyOld,_this22.ax - _this22.dxOld) - Math.PI / 2;
+					theta16 = -Math.atan2(_this22.ay - _this22.eyPrev,_this22.ax - _this22.exPrev) - Math.PI / 2;
 				} else {
-					theta01 = -Math.atan2(_this20.ay - _this20.eyOld,_this20.ax - _this20.exOld) - Math.PI / 2;
-					theta19 = -Math.atan2(_this20.ay - _this20.dyPrev,_this20.ax - _this20.dxPrev) - Math.PI / 2;
+					theta01 = -Math.atan2(_this22.ay - _this22.eyOld,_this22.ax - _this22.exOld) - Math.PI / 2;
+					theta16 = -Math.atan2(_this22.ay - _this22.dyPrev,_this22.ax - _this22.dxPrev) - Math.PI / 2;
 				}
 				var dif15;
 				switch(trilateral_angle_DifferencePreference.SMALL._hx_index) {
@@ -4302,22 +2312,22 @@ Main.prototype = {
 						var a25 = theta01 % (2 * Math.PI);
 						f25 = a25 >= 0 ? a25 : a25 + 2 * Math.PI;
 					}
-					var this81 = f25;
-					var za12 = this81;
+					var this69 = f25;
+					var za12 = this69;
 					var f26;
-					if(theta19 >= 0 && theta19 > Math.PI) {
-						f26 = theta19;
+					if(theta16 >= 0 && theta16 > Math.PI) {
+						f26 = theta16;
 					} else {
-						var a26 = theta19 % (2 * Math.PI);
+						var a26 = theta16 % (2 * Math.PI);
 						f26 = a26 >= 0 ? a26 : a26 + 2 * Math.PI;
 					}
-					var this82 = f26;
-					var zb12 = this82;
+					var this70 = f26;
+					var zb12 = this70;
 					var fa12 = za12;
 					var fb12 = zb12;
-					var theta20 = Math.abs(theta01 - theta19);
-					var clockwise12 = theta01 < theta19;
-					var dif16 = clockwise12 ? theta20 : -theta20;
+					var theta17 = Math.abs(theta01 - theta16);
+					var clockwise12 = theta01 < theta16;
+					var dif16 = clockwise12 ? theta17 : -theta17;
 					dif15 = dif16 > 0 ? dif16 : 2 * Math.PI + dif16;
 					break;
 				case 1:
@@ -4328,22 +2338,22 @@ Main.prototype = {
 						var a27 = theta01 % (2 * Math.PI);
 						f27 = a27 >= 0 ? a27 : a27 + 2 * Math.PI;
 					}
-					var this83 = f27;
-					var za13 = this83;
+					var this71 = f27;
+					var za13 = this71;
 					var f28;
-					if(theta19 >= 0 && theta19 > Math.PI) {
-						f28 = theta19;
+					if(theta16 >= 0 && theta16 > Math.PI) {
+						f28 = theta16;
 					} else {
-						var a28 = theta19 % (2 * Math.PI);
+						var a28 = theta16 % (2 * Math.PI);
 						f28 = a28 >= 0 ? a28 : a28 + 2 * Math.PI;
 					}
-					var this84 = f28;
-					var zb13 = this84;
+					var this72 = f28;
+					var zb13 = this72;
 					var fa13 = za13;
 					var fb13 = zb13;
-					var theta21 = Math.abs(theta01 - theta19);
-					var clockwise13 = theta01 < theta19;
-					var dif17 = clockwise13 ? theta21 : -theta21;
+					var theta18 = Math.abs(theta01 - theta16);
+					var clockwise13 = theta01 < theta16;
+					var dif17 = clockwise13 ? theta18 : -theta18;
 					dif15 = dif17 < 0 ? dif17 : -2 * Math.PI + dif17;
 					break;
 				case 2:
@@ -4354,24 +2364,24 @@ Main.prototype = {
 						var a29 = theta01 % (2 * Math.PI);
 						f29 = a29 >= 0 ? a29 : a29 + 2 * Math.PI;
 					}
-					var this85 = f29;
-					var za14 = this85;
+					var this73 = f29;
+					var za14 = this73;
 					var f30;
-					if(theta19 >= 0 && theta19 > Math.PI) {
-						f30 = theta19;
+					if(theta16 >= 0 && theta16 > Math.PI) {
+						f30 = theta16;
 					} else {
-						var a30 = theta19 % (2 * Math.PI);
+						var a30 = theta16 % (2 * Math.PI);
 						f30 = a30 >= 0 ? a30 : a30 + 2 * Math.PI;
 					}
-					var this86 = f30;
-					var zb14 = this86;
+					var this74 = f30;
+					var zb14 = this74;
 					var fa14 = theta01;
-					var fb14 = theta19;
-					var theta22 = Math.abs(theta01 - theta19);
-					var smallest3 = theta22 <= Math.PI;
-					var clockwise14 = theta01 < theta19;
-					var dif18 = clockwise14 ? theta22 : -theta22;
-					dif15 = smallest3 ? dif18 : clockwise14 ? -(2 * Math.PI - theta22) : 2 * Math.PI - theta22;
+					var fb14 = theta16;
+					var theta19 = Math.abs(theta01 - theta16);
+					var smallest3 = theta19 <= Math.PI;
+					var clockwise14 = theta01 < theta16;
+					var dif18 = clockwise14 ? theta19 : -theta19;
+					dif15 = smallest3 ? dif18 : clockwise14 ? -(2 * Math.PI - theta19) : 2 * Math.PI - theta19;
 					break;
 				case 3:
 					var f31;
@@ -4381,27 +2391,27 @@ Main.prototype = {
 						var a31 = theta01 % (2 * Math.PI);
 						f31 = a31 >= 0 ? a31 : a31 + 2 * Math.PI;
 					}
-					var this87 = f31;
-					var za15 = this87;
+					var this75 = f31;
+					var za15 = this75;
 					var f32;
-					if(theta19 >= 0 && theta19 > Math.PI) {
-						f32 = theta19;
+					if(theta16 >= 0 && theta16 > Math.PI) {
+						f32 = theta16;
 					} else {
-						var a32 = theta19 % (2 * Math.PI);
+						var a32 = theta16 % (2 * Math.PI);
 						f32 = a32 >= 0 ? a32 : a32 + 2 * Math.PI;
 					}
-					var this88 = f32;
-					var zb15 = this88;
+					var this76 = f32;
+					var zb15 = this76;
 					var fa15 = theta01;
-					var fb15 = theta19;
-					var theta23 = Math.abs(theta01 - theta19);
-					var largest3 = theta23 > Math.PI;
-					var clockwise15 = theta01 < theta19;
-					var dif19 = clockwise15 ? theta23 : -theta23;
-					dif15 = largest3 ? dif19 : clockwise15 ? -(2 * Math.PI - theta23) : 2 * Math.PI - theta23;
+					var fb15 = theta16;
+					var theta20 = Math.abs(theta01 - theta16);
+					var largest3 = theta20 > Math.PI;
+					var clockwise15 = theta01 < theta16;
+					var dif19 = clockwise15 ? theta20 : -theta20;
+					dif15 = largest3 ? dif19 : clockwise15 ? -(2 * Math.PI - theta20) : 2 * Math.PI - theta20;
 					break;
 				}
-				if(_this20.count != 0) {
+				if(_this22.count != 0) {
 					var gamma3 = Math.abs(dif15) / 2;
 					var h1 = width_1 / 2 / Math.cos(gamma3);
 					var f33;
@@ -4411,34 +2421,34 @@ Main.prototype = {
 						var a33 = (theta01 + Math.PI) % (2 * Math.PI);
 						f33 = a33 >= 0 ? a33 - Math.PI : a33 + Math.PI;
 					}
-					var this89 = f33;
-					var start1 = this89;
+					var this77 = f33;
+					var start1 = this77;
 					var start21 = start1;
 					var delta1 = start21 + dif15 / 2 + Math.PI;
-					_this20.jx = _this20.ax + h1 * Math.sin(delta1);
-					_this20.jy = _this20.ay + h1 * Math.cos(delta1);
+					_this22.jx = _this22.ax + h1 * Math.sin(delta1);
+					_this22.jy = _this22.ay + h1 * Math.cos(delta1);
 				}
-				if(_this20.count == 0 && (_this20.endLine == 1 || _this20.endLine == 3)) {
-					var ax1 = _this20.ax;
-					var ay1 = _this20.ay;
-					var radius10 = width_1 / 2;
-					var beta1 = -_this20.angle1 - Math.PI / 2;
-					var gamma4 = -_this20.angle1 - Math.PI / 2 + Math.PI;
+				if(_this22.count == 0 && (_this22.endLine == 1 || _this22.endLine == 3)) {
+					var ax1 = _this22.ax;
+					var ay1 = _this22.ay;
+					var radius7 = width_1 / 2;
+					var beta1 = -_this22.angle1 - Math.PI / 2;
+					var gamma4 = -_this22.angle1 - Math.PI / 2 + Math.PI;
 					var temp1 = [];
-					var this90 = _this20.triArr;
-					var t43 = [];
-					var this91;
-					if(t43 == null) {
-						var t44 = [];
-						var this92 = t44 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t44;
-						this91 = this92;
+					var this78 = _this22.triArr;
+					var t31 = [];
+					var this79;
+					if(t31 == null) {
+						var t32 = [];
+						var this80 = t32 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t32;
+						this79 = this80;
 					} else {
-						this91 = t43;
+						this79 = t31;
 					}
-					var this93 = this91;
-					var out10 = this93;
-					var pi10 = Math.PI;
-					var step14 = pi10 * 2 / 36;
+					var this81 = this79;
+					var out7 = this81;
+					var pi7 = Math.PI;
+					var step11 = pi7 * 2 / 36;
 					var dif20;
 					switch(trilateral_angle_DifferencePreference.SMALL._hx_index) {
 					case 0:
@@ -4449,8 +2459,8 @@ Main.prototype = {
 							var a34 = beta1 % (2 * Math.PI);
 							f34 = a34 >= 0 ? a34 : a34 + 2 * Math.PI;
 						}
-						var this94 = f34;
-						var za16 = this94;
+						var this82 = f34;
+						var za16 = this82;
 						var f35;
 						if(gamma4 >= 0 && gamma4 > Math.PI) {
 							f35 = gamma4;
@@ -4458,13 +2468,13 @@ Main.prototype = {
 							var a35 = gamma4 % (2 * Math.PI);
 							f35 = a35 >= 0 ? a35 : a35 + 2 * Math.PI;
 						}
-						var this95 = f35;
-						var zb16 = this95;
+						var this83 = f35;
+						var zb16 = this83;
 						var fa16 = za16;
 						var fb16 = zb16;
-						var theta24 = Math.abs(beta1 - gamma4);
+						var theta21 = Math.abs(beta1 - gamma4);
 						var clockwise16 = beta1 < gamma4;
-						var dif21 = clockwise16 ? theta24 : -theta24;
+						var dif21 = clockwise16 ? theta21 : -theta21;
 						dif20 = dif21 > 0 ? dif21 : 2 * Math.PI + dif21;
 						break;
 					case 1:
@@ -4475,8 +2485,8 @@ Main.prototype = {
 							var a36 = beta1 % (2 * Math.PI);
 							f36 = a36 >= 0 ? a36 : a36 + 2 * Math.PI;
 						}
-						var this96 = f36;
-						var za17 = this96;
+						var this84 = f36;
+						var za17 = this84;
 						var f37;
 						if(gamma4 >= 0 && gamma4 > Math.PI) {
 							f37 = gamma4;
@@ -4484,13 +2494,13 @@ Main.prototype = {
 							var a37 = gamma4 % (2 * Math.PI);
 							f37 = a37 >= 0 ? a37 : a37 + 2 * Math.PI;
 						}
-						var this97 = f37;
-						var zb17 = this97;
+						var this85 = f37;
+						var zb17 = this85;
 						var fa17 = za17;
 						var fb17 = zb17;
-						var theta25 = Math.abs(beta1 - gamma4);
+						var theta22 = Math.abs(beta1 - gamma4);
 						var clockwise17 = beta1 < gamma4;
-						var dif22 = clockwise17 ? theta25 : -theta25;
+						var dif22 = clockwise17 ? theta22 : -theta22;
 						dif20 = dif22 < 0 ? dif22 : -2 * Math.PI + dif22;
 						break;
 					case 2:
@@ -4501,8 +2511,8 @@ Main.prototype = {
 							var a38 = beta1 % (2 * Math.PI);
 							f38 = a38 >= 0 ? a38 : a38 + 2 * Math.PI;
 						}
-						var this98 = f38;
-						var za18 = this98;
+						var this86 = f38;
+						var za18 = this86;
 						var f39;
 						if(gamma4 >= 0 && gamma4 > Math.PI) {
 							f39 = gamma4;
@@ -4510,15 +2520,15 @@ Main.prototype = {
 							var a39 = gamma4 % (2 * Math.PI);
 							f39 = a39 >= 0 ? a39 : a39 + 2 * Math.PI;
 						}
-						var this99 = f39;
-						var zb18 = this99;
+						var this87 = f39;
+						var zb18 = this87;
 						var fa18 = beta1;
 						var fb18 = gamma4;
-						var theta26 = Math.abs(beta1 - gamma4);
-						var smallest4 = theta26 <= Math.PI;
+						var theta23 = Math.abs(beta1 - gamma4);
+						var smallest4 = theta23 <= Math.PI;
 						var clockwise18 = beta1 < gamma4;
-						var dif23 = clockwise18 ? theta26 : -theta26;
-						dif20 = smallest4 ? dif23 : clockwise18 ? -(2 * Math.PI - theta26) : 2 * Math.PI - theta26;
+						var dif23 = clockwise18 ? theta23 : -theta23;
+						dif20 = smallest4 ? dif23 : clockwise18 ? -(2 * Math.PI - theta23) : 2 * Math.PI - theta23;
 						break;
 					case 3:
 						var f40;
@@ -4528,8 +2538,8 @@ Main.prototype = {
 							var a40 = beta1 % (2 * Math.PI);
 							f40 = a40 >= 0 ? a40 : a40 + 2 * Math.PI;
 						}
-						var this100 = f40;
-						var za19 = this100;
+						var this88 = f40;
+						var za19 = this88;
 						var f41;
 						if(gamma4 >= 0 && gamma4 > Math.PI) {
 							f41 = gamma4;
@@ -4537,283 +2547,283 @@ Main.prototype = {
 							var a41 = gamma4 % (2 * Math.PI);
 							f41 = a41 >= 0 ? a41 : a41 + 2 * Math.PI;
 						}
-						var this101 = f41;
-						var zb19 = this101;
+						var this89 = f41;
+						var zb19 = this89;
 						var fa19 = beta1;
 						var fb19 = gamma4;
-						var theta27 = Math.abs(beta1 - gamma4);
-						var largest4 = theta27 > Math.PI;
+						var theta24 = Math.abs(beta1 - gamma4);
+						var largest4 = theta24 > Math.PI;
 						var clockwise19 = beta1 < gamma4;
-						var dif24 = clockwise19 ? theta27 : -theta27;
-						dif20 = largest4 ? dif24 : clockwise19 ? -(2 * Math.PI - theta27) : 2 * Math.PI - theta27;
+						var dif24 = clockwise19 ? theta24 : -theta24;
+						dif20 = largest4 ? dif24 : clockwise19 ? -(2 * Math.PI - theta24) : 2 * Math.PI - theta24;
 						break;
 					}
 					var positive4 = dif20 >= 0;
-					var totalSteps4 = Math.ceil(Math.abs(dif20) / step14);
-					var step15 = dif20 / totalSteps4;
+					var totalSteps4 = Math.ceil(Math.abs(dif20) / step11);
+					var step12 = dif20 / totalSteps4;
 					var angle4 = beta1;
-					var cx10;
-					var cy10;
-					var bx10 = 0;
-					var by10 = 0;
+					var cx7;
+					var cy7;
+					var bx7 = 0;
+					var by7 = 0;
 					var p23 = temp1.length;
-					var _g37 = 0;
-					var _g118 = totalSteps4 + 1;
-					while(_g37 < _g118) {
-						var i18 = _g37++;
-						cx10 = ax1 + radius10 * Math.sin(angle4);
-						cy10 = ay1 + radius10 * Math.cos(angle4);
-						temp1[p23++] = cx10;
-						temp1[p23++] = cy10;
-						if(i18 != 0) {
-							var t45 = new trilateral_tri_Trilateral(ax1,ay1,bx10,by10,cx10,cy10);
-							out10[out10.length] = t45;
+					var _g30 = 0;
+					var _g114 = totalSteps4 + 1;
+					while(_g30 < _g114) {
+						var i17 = _g30++;
+						cx7 = ax1 + radius7 * Math.sin(angle4);
+						cy7 = ay1 + radius7 * Math.cos(angle4);
+						temp1[p23++] = cx7;
+						temp1[p23++] = cy7;
+						if(i17 != 0) {
+							var t33 = new trilateral_tri_Trilateral(ax1,ay1,bx7,by7,cx7,cy7);
+							out7[out7.length] = t33;
 						}
-						angle4 += step15;
-						bx10 = cx10;
-						by10 = cy10;
+						angle4 += step12;
+						bx7 = cx7;
+						by7 = cy7;
 					}
-					var triArr9 = out10;
-					var _g38 = 0;
-					while(_g38 < triArr9.length) {
-						var t46 = triArr9[_g38];
-						++_g38;
-						this90[this90.length] = t46;
+					var triArr6 = out7;
+					var _g33 = 0;
+					while(_g33 < triArr6.length) {
+						var t34 = triArr6[_g33];
+						++_g33;
+						this78[this78.length] = t34;
 					}
-					var pA1 = _this20.pointsAnti.length;
+					var pA1 = _this22.pointsAnti.length;
 					var len1 = temp1.length / 2 | 0;
 					var p41 = temp1.length / 4 | 0;
-					var _g39 = 0;
-					var _g119 = p41;
-					while(_g39 < _g119) {
-						var i19 = _g39++;
-						_this20.pointsAnti[pA1++] = temp1[len1 - 2 * i19 + 1];
-						_this20.pointsAnti[pA1++] = temp1[len1 - 2 * i19];
+					var _g34 = 0;
+					var _g115 = p41;
+					while(_g34 < _g115) {
+						var i18 = _g34++;
+						_this22.pointsAnti[pA1++] = temp1[len1 - 2 * i18 + 1];
+						_this22.pointsAnti[pA1++] = temp1[len1 - 2 * i18];
 					}
-					var pC1 = _this20.pointsClock.length;
+					var pC1 = _this22.pointsClock.length;
 					var _g210 = 0;
-					var _g310 = p41;
-					while(_g210 < _g310) {
-						var i20 = _g210++;
-						_this20.pointsClock[pC1++] = temp1[i20 * 2 + len1 + 1];
-						_this20.pointsClock[pC1++] = temp1[i20 * 2 + len1];
+					var _g35 = p41;
+					while(_g210 < _g35) {
+						var i19 = _g210++;
+						_this22.pointsClock[pC1++] = temp1[i19 * 2 + len1 + 1];
+						_this22.pointsClock[pC1++] = temp1[i19 * 2 + len1];
 					}
 				}
-				if(_this20.count != 0) {
-					_this20.addQuads(clockWise1,width_1);
+				if(_this22.count != 0) {
+					_this22.addQuads(clockWise1,width_1);
 				}
-				_this20.quadIndex = _this20.triArr.length;
-				if(_this20.count == 0) {
-					_this20.penultimateAX = _this20.dxPrev;
-					_this20.penultimateAY = _this20.dyPrev;
-					_this20.lastAntiX = _this20.ex;
-					_this20.lastAntiY = _this20.ey;
-					_this20.penultimateCX = _this20.dx;
-					_this20.penultimateCY = _this20.dy;
-					_this20.lastClockX = _this20.exPrev;
-					_this20.lastClockY = _this20.eyPrev;
-					var this102 = _this20.triArr;
-					var tri28 = new trilateral_tri_Trilateral(_this20.dxPrev,_this20.dyPrev,_this20.dx,_this20.dy,_this20.ex,_this20.ey,0);
-					this102[this102.length] = tri28;
-					var this103 = _this20.triArr;
-					var tri29 = new trilateral_tri_Trilateral(_this20.dxPrev,_this20.dyPrev,_this20.dx,_this20.dy,_this20.exPrev,_this20.eyPrev,0);
-					this103[this103.length] = tri29;
+				_this22.quadIndex = _this22.triArr.length;
+				if(_this22.count == 0) {
+					_this22.penultimateAX = _this22.dxPrev;
+					_this22.penultimateAY = _this22.dyPrev;
+					_this22.lastAntiX = _this22.ex;
+					_this22.lastAntiY = _this22.ey;
+					_this22.penultimateCX = _this22.dx;
+					_this22.penultimateCY = _this22.dy;
+					_this22.lastClockX = _this22.exPrev;
+					_this22.lastClockY = _this22.eyPrev;
+					var this90 = _this22.triArr;
+					var tri22 = new trilateral_tri_Trilateral(_this22.dxPrev,_this22.dyPrev,_this22.dx,_this22.dy,_this22.ex,_this22.ey,0);
+					this90[this90.length] = tri22;
+					var this91 = _this22.triArr;
+					var tri23 = new trilateral_tri_Trilateral(_this22.dxPrev,_this22.dyPrev,_this22.dx,_this22.dy,_this22.exPrev,_this22.eyPrev,0);
+					this91[this91.length] = tri23;
 				} else {
-					if(clockWise1 && !_this20.lastClock) {
-						_this20.penultimateAX = _this20.jx;
-						_this20.penultimateAY = _this20.jy;
-						_this20.lastAntiX = _this20.ex;
-						_this20.lastAntiY = _this20.ey;
-						_this20.penultimateCX = _this20.dx;
-						_this20.penultimateCY = _this20.dy;
-						_this20.lastClockX = _this20.exPrev;
-						_this20.lastClockY = _this20.eyPrev;
-						var this104 = _this20.triArr;
-						var tri30 = new trilateral_tri_Trilateral(_this20.jx,_this20.jy,_this20.dx,_this20.dy,_this20.ex,_this20.ey,0);
-						this104[this104.length] = tri30;
-						var this105 = _this20.triArr;
-						var tri31 = new trilateral_tri_Trilateral(_this20.jx,_this20.jy,_this20.dx,_this20.dy,_this20.exPrev,_this20.eyPrev,0);
-						this105[this105.length] = tri31;
+					if(clockWise1 && !_this22.lastClock) {
+						_this22.penultimateAX = _this22.jx;
+						_this22.penultimateAY = _this22.jy;
+						_this22.lastAntiX = _this22.ex;
+						_this22.lastAntiY = _this22.ey;
+						_this22.penultimateCX = _this22.dx;
+						_this22.penultimateCY = _this22.dy;
+						_this22.lastClockX = _this22.exPrev;
+						_this22.lastClockY = _this22.eyPrev;
+						var this92 = _this22.triArr;
+						var tri24 = new trilateral_tri_Trilateral(_this22.jx,_this22.jy,_this22.dx,_this22.dy,_this22.ex,_this22.ey,0);
+						this92[this92.length] = tri24;
+						var this93 = _this22.triArr;
+						var tri25 = new trilateral_tri_Trilateral(_this22.jx,_this22.jy,_this22.dx,_this22.dy,_this22.exPrev,_this22.eyPrev,0);
+						this93[this93.length] = tri25;
 					}
-					if(clockWise1 && _this20.lastClock) {
-						_this20.penultimateAX = _this20.jx;
-						_this20.penultimateAY = _this20.jy;
-						_this20.lastAntiX = _this20.ex;
-						_this20.lastAntiY = _this20.ey;
-						_this20.penultimateCX = _this20.dx;
-						_this20.penultimateCY = _this20.dy;
-						_this20.lastClockX = _this20.exPrev;
-						_this20.lastClockY = _this20.eyPrev;
-						var this106 = _this20.triArr;
-						var tri32 = new trilateral_tri_Trilateral(_this20.jx,_this20.jy,_this20.dx,_this20.dy,_this20.ex,_this20.ey,0);
-						this106[this106.length] = tri32;
-						var this107 = _this20.triArr;
-						var tri33 = new trilateral_tri_Trilateral(_this20.jx,_this20.jy,_this20.dx,_this20.dy,_this20.exPrev,_this20.eyPrev,0);
-						this107[this107.length] = tri33;
+					if(clockWise1 && _this22.lastClock) {
+						_this22.penultimateAX = _this22.jx;
+						_this22.penultimateAY = _this22.jy;
+						_this22.lastAntiX = _this22.ex;
+						_this22.lastAntiY = _this22.ey;
+						_this22.penultimateCX = _this22.dx;
+						_this22.penultimateCY = _this22.dy;
+						_this22.lastClockX = _this22.exPrev;
+						_this22.lastClockY = _this22.eyPrev;
+						var this94 = _this22.triArr;
+						var tri26 = new trilateral_tri_Trilateral(_this22.jx,_this22.jy,_this22.dx,_this22.dy,_this22.ex,_this22.ey,0);
+						this94[this94.length] = tri26;
+						var this95 = _this22.triArr;
+						var tri27 = new trilateral_tri_Trilateral(_this22.jx,_this22.jy,_this22.dx,_this22.dy,_this22.exPrev,_this22.eyPrev,0);
+						this95[this95.length] = tri27;
 					}
-					if(!clockWise1 && !_this20.lastClock) {
-						_this20.penultimateCX = _this20.dx;
-						_this20.penultimateCY = _this20.dy;
-						_this20.lastClockX = _this20.jx;
-						_this20.lastClockY = _this20.jy;
-						_this20.penultimateAX = _this20.dxPrev;
-						_this20.penultimateAY = _this20.dyPrev;
-						_this20.lastAntiX = _this20.ex;
-						_this20.lastAntiY = _this20.ey;
-						var this108 = _this20.triArr;
-						var tri34 = new trilateral_tri_Trilateral(_this20.dxPrev,_this20.dyPrev,_this20.dx,_this20.dy,_this20.jx,_this20.jy,0);
-						this108[this108.length] = tri34;
-						var this109 = _this20.triArr;
-						var tri35 = new trilateral_tri_Trilateral(_this20.dxPrev,_this20.dyPrev,_this20.dx,_this20.dy,_this20.ex,_this20.ey,0);
-						this109[this109.length] = tri35;
+					if(!clockWise1 && !_this22.lastClock) {
+						_this22.penultimateCX = _this22.dx;
+						_this22.penultimateCY = _this22.dy;
+						_this22.lastClockX = _this22.jx;
+						_this22.lastClockY = _this22.jy;
+						_this22.penultimateAX = _this22.dxPrev;
+						_this22.penultimateAY = _this22.dyPrev;
+						_this22.lastAntiX = _this22.ex;
+						_this22.lastAntiY = _this22.ey;
+						var this96 = _this22.triArr;
+						var tri28 = new trilateral_tri_Trilateral(_this22.dxPrev,_this22.dyPrev,_this22.dx,_this22.dy,_this22.jx,_this22.jy,0);
+						this96[this96.length] = tri28;
+						var this97 = _this22.triArr;
+						var tri29 = new trilateral_tri_Trilateral(_this22.dxPrev,_this22.dyPrev,_this22.dx,_this22.dy,_this22.ex,_this22.ey,0);
+						this97[this97.length] = tri29;
 					}
-					if(!clockWise1 && _this20.lastClock) {
-						_this20.penultimateAX = _this20.dxPrev;
-						_this20.penultimateAY = _this20.dyPrev;
-						_this20.lastAntiX = _this20.ex;
-						_this20.lastAntiY = _this20.ey;
-						_this20.penultimateCX = _this20.jx;
-						_this20.penultimateCY = _this20.jy;
-						_this20.lastClockX = _this20.dx;
-						_this20.lastClockY = _this20.dy;
-						var this110 = _this20.triArr;
-						var tri36 = new trilateral_tri_Trilateral(_this20.jx,_this20.jy,_this20.dx,_this20.dy,_this20.ex,_this20.ey,0);
-						this110[this110.length] = tri36;
-						var this111 = _this20.triArr;
-						var tri37 = new trilateral_tri_Trilateral(_this20.dxPrev,_this20.dyPrev,_this20.jx,_this20.jy,_this20.ex,_this20.ey,0);
-						this111[this111.length] = tri37;
+					if(!clockWise1 && _this22.lastClock) {
+						_this22.penultimateAX = _this22.dxPrev;
+						_this22.penultimateAY = _this22.dyPrev;
+						_this22.lastAntiX = _this22.ex;
+						_this22.lastAntiY = _this22.ey;
+						_this22.penultimateCX = _this22.jx;
+						_this22.penultimateCY = _this22.jy;
+						_this22.lastClockX = _this22.dx;
+						_this22.lastClockY = _this22.dy;
+						var this98 = _this22.triArr;
+						var tri30 = new trilateral_tri_Trilateral(_this22.jx,_this22.jy,_this22.dx,_this22.dy,_this22.ex,_this22.ey,0);
+						this98[this98.length] = tri30;
+						var this99 = _this22.triArr;
+						var tri31 = new trilateral_tri_Trilateral(_this22.dxPrev,_this22.dyPrev,_this22.jx,_this22.jy,_this22.ex,_this22.ey,0);
+						this99[this99.length] = tri31;
 					}
 				}
 				if(clockWise1) {
-					var radius11 = width_1 / 2;
-					var edgePoly2 = _this20.pointsClock;
-					var t47 = [];
-					var this112;
-					if(t47 == null) {
-						var t48 = [];
-						var this113 = t48 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t48;
-						this112 = this113;
+					var radius8 = width_1 / 2;
+					var edgePoly2 = _this22.pointsClock;
+					var t35 = [];
+					var this100;
+					if(t35 == null) {
+						var t36 = [];
+						var this101 = t36 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t36;
+						this100 = this101;
 					} else {
-						this112 = t47;
+						this100 = t35;
 					}
-					var this114 = this112;
-					var out11 = this114;
-					var pi11 = Math.PI;
-					var step16 = pi11 * 2 / 36;
+					var this102 = this100;
+					var out8 = this102;
+					var pi8 = Math.PI;
+					var step13 = pi8 * 2 / 36;
 					var positive5 = dif15 >= 0;
-					var totalSteps5 = Math.ceil(Math.abs(dif15) / step16);
-					var step17 = dif15 / totalSteps5;
+					var totalSteps5 = Math.ceil(Math.abs(dif15) / step13);
+					var step14 = dif15 / totalSteps5;
 					var angle5 = theta01;
-					var cx11;
-					var cy11;
-					var bx11 = 0;
-					var by11 = 0;
+					var cx8;
+					var cy8;
+					var bx8 = 0;
+					var by8 = 0;
 					var p24 = edgePoly2.length;
 					var count2 = 0;
-					var _g40 = 0;
-					var _g120 = totalSteps5 + 1;
-					while(_g40 < _g120) {
-						var i21 = _g40++;
-						cx11 = ax_1 + radius11 * Math.sin(angle5);
-						cy11 = ay_1 + radius11 * Math.cos(angle5);
-						if(i21 != 0) {
-							var t49 = new trilateral_tri_Trilateral(ax_1,ay_1,bx11,by11,cx11,cy11);
-							out11[out11.length] = t49;
-							edgePoly2[p24++] = cx11;
-							edgePoly2[p24++] = cy11;
+					var _g36 = 0;
+					var _g116 = totalSteps5 + 1;
+					while(_g36 < _g116) {
+						var i20 = _g36++;
+						cx8 = ax_1 + radius8 * Math.sin(angle5);
+						cy8 = ay_1 + radius8 * Math.cos(angle5);
+						if(i20 != 0) {
+							var t37 = new trilateral_tri_Trilateral(ax_1,ay_1,bx8,by8,cx8,cy8);
+							out8[out8.length] = t37;
+							edgePoly2[p24++] = cx8;
+							edgePoly2[p24++] = cy8;
 						}
-						angle5 += step17;
-						bx11 = cx11;
-						by11 = cy11;
+						angle5 += step14;
+						bx8 = cx8;
+						by8 = cy8;
 					}
-					var trilateralArray2 = out11;
-					var this115 = _this20.triArr;
-					var _g41 = 0;
-					while(_g41 < trilateralArray2.length) {
-						var t50 = trilateralArray2[_g41];
-						++_g41;
-						this115[this115.length] = t50;
+					var trilateralArray2 = out8;
+					var this103 = _this22.triArr;
+					var _g37 = 0;
+					while(_g37 < trilateralArray2.length) {
+						var t38 = trilateralArray2[_g37];
+						++_g37;
+						this103[this103.length] = t38;
 					}
 				} else {
-					var radius12 = width_1 / 2;
-					var edgePoly3 = _this20.pointsAnti;
-					var t51 = [];
-					var this116;
-					if(t51 == null) {
-						var t52 = [];
-						var this117 = t52 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t52;
-						this116 = this117;
+					var radius9 = width_1 / 2;
+					var edgePoly3 = _this22.pointsAnti;
+					var t39 = [];
+					var this104;
+					if(t39 == null) {
+						var t40 = [];
+						var this105 = t40 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t40;
+						this104 = this105;
 					} else {
-						this116 = t51;
+						this104 = t39;
 					}
-					var this118 = this116;
-					var out12 = this118;
-					var pi12 = Math.PI;
-					var step18 = pi12 * 2 / 36;
+					var this106 = this104;
+					var out9 = this106;
+					var pi9 = Math.PI;
+					var step15 = pi9 * 2 / 36;
 					var positive6 = dif15 >= 0;
-					var totalSteps6 = Math.ceil(Math.abs(dif15) / step18);
-					var step19 = dif15 / totalSteps6;
+					var totalSteps6 = Math.ceil(Math.abs(dif15) / step15);
+					var step16 = dif15 / totalSteps6;
 					var angle6 = theta01;
-					var cx12;
-					var cy12;
-					var bx12 = 0;
-					var by12 = 0;
+					var cx9;
+					var cy9;
+					var bx9 = 0;
+					var by9 = 0;
 					var p25 = edgePoly3.length;
 					var count3 = 0;
-					var _g42 = 0;
-					var _g121 = totalSteps6 + 1;
-					while(_g42 < _g121) {
-						var i22 = _g42++;
-						cx12 = ax_1 + radius12 * Math.sin(angle6);
-						cy12 = ay_1 + radius12 * Math.cos(angle6);
-						if(i22 != 0) {
-							var t53 = new trilateral_tri_Trilateral(ax_1,ay_1,bx12,by12,cx12,cy12);
-							out12[out12.length] = t53;
-							edgePoly3[p25++] = cx12;
-							edgePoly3[p25++] = cy12;
+					var _g38 = 0;
+					var _g117 = totalSteps6 + 1;
+					while(_g38 < _g117) {
+						var i21 = _g38++;
+						cx9 = ax_1 + radius9 * Math.sin(angle6);
+						cy9 = ay_1 + radius9 * Math.cos(angle6);
+						if(i21 != 0) {
+							var t41 = new trilateral_tri_Trilateral(ax_1,ay_1,bx9,by9,cx9,cy9);
+							out9[out9.length] = t41;
+							edgePoly3[p25++] = cx9;
+							edgePoly3[p25++] = cy9;
 						}
-						angle6 += step19;
-						bx12 = cx12;
-						by12 = cy12;
+						angle6 += step16;
+						bx9 = cx9;
+						by9 = cy9;
 					}
-					var trilateralArray3 = out12;
-					var this119 = _this20.triArr;
-					var _g43 = 0;
-					while(_g43 < trilateralArray3.length) {
-						var t54 = trilateralArray3[_g43];
-						++_g43;
-						this119[this119.length] = t54;
+					var trilateralArray3 = out9;
+					var this107 = _this22.triArr;
+					var _g39 = 0;
+					while(_g39 < trilateralArray3.length) {
+						var t42 = trilateralArray3[_g39];
+						++_g39;
+						this107[this107.length] = t42;
 					}
 				}
-				_this20.kax = _this20.dxPrev;
-				_this20.kay = _this20.dyPrev;
-				_this20.kbx = _this20.dx;
-				_this20.kby = _this20.dy;
-				_this20.ncx = _this20.exPrev;
-				_this20.ncy = _this20.eyPrev;
-				_this20.kcx = _this20.ex;
-				_this20.kcy = _this20.ey;
-				if(_this20.count != 0) {
+				_this22.kax = _this22.dxPrev;
+				_this22.kay = _this22.dyPrev;
+				_this22.kbx = _this22.dx;
+				_this22.kby = _this22.dy;
+				_this22.ncx = _this22.exPrev;
+				_this22.ncy = _this22.eyPrev;
+				_this22.kcx = _this22.ex;
+				_this22.kcy = _this22.ey;
+				if(_this22.count != 0) {
 					if(clockWise1) {
-						var this120 = _this20.triArr;
-						var tri38 = new trilateral_tri_Trilateral(_this20.ax,_this20.ay,_this20.dxOld,_this20.dyOld,_this20.jx,_this20.jy,0);
-						this120[this120.length] = tri38;
-						var this121 = _this20.triArr;
-						var tri39 = new trilateral_tri_Trilateral(_this20.ax,_this20.ay,_this20.exPrev,_this20.eyPrev,_this20.jx,_this20.jy,0);
-						this121[this121.length] = tri39;
+						var this108 = _this22.triArr;
+						var tri32 = new trilateral_tri_Trilateral(_this22.ax,_this22.ay,_this22.dxOld,_this22.dyOld,_this22.jx,_this22.jy,0);
+						this108[this108.length] = tri32;
+						var this109 = _this22.triArr;
+						var tri33 = new trilateral_tri_Trilateral(_this22.ax,_this22.ay,_this22.exPrev,_this22.eyPrev,_this22.jx,_this22.jy,0);
+						this109[this109.length] = tri33;
 					} else {
-						var this122 = _this20.triArr;
-						var tri40 = new trilateral_tri_Trilateral(_this20.ax,_this20.ay,_this20.exOld,_this20.eyOld,_this20.jx,_this20.jy,0);
-						this122[this122.length] = tri40;
-						var this123 = _this20.triArr;
-						var tri41 = new trilateral_tri_Trilateral(_this20.ax,_this20.ay,_this20.dxPrev,_this20.dyPrev,_this20.jx,_this20.jy,0);
-						this123[this123.length] = tri41;
+						var this110 = _this22.triArr;
+						var tri34 = new trilateral_tri_Trilateral(_this22.ax,_this22.ay,_this22.exOld,_this22.eyOld,_this22.jx,_this22.jy,0);
+						this110[this110.length] = tri34;
+						var this111 = _this22.triArr;
+						var tri35 = new trilateral_tri_Trilateral(_this22.ax,_this22.ay,_this22.dxPrev,_this22.dyPrev,_this22.jx,_this22.jy,0);
+						this111[this111.length] = tri35;
 					}
 				}
-				_this20.jxOld = _this20.jx;
-				_this20.jyOld = _this20.jy;
-				_this20.lastClock = clockWise1;
-				_this20.count++;
+				_this22.jxOld = _this22.jx;
+				_this22.jyOld = _this22.jy;
+				_this22.lastClock = clockWise1;
+				_this22.count++;
 				var l1 = path1.points.length;
 				var p1 = path1.points[l1 - 1];
 				var l21 = p1.length;
@@ -4836,77 +2846,148 @@ Main.prototype = {
 				path1.y = y_1;
 			}
 		}
-		var this124 = this.triangles;
-		var triArr10 = path1.trilateralArray;
+		var this112 = this.triangles;
+		var triArr7 = path1.trilateralArray;
 		var colorID2 = this.appColors.indexOf(4473924);
-		var tri42;
-		var _g44 = 0;
-		while(_g44 < triArr10.length) {
-			var t55 = triArr10[_g44];
-			++_g44;
-			if(t55 != null) {
-				var t56 = Object.create(trilateral_tri_Triangle.prototype);
-				t56.id = 10;
-				t56.ax = t55.ax;
-				t56.ay = t55.ay;
-				t56.bx = t55.bx;
-				t56.by = t55.by;
-				t56.cx = t55.cx;
-				t56.cy = t55.cy;
-				t56.mark = t55.mark;
-				t56.depth = 0;
-				t56.alpha = 1.;
-				t56.colorID = colorID2;
-				t56.colorA = colorID2;
-				t56.colorB = colorID2;
-				t56.colorC = colorID2;
-				t56.windingAdjusted = t55.windingAdjusted;
-				tri42 = t56;
-				this124[this124.length] = tri42;
+		var tri36;
+		var _g40 = 0;
+		while(_g40 < triArr7.length) {
+			var t43 = triArr7[_g40];
+			++_g40;
+			if(t43 != null) {
+				var t44 = Object.create(trilateral_tri_Triangle.prototype);
+				t44.id = 11;
+				t44.ax = t43.ax;
+				t44.ay = t43.ay;
+				t44.bx = t43.bx;
+				t44.by = t43.by;
+				t44.cx = t43.cx;
+				t44.cy = t43.cy;
+				t44.mark = t43.mark;
+				t44.depth = 0;
+				t44.alpha = 1.;
+				t44.colorID = colorID2;
+				t44.colorA = colorID2;
+				t44.colorB = colorID2;
+				t44.colorC = colorID2;
+				t44.windingAdjusted = t43.windingAdjusted;
+				tri36 = t44;
+				this112[this112.length] = tri36;
 			}
 		}
-		var body;
+		var _gthis2 = this;
+		var jointRender2 = function(i22,joint5) {
+			var col = _gthis2.appColors.indexOf(16711680) + i22;
+			if(col > 7) {
+				col -= 7;
+			}
+			var _this23 = _gthis2.shapes;
+			var x8 = joint5.x;
+			var y8 = joint5.y;
+			var radius10 = _gthis2.circleSize;
+			var this113 = _this23.triangles;
+			var id3 = _this23.refCount++;
+			var t45 = [];
+			var this114;
+			if(t45 == null) {
+				var t46 = [];
+				var this115 = t46 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t46;
+				this114 = this115;
+			} else {
+				this114 = t45;
+			}
+			var this116 = this114;
+			var out10 = this116;
+			var pi10 = Math.PI;
+			var theta25 = pi10 / 2;
+			var step17 = pi10 * 2 / 36;
+			var bx10;
+			var by10;
+			var cx10;
+			var cy10;
+			var _g41 = 0;
+			var _g118 = 36;
+			while(_g41 < _g118) {
+				var i23 = _g41++;
+				bx10 = x8 + radius10 * Math.sin(theta25);
+				by10 = y8 + radius10 * Math.cos(theta25);
+				theta25 += step17;
+				cx10 = x8 + radius10 * Math.sin(theta25);
+				cy10 = y8 + radius10 * Math.cos(theta25);
+				var tri37 = new trilateral_tri_Trilateral(x8,y8,bx10,by10,cx10,cy10);
+				out10[out10.length] = tri37;
+			}
+			var triArr8 = out10;
+			var tri38;
+			var _g42 = 0;
+			while(_g42 < triArr8.length) {
+				var t47 = triArr8[_g42];
+				++_g42;
+				if(t47 != null) {
+					var t48 = Object.create(trilateral_tri_Triangle.prototype);
+					t48.id = id3;
+					t48.ax = t47.ax;
+					t48.ay = t47.ay;
+					t48.bx = t47.bx;
+					t48.by = t47.by;
+					t48.cx = t47.cx;
+					t48.cy = t47.cy;
+					t48.mark = t47.mark;
+					t48.depth = 0;
+					t48.alpha = 1.;
+					t48.colorID = col;
+					t48.colorA = col;
+					t48.colorB = col;
+					t48.colorC = col;
+					t48.windingAdjusted = t47.windingAdjusted;
+					tri38 = t48;
+					this113[this113.length] = tri38;
+				}
+			}
+			return _this23.refCount - 1;
+		};
+		var _this24 = this.collisionDemo;
+		var anchor6 = this.mousePos;
+		var joint6;
 		var mouseEdge = 2;
-		var radius13 = this.distance + mouseEdge + this.circleSize / 2;
-		var _g45 = 0;
-		var _g122 = this.places;
-		while(_g45 < _g122) {
-			var i23 = _g45++;
-			body = this.bodies[i23];
-			var _this21 = this.mousePos;
-			var toNext1 = new khaMath_Vector4(_this21.x - body.x,_this21.y - body.y,_this21.z - body.z,_this21.w - body.w);
-			if(toNext1.get_length() < radius13) {
-				toNext1.set_length(radius13);
-				var _this22 = this.mousePos;
-				var _this_x4 = _this22.x - body.x;
-				var _this_y4 = _this22.y - body.y;
-				var _this_z4 = _this22.z - body.z;
-				var _this_w4 = _this22.w - body.w;
+		var radius11 = _this24.distance + mouseEdge + _this24.circleSize / 2;
+		var _g43 = 0;
+		var _g119 = _this24.points;
+		while(_g43 < _g119) {
+			var i24 = _g43++;
+			joint6 = _this24.joints[i24];
+			var toNext1 = new khaMath_Vector4(anchor6.x - joint6.x,anchor6.y - joint6.y,anchor6.z - joint6.z,anchor6.w - joint6.w);
+			if(toNext1.get_length() < radius11) {
+				toNext1.set_length(radius11);
+				var _this_x4 = anchor6.x - joint6.x;
+				var _this_y4 = anchor6.y - joint6.y;
+				var _this_z4 = anchor6.z - joint6.z;
+				var _this_w4 = anchor6.w - joint6.w;
 				var offset_x = _this_x4 - toNext1.x;
 				var offset_y = _this_y4 - toNext1.y;
 				var offset_z = _this_z4 - toNext1.z;
 				var offset_w = _this_w4 - toNext1.w;
-				this.bodies[i23] = new khaMath_Vector4(body.x + offset_x,body.y + offset_y,body.z + offset_z,body.w + offset_w);
+				_this24.joints[i24] = new khaMath_Vector4(joint6.x + offset_x,joint6.y + offset_y,joint6.z + offset_z,joint6.w + offset_w);
 			}
 		}
 		var other;
 		var _g211 = 0;
-		var _g311 = this.places;
-		while(_g211 < _g311) {
-			var i24 = _g211++;
-			var _g212 = i24;
-			var _g312 = this.places;
-			while(_g212 < _g312) {
+		var _g310 = _this24.points;
+		while(_g211 < _g310) {
+			var i25 = _g211++;
+			var _g212 = i25;
+			var _g311 = _this24.points;
+			while(_g212 < _g311) {
 				var j1 = _g212++;
-				body = this.bodies[i24];
-				other = this.bodies[j1];
-				var toNext2 = new khaMath_Vector4(other.x - body.x,other.y - body.y,other.z - body.z,other.w - body.w);
-				if(toNext2.get_length() < this.circleSize * 2) {
-					toNext2.set_length(this.circleSize * 2);
-					var _this_x5 = other.x - body.x;
-					var _this_y5 = other.y - body.y;
-					var _this_z5 = other.z - body.z;
-					var _this_w5 = other.w - body.w;
+				joint6 = _this24.joints[i25];
+				other = _this24.joints[j1];
+				var toNext2 = new khaMath_Vector4(other.x - joint6.x,other.y - joint6.y,other.z - joint6.z,other.w - joint6.w);
+				if(toNext2.get_length() < _this24.circleSize * 2) {
+					toNext2.set_length(_this24.circleSize * 2);
+					var _this_x5 = other.x - joint6.x;
+					var _this_y5 = other.y - joint6.y;
+					var _this_z5 = other.z - joint6.z;
+					var _this_w5 = other.w - joint6.w;
 					var _this_x6 = _this_x5 - toNext2.x;
 					var _this_y6 = _this_y5 - toNext2.y;
 					var _this_z6 = _this_z5 - toNext2.z;
@@ -4915,85 +2996,18 @@ Main.prototype = {
 					var offset_y1 = _this_y6 * 0.5;
 					var offset_z1 = _this_z6 * 0.5;
 					var offset_w1 = _this_w6 * 0.5;
-					this.bodies[i24] = new khaMath_Vector4(body.x + offset_x1,body.y + offset_y1,body.z + offset_z1,body.w + offset_w1);
-					this.bodies[j1] = new khaMath_Vector4(other.x - offset_x1,other.y - offset_y1,other.z - offset_z1,other.w - offset_w1);
+					_this24.joints[i25] = new khaMath_Vector4(joint6.x + offset_x1,joint6.y + offset_y1,joint6.z + offset_z1,joint6.w + offset_w1);
+					_this24.joints[j1] = new khaMath_Vector4(other.x - offset_x1,other.y - offset_y1,other.z - offset_z1,other.w - offset_w1);
 				}
 			}
 		}
-		var _g46 = 0;
-		var _g51 = this.places;
-		while(_g46 < _g51) {
-			var i25 = _g46++;
-			body = this.bodies[i25];
-			var col = this.appColors.indexOf(16711680) + i25 - 1;
-			if(col > 7) {
-				col -= 8;
-			}
-			var _this23 = this.shapes;
-			var x10 = body.x;
-			var y10 = body.y;
-			var radius14 = this.circleSize;
-			var this125 = _this23.triangles;
-			var id6 = _this23.refCount++;
-			var t57 = [];
-			var this126;
-			if(t57 == null) {
-				var t58 = [];
-				var this127 = t58 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t58;
-				this126 = this127;
-			} else {
-				this126 = t57;
-			}
-			var this128 = this126;
-			var out13 = this128;
-			var pi13 = Math.PI;
-			var theta28 = pi13 / 2;
-			var step20 = pi13 * 2 / 36;
-			var bx13;
-			var by13;
-			var cx13;
-			var cy13;
-			var _g47 = 0;
-			var _g123 = 36;
-			while(_g47 < _g123) {
-				var i26 = _g47++;
-				bx13 = x10 + radius14 * Math.sin(theta28);
-				by13 = y10 + radius14 * Math.cos(theta28);
-				theta28 += step20;
-				cx13 = x10 + radius14 * Math.sin(theta28);
-				cy13 = y10 + radius14 * Math.cos(theta28);
-				var tri43 = new trilateral_tri_Trilateral(x10,y10,bx13,by13,cx13,cy13);
-				out13[out13.length] = tri43;
-			}
-			var triArr11 = out13;
-			var tri44;
-			var _g48 = 0;
-			while(_g48 < triArr11.length) {
-				var t59 = triArr11[_g48];
-				++_g48;
-				if(t59 != null) {
-					var t60 = Object.create(trilateral_tri_Triangle.prototype);
-					t60.id = id6;
-					t60.ax = t59.ax;
-					t60.ay = t59.ay;
-					t60.bx = t59.bx;
-					t60.by = t59.by;
-					t60.cx = t59.cx;
-					t60.cy = t59.cy;
-					t60.mark = t59.mark;
-					t60.depth = 0;
-					t60.alpha = 1.;
-					t60.colorID = col;
-					t60.colorA = col;
-					t60.colorB = col;
-					t60.colorC = col;
-					t60.windingAdjusted = t59.windingAdjusted;
-					tri44 = t60;
-					this125[this125.length] = tri44;
-				}
-			}
+		var _g44 = 0;
+		var _g51 = _this24.points;
+		while(_g44 < _g51) {
+			var i26 = _g44++;
+			jointRender2(i26,_this24.joints[i26]);
 		}
-		var tri45;
+		var tri39;
 		var s = 1.;
 		var ox = 0.;
 		var oy = 0.;
@@ -5004,85 +3018,19 @@ Main.prototype = {
 		g.endFill();
 		var triangles = this.triangles;
 		var triangleColors = this.appColors;
-		var _g49 = 0;
-		var _g124 = triangles.length;
-		while(_g49 < _g124) {
-			var i27 = _g49++;
-			tri45 = triangles[i27];
-			if(tri45.mark != 0) {
-				g.beginFill(triangleColors[tri45.mark]);
+		var _g45 = 0;
+		var _g120 = triangles.length;
+		while(_g45 < _g120) {
+			var i27 = _g45++;
+			tri39 = triangles[i27];
+			if(tri39.mark != 0) {
+				g.beginFill(triangleColors[tri39.mark]);
 			} else {
-				g.beginFill(triangleColors[tri45.colorID]);
-				g.lineStyle(0.,triangleColors[tri45.colorID],1.);
+				g.beginFill(triangleColors[tri39.colorID]);
+				g.lineStyle(0.,triangleColors[tri39.colorID],1.);
 			}
-			g.drawTri([ox + tri45.ax * s,oy + tri45.ay * s,ox + tri45.bx * s,oy + tri45.by * s,ox + tri45.cx * s,oy + tri45.cy * s]);
+			g.drawTri([ox + tri39.ax * s,oy + tri39.ay * s,ox + tri39.bx * s,oy + tri39.by * s,ox + tri39.cx * s,oy + tri39.cy * s]);
 			g.endFill();
-		}
-	}
-	,plotPoint: function() {
-		var x = this.point.x;
-		var y = this.point.y;
-		var _this = this.shapes;
-		var radius = this.circleSize;
-		var color = this.appColors.indexOf(16777215);
-		var this1 = _this.triangles;
-		var id = _this.refCount++;
-		var t = [];
-		var this2;
-		if(t == null) {
-			var t1 = [];
-			var this3 = t1 == null ? trilateral_tri__$TrilateralArray_TrilateralArray_$Impl_$._new([]) : t1;
-			this2 = this3;
-		} else {
-			this2 = t;
-		}
-		var this4 = this2;
-		var out = this4;
-		var pi = Math.PI;
-		var theta = pi / 2;
-		var step = pi * 2 / 36;
-		var bx;
-		var by;
-		var cx;
-		var cy;
-		var _g = 0;
-		var _g1 = 36;
-		while(_g < _g1) {
-			var i = _g++;
-			bx = x + radius * Math.sin(theta);
-			by = y + radius * Math.cos(theta);
-			theta += step;
-			cx = x + radius * Math.sin(theta);
-			cy = y + radius * Math.cos(theta);
-			var tri = new trilateral_tri_Trilateral(x,y,bx,by,cx,cy);
-			out[out.length] = tri;
-		}
-		var triArr = out;
-		var tri1;
-		var _g2 = 0;
-		while(_g2 < triArr.length) {
-			var t2 = triArr[_g2];
-			++_g2;
-			if(t2 != null) {
-				var t3 = Object.create(trilateral_tri_Triangle.prototype);
-				t3.id = id;
-				t3.ax = t2.ax;
-				t3.ay = t2.ay;
-				t3.bx = t2.bx;
-				t3.by = t2.by;
-				t3.cx = t2.cx;
-				t3.cy = t2.cy;
-				t3.mark = t2.mark;
-				t3.depth = 0;
-				t3.alpha = 1.;
-				t3.colorID = color;
-				t3.colorA = color;
-				t3.colorB = color;
-				t3.colorC = color;
-				t3.windingAdjusted = t2.windingAdjusted;
-				tri1 = t3;
-				this1[this1.length] = tri1;
-			}
 		}
 	}
 	,plotMousePos: function() {
@@ -6039,6 +3987,212 @@ StringTools.hex = function(n,digits) {
 		while(s.length < digits) s = "0" + s;
 	}
 	return s;
+};
+var constraints_demo_Chain = function(x,y,points_,distance_) {
+	this.joints = [];
+	this.distance = distance_;
+	this.points = points_;
+	var _g = 0;
+	var _g1 = this.points;
+	while(_g < _g1) {
+		var i = _g++;
+		this.joints[i] = new khaMath_Vector4(x + i * this.distance,y,0);
+	}
+};
+constraints_demo_Chain.__name__ = true;
+constraints_demo_Chain.prototype = {
+	update: function(anchor,render) {
+		var joint = this.joints[0];
+		joint.x = anchor.x;
+		joint.y = anchor.y;
+		render(0,joint);
+		var _g = 1;
+		var _g1 = this.points;
+		while(_g < _g1) {
+			var i = _g++;
+			var tmp = this.joints;
+			var _this = this.joints[i];
+			var anchor1 = this.joints[i - 1];
+			var distance = this.distance;
+			var _this1 = new khaMath_Vector4(_this.x - anchor1.x,_this.y - anchor1.y,_this.z - anchor1.z,_this.w - anchor1.w);
+			_this1.set_length(1);
+			var _this2 = _this1;
+			var _this_x = _this2.x * distance;
+			var _this_y = _this2.y * distance;
+			var _this_z = _this2.z * distance;
+			var _this_w = _this2.w * distance;
+			tmp[i] = new khaMath_Vector4(_this_x + anchor1.x,_this_y + anchor1.y,_this_z + anchor1.z,_this_w + anchor1.w);
+			joint = this.joints[i];
+			render(i,joint);
+		}
+	}
+};
+var constraints_demo_Collision = function(x_,y_,points_,circleSize_,collisionArea,distance_) {
+	this.joints = [];
+	this.x = x_;
+	this.y = y_;
+	this.distance = distance_;
+	this.points = points_;
+	this.circleSize = circleSize_;
+	var _g = 0;
+	var _g1 = this.points;
+	while(_g < _g1) {
+		var i = _g++;
+		var x0 = this.x / 2 + collisionArea * Math.random();
+		var y0 = this.y / 2 + collisionArea * Math.random();
+		this.joints[i] = new khaMath_Vector4(x0,y0,0);
+	}
+};
+constraints_demo_Collision.__name__ = true;
+constraints_demo_Collision.prototype = {
+	update: function(anchor,render) {
+		var joint;
+		var mouseEdge = 2;
+		var radius = this.distance + mouseEdge + this.circleSize / 2;
+		var _g = 0;
+		var _g1 = this.points;
+		while(_g < _g1) {
+			var i = _g++;
+			joint = this.joints[i];
+			var toNext = new khaMath_Vector4(anchor.x - joint.x,anchor.y - joint.y,anchor.z - joint.z,anchor.w - joint.w);
+			if(toNext.get_length() < radius) {
+				toNext.set_length(radius);
+				var _this_x = anchor.x - joint.x;
+				var _this_y = anchor.y - joint.y;
+				var _this_z = anchor.z - joint.z;
+				var _this_w = anchor.w - joint.w;
+				var offset_x = _this_x - toNext.x;
+				var offset_y = _this_y - toNext.y;
+				var offset_z = _this_z - toNext.z;
+				var offset_w = _this_w - toNext.w;
+				this.joints[i] = new khaMath_Vector4(joint.x + offset_x,joint.y + offset_y,joint.z + offset_z,joint.w + offset_w);
+			}
+		}
+		var other;
+		var _g2 = 0;
+		var _g3 = this.points;
+		while(_g2 < _g3) {
+			var i1 = _g2++;
+			var _g21 = i1;
+			var _g31 = this.points;
+			while(_g21 < _g31) {
+				var j = _g21++;
+				joint = this.joints[i1];
+				other = this.joints[j];
+				var toNext1 = new khaMath_Vector4(other.x - joint.x,other.y - joint.y,other.z - joint.z,other.w - joint.w);
+				if(toNext1.get_length() < this.circleSize * 2) {
+					toNext1.set_length(this.circleSize * 2);
+					var _this_x1 = other.x - joint.x;
+					var _this_y1 = other.y - joint.y;
+					var _this_z1 = other.z - joint.z;
+					var _this_w1 = other.w - joint.w;
+					var _this_x2 = _this_x1 - toNext1.x;
+					var _this_y2 = _this_y1 - toNext1.y;
+					var _this_z2 = _this_z1 - toNext1.z;
+					var _this_w2 = _this_w1 - toNext1.w;
+					var offset_x1 = _this_x2 * 0.5;
+					var offset_y1 = _this_y2 * 0.5;
+					var offset_z1 = _this_z2 * 0.5;
+					var offset_w1 = _this_w2 * 0.5;
+					this.joints[i1] = new khaMath_Vector4(joint.x + offset_x1,joint.y + offset_y1,joint.z + offset_z1,joint.w + offset_w1);
+					this.joints[j] = new khaMath_Vector4(other.x - offset_x1,other.y - offset_y1,other.z - offset_z1,other.w - offset_w1);
+				}
+			}
+		}
+		var _g4 = 0;
+		var _g5 = this.points;
+		while(_g4 < _g5) {
+			var i2 = _g4++;
+			render(i2,this.joints[i2]);
+		}
+	}
+};
+var constraints_demo_Fabrik = function(x_,y_,points_,distance_) {
+	this.joints = [];
+	this.x = x_;
+	this.y = y_;
+	this.distance = distance_;
+	this.points = points_;
+	var _g = 0;
+	var _g1 = this.points;
+	while(_g < _g1) {
+		var i = _g++;
+		this.joints[i] = new khaMath_Vector4(this.x + i * this.distance,this.y,0);
+	}
+};
+constraints_demo_Fabrik.__name__ = true;
+constraints_demo_Fabrik.prototype = {
+	update: function(anchor,render) {
+		var joint = this.joints[0];
+		joint.x = anchor.x;
+		joint.y = anchor.y;
+		render(0,joint);
+		var _g = 1;
+		var _g1 = this.points;
+		while(_g < _g1) {
+			var i = _g++;
+			var tmp = this.joints;
+			var _this = this.joints[i];
+			var anchor1 = this.joints[i - 1];
+			var distance = this.distance;
+			var _this1 = new khaMath_Vector4(_this.x - anchor1.x,_this.y - anchor1.y,_this.z - anchor1.z,_this.w - anchor1.w);
+			_this1.set_length(1);
+			var _this2 = _this1;
+			var _this_x = _this2.x * distance;
+			var _this_y = _this2.y * distance;
+			var _this_z = _this2.z * distance;
+			var _this_w = _this2.w * distance;
+			tmp[i] = new khaMath_Vector4(_this_x + anchor1.x,_this_y + anchor1.y,_this_z + anchor1.z,_this_w + anchor1.w);
+		}
+		var j;
+		var joint1 = this.joints[this.points - 1];
+		joint1.x = this.x;
+		joint1.y = this.y;
+		render(this.points - 1,joint1);
+		var _g2 = 1;
+		var _g3 = this.points;
+		while(_g2 < _g3) {
+			var i1 = _g2++;
+			j = this.points - i1;
+			var tmp1 = this.joints;
+			var _this3 = this.joints[j - 1];
+			var anchor2 = this.joints[j];
+			var distance1 = this.distance;
+			var _this4 = new khaMath_Vector4(_this3.x - anchor2.x,_this3.y - anchor2.y,_this3.z - anchor2.z,_this3.w - anchor2.w);
+			_this4.set_length(1);
+			var _this5 = _this4;
+			var _this_x1 = _this5.x * distance1;
+			var _this_y1 = _this5.y * distance1;
+			var _this_z1 = _this5.z * distance1;
+			var _this_w1 = _this5.w * distance1;
+			tmp1[j - 1] = new khaMath_Vector4(_this_x1 + anchor2.x,_this_y1 + anchor2.y,_this_z1 + anchor2.z,_this_w1 + anchor2.w);
+			joint1 = this.joints[j - 1];
+			render(j,joint1);
+		}
+	}
+};
+var constraints_demo_Inner = function(x,y,distance_) {
+	this.point = new khaMath_Vector4(x,y,0);
+	this.distance = distance_;
+};
+constraints_demo_Inner.__name__ = true;
+constraints_demo_Inner.prototype = {
+	update: function(anchor) {
+		var vec = this.point;
+		var toNext = new khaMath_Vector4(anchor.x - vec.x,anchor.y - vec.y,anchor.z - vec.z,anchor.w - vec.w);
+		if(toNext.get_length() > this.distance) {
+			var _this = this.point;
+			var distance = this.distance;
+			var _this1 = new khaMath_Vector4(_this.x - anchor.x,_this.y - anchor.y,_this.z - anchor.z,_this.w - anchor.w);
+			_this1.set_length(1);
+			var _this2 = _this1;
+			var _this_x = _this2.x * distance;
+			var _this_y = _this2.y * distance;
+			var _this_z = _this2.z * distance;
+			var _this_w = _this2.w * distance;
+			this.point = new khaMath_Vector4(_this_x + anchor.x,_this_y + anchor.y,_this_z + anchor.z,_this_w + anchor.w);
+		}
+	}
 };
 var htmlHelper_canvas__$CanvasWrapper_CanvasWrapper_$Impl_$ = {};
 htmlHelper_canvas__$CanvasWrapper_CanvasWrapper_$Impl_$.__name__ = true;
