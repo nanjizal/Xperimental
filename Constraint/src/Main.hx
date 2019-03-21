@@ -17,35 +17,45 @@ import trilateral.polys.Shapes;
 import khaMath.Vector4;
 import trilateral.angle.Angles;
 import trilateral.polys.Poly;
+
+import constraints.demo.Inner;
+import constraints.demo.Chain;
+import constraints.demo.Fabrik;
+import constraints.demo.Collision;
+
 class Main {
-    public var surface:       Surface;
-    public var distance       = 50;
-    public var canvas         = new CanvasWrapper();
-    public var circleSize:    Float = 5.;
-    public var shapes:        Shapes;
-    public var triangles      = new TriangleArray();
-    public var mousePos:      Vector4;
-    public var point:         Vector4;
-    public var points         = 7;
-    public var places         = 12;// 6*2
-    public var bodies         = new Array<Vector4>();
-    public var joints         = new Array<Vector4>();
-    public var jointsF        = new Array<Vector4>();
-    public var mouseIsDown:   Bool = false;
-    public var showMouse:     Bool = true;
-    public var appColors:     Array<AppColors> = [  Black, Red
-                                                 , Orange, Yellow
-                                                 , Green, Blue
-                                                 , Indigo, Violet
-                                                 , LightGrey, MidGrey
-                                                 , DarkGrey, NearlyBlack
-                                                 , White
-                                                 , BlueAlpha, GreenAlpha, RedAlpha ];
+    var innerDemo:     Inner;
+    var chainDemo:     Chain;
+    var fabrikDemo:    Fabrik;
+    var collisionDemo: Collision;
+    var surface:       Surface;
+    var distance       = 50;
+    var canvas         = new CanvasWrapper();
+    var circleSize     = 5.;
+    var lineWidth      = 0.3;
+    var shapes:        Shapes;
+    var triangles      = new TriangleArray();
+    var mousePos:      Vector4;
+    var points         = 7;
+    var places         = 12;// 6*2
+    var centreX:       Float;
+    var centreY:       Float;
+    var mouseIsDown:   Bool = false;
+    var showMouse:     Bool = true;
+    var appColors:     Array<AppColors> = [  Black, Red
+                                           , Orange, Yellow
+                                           , Green, Blue
+                                           , Indigo, Violet
+                                           , LightGrey, MidGrey
+                                           , DarkGrey, NearlyBlack
+                                           , White ];
     public static function main(){ new Main(); }
     public function new(){
         var doc = Browser.document;
         canvas.width  = 1024*2;
-        canvas.height = 768*2;
+        canvas.height = 768*2;        
+        centreX  = canvas.width/2;
+        centreY  = canvas.height/2;
         doc.body.appendChild( cast canvas );
         surface  = new Surface( canvas.getContext2d() );
         shapes   = new Shapes( triangles, appColors );
@@ -60,20 +70,14 @@ class Main {
     inline
     function setupExperiments(){
         // simple
-        point    = new Vector4( 100, 100, 0 );
+        innerDemo = new Inner( 100, 100, distance );
         // chain
-        var dx = canvas.width/2;
-        var dy = canvas.height/2;
-        for( i in 0...points ) joints[ i ] = new Vector4( dx + i*distance, dy, 0 );
+        chainDemo = new Chain( centreX, centreY, points, distance );
         // FABRIK
-        for( i in 0...points ) jointsF[ i ] = new Vector4( dx + i*distance, dy, 0 );
+        fabrikDemo = new Fabrik( centreX/2, centreY/2, points, distance );
         // collision
         var collisionArea = 300;
-        for( i in 0...places ) {
-            var x0 = dx/2 + collisionArea*Math.random(); 
-            var y0 = dy/2 + collisionArea*Math.random();
-            bodies[ i ] = new Vector4( x0, y0, 0 );
-        }
+        collisionDemo = new Collision( centreX, centreY, places, circleSize, collisionArea, distance );
     }
     inline
     function findColorID( col: AppColors ){
@@ -116,104 +120,41 @@ class Main {
     }
     inline
     function simple(){
-        if( showMouse ) plotMousePos();
-        var anchor = mousePos;
-        var toNext = mousePos.sub( point );
-        if( toNext.length > distance ) point = point.constrainDistance( anchor, distance );
-        plotPoint();
+        innerDemo.update( mousePos );
+        createSpot( innerDemo.point.x, innerDemo.point.y, White );
     }
     inline
     function chain(){
-        var joint = joints[0];
-        joint.x = mousePos.x;
-        joint.y = mousePos.y;
-        createSpot( joint.x, joint.y, Red );
-        for( i in 0...( points - 1) ) {
-            joints[ i + 1 ] = joints[ i + 1 ].constrainDistance( joints[ i ], distance );
-            joint = joints[ i + 1 ];
-            shapes.circle( joint.x, joint.y, circleSize, findColorID( Red ) + i + 1 );
-        }
+        var jointRender = ( i: Int, joint: Vector4 ) 
+            -> shapes.circle( joint.x, joint.y, circleSize, findColorID( Red ) + i );
+        chainDemo.update( mousePos, jointRender );
     }
     inline
     function fabrik(){
-        var joint = jointsF[0];
-        joint.x = mousePos.x;
-        joint.y = mousePos.y;
-        createSpot( joint.x, joint.y, Red );
-        for( i in 1...points ) {
-            jointsF[ i ] = jointsF[ i ].constrainDistance( jointsF[ i - 1 ], distance );
-        }
-        var j: Int;
-        var dx = canvas.width/4;
-        var dy = canvas.height/4;
-        var joint = jointsF[ points - 1 ];
-        joint.x = dx;
-        joint.y = dy;
-        createSpot( dx, dy, White );
-        for( i in 1...points ){
-            j = points - i;
-            jointsF[ j - 1 ] = jointsF[ j - 1 ].constrainDistance( jointsF[ j ], distance );
-            joint = jointsF[ j - 1 ];
-            shapes.circle( joint.x, joint.y, circleSize, findColorID( Red ) + i - 1 );
-        }
+        var jointRender = ( i: Int, joint: Vector4 ) 
+            -> shapes.circle( joint.x, joint.y, circleSize, findColorID( Red ) + i );
+        fabrikDemo.update( mousePos, jointRender );
     }
     inline
     function collision(){
-        // separate from mouse
-        var body: Vector4;
-        var mouseEdge = 2;
-        var radius = distance + mouseEdge + circleSize/2;
-        for( i in 0...places ) {
-            body = bodies[ i ];
-            var toNext = mousePos.sub( body );
-            if( toNext.length < radius ){
-                toNext.length = radius;
-                var offset = mousePos.sub( body ).sub( toNext );
-                bodies[ i ] = body.add( offset );
-            }
-        }
-        // separate balls
-        var other: Vector4;
-        for( i in 0...places ) for( j in i...places ) {
-            body = bodies[ i ];
-            other = bodies[ j ];
-            var toNext = other.sub( body );
-            if( toNext.length < circleSize*2 ){
-                toNext.length = circleSize*2 ;
-                var offset = other.sub( body ).sub( toNext ).mult( 0.5 );
-                bodies[ i ] = body.add( offset );
-                bodies[ j ] = other.sub( offset );
-            }
-        }
-        for( i in 0...places ){
-            body = bodies[ i ];
+        var jointRender = ( i: Int, joint: Vector4 ) -> {
             var col = findColorID( Red ) + i;
             if( col > 7 ) col = col - 7; // wrap colors
-            shapes.circle( body.x, body.y, circleSize, col );
+            shapes.circle( joint.x, joint.y, circleSize, col );
         }
-    }
-    inline
-    function chainLink(){
-        linkSpots( 11, joints, 0.3, MidGrey );
-    }
-    inline
-    function fabrikLink(){
-        linkSpots( 10, jointsF, 0.3, LightGrey );
+        collisionDemo.update( mousePos, jointRender );
     }
     inline
     function render( i: Int ): Void {
         clear();
+        plotMousePos();
         simple();
         chain();
-        fabrik();
-        chainLink();
-        fabrikLink();
+        fabrik();   
+        linkSpots( 10, chainDemo.joints,  lineWidth, DarkGrey );
+        linkSpots( 11, fabrikDemo.joints, lineWidth, LightGrey );
         collision();
         drawTriangles();
-    }
-    inline
-    function plotPoint(){
-        createSpot( point.x, point.y, White );
     }
     inline
     function plotMousePos(){
