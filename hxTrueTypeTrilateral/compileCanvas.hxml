@@ -1,0 +1,17 @@
+-js bin/trueTypeTrilateralTestCanvas.js
+-resource fonts/AvenirNextCyr-Bold.ttf@font
+-cp src
+-lib htmlHelper
+-lib trilateral
+-lib trilateralXtra
+-lib hxGeomAlgo
+-lib khaMath
+-lib justDrawing
+-lib HxTrueType
+-debug
+-main MainCanvas
+#-D js-flatten 
+#-dce full
+--next
+-cmd echo '<!DOCTYPE html><meta charset="UTF-8"><html><body><script src="trueTypeTrilateralTestCanvas.js"></script></body></html>' >bin/indexCanvas.html
+-cmd open bin/indexCanvas.html

@@ -1,0 +1,17 @@
+-js bin/trueTypeTrilateralTestWebGL.js
+-resource fonts/AvenirNextCyr-Bold.ttf@font
+-cp src
+-lib htmlHelper
+-lib trilateral
+-lib trilateralXtra
+-lib hxGeomAlgo
+-lib khaMath
+-lib justDrawing
+-lib HxTrueType
+-debug
+-main MainWebGL
+#-D js-flatten 
+#-dce full
+--next
+-cmd echo '<!DOCTYPE html><meta charset="UTF-8"><html><body><script src="trueTypeTrilateralTestWebGL.js"></script></body></html>' >bin/indexWebGL.html
+-cmd open bin/indexWebGL.html
