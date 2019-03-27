@@ -56,7 +56,6 @@ class MainWebGL extends WebGLSetup {
     public static function main(){ new MainWebGL(); }
     public function new(){
         super( stageRadius*2, stageRadius*2 );
-        super( stageRadius*2, stageRadius*2 );
         scale = 1/(stageRadius);
         darkBackground();
         modelViewProjection = Matrix4.identity();
