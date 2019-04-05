@@ -4,6 +4,7 @@
 -lib trilateral
 -lib trilateralXtra
 -lib khaMath
+-lib geom
 -lib justDrawing
 -lib constraints
 -debug
