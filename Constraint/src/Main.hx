@@ -35,7 +35,7 @@ class Main {
     var lineWidth      = 0.3;
     var shapes:        Shapes;
     var triangles      = new TriangleArray();
-    var mousePos:      Apoint4;//Vector4;
+    var mousePos:      Apoint4;
     var points         = 7;
     var places         = 12;// 6*2
     var centreX:       Float;
@@ -106,7 +106,7 @@ class Main {
     }
     inline
     function mouseCoord( e: MouseEvent ){
-        mousePos = new Apoint4( { x: cast e.clientX, y: cast e.clientY, z:0., w:1. });//Vector4( e.clientX, e.clientY, 0 );
+        mousePos = new Apoint4( { x: cast e.clientX, y: cast e.clientY, z:0., w:1. });
     }
     inline
     function mouseUp( e: MouseEvent ){
