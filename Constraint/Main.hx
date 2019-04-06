@@ -106,7 +106,7 @@ class Main {
     }
     inline
     function mouseCoord( e: MouseEvent ){
-        mousePos = new Apoint4( { x: cast e.clientX, y: cast e.clientY, z:0., w:1. });//Vector4( e.clientX, e.clientY, 0 );
+        mousePos = new Apoint4( { x: cast e.clientX, y: cast e.clientY, z:0., w:1. });
     }
     inline
     function mouseUp( e: MouseEvent ){
