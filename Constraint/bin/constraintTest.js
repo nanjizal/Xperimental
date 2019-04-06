@@ -587,7 +587,7 @@ Main.prototype = {
 			var a_w1 = a_w * distance;
 			var this2 = { x : a_x1 + anchor.x, y : a_y1 + anchor.y, z : a_z1 + anchor.z, w : a_w1 + anchor.w};
 			_this.point = this2;
-			console.log("constraints/demo/Inner.hx:19:",_this.point.x + " " + _this.point.y);
+			//console.log("constraints/demo/Inner.hx:19:",_this.point.x + " " + _this.point.y);
 		}
 		var x = this.innerDemo.point.x;
 		var y = this.innerDemo.point.y;
